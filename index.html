@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Caldo Control - Cuadre 50/50</title>
+  
+  <!-- Google Fonts & Tailwind CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilo de barra de desplazamiento visible y ergonómica */
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 8px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f5f5f4;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #d6d3d1;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #ea580c;
+    }
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom, 1.25rem);
+    }
+    .tap-highlight-transparent {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+
+<body class="bg-stone-100 text-stone-800 font-sans antialiased min-h-screen flex flex-col select-none tap-highlight-transparent">
+
+  <header class="sticky top-0 z-30 bg-amber-600 text-white shadow-md">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-10 h-10 rounded-full bg-amber-500/90 flex items-center justify-center text-2xl shadow-inner border border-amber-300">
+          🍲
+        </div>
+        <div>
+          <h1 class="text-lg font-extrabold leading-tight tracking-tight">Caldo de Gallina</h1>
+          <p class="text-xs text-amber-100 font-medium">Wilder, Delia & Willians (50/50)</p>
+        </div>
+      </div>
+      <button onclick="openModal('modal-backup')" class="p-2.5 rounded-xl bg-amber-700/50 hover:bg-amber-700 text-amber-100 border border-amber-500/30 transition-all flex items-center justify-center shadow-sm">
+        <i class="ph ph-gear text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-md w-full mx-auto p-4 pb-28">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: REGISTRO RÁPIDO DIARIO               -->
+    <!-- ========================================== -->
+    <section id="tab-registro" class="space-y-4">
+      
+      <!-- Selector de Fecha de Trabajo -->
+      <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="p-2 bg-amber-50 rounded-xl text-amber-600">
+            <i class="ph ph-calendar-blank text-xl"></i>
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold tracking-wider uppercase text-stone-400">Fecha de Operación</span>
+            <input type="date" id="fecha-operacion" class="block font-bold text-stone-800 text-sm focus:outline-none bg-transparent cursor-pointer">
+          </div>
+        </div>
+        <button onclick="setTodayDate()" class="text-xs font-bold px-3 py-1.5 bg-amber-100 text-amber-800 rounded-xl active:scale-95 border border-amber-200">
+          Hoy
+        </button>
+      </div>
+
+      <!-- TARJETA: Venta de Caldos (S/ 15 c/u) -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-3.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="text-xl">🥣</span>
+            <h2 class="font-bold text-stone-800 text-base">Anotar Caldos</h2>
+          </div>
+          <span class="text-xs bg-emerald-100 text-emerald-800 font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200">
+            S/ 15.00 c/u
+          </span>
+        </div>
+
+        <!-- Selector de Turno / Responsable de cobro -->
+        <div class="grid grid-cols-2 gap-2 p-1 bg-stone-100 rounded-xl">
+          <button type="button" id="btn-turno-manana" onclick="selectTurno('manana')" class="py-2 px-2 text-xs font-bold rounded-lg text-center transition-all bg-white text-stone-800 shadow-sm border border-stone-200">
+            🌅 Mañana (Wilder)
+            <span class="block text-[10px] text-stone-500 font-normal">Efectivo / Yape Wilder</span>
+          </button>
+          <button type="button" id="btn-turno-tarde" onclick="selectTurno('tarde')" class="py-2 px-2 text-xs font-semibold rounded-lg text-center transition-all text-stone-600 hover:text-stone-900">
+            🌆 Tarde (Delia 1pm+)
+            <span class="block text-[10px] text-stone-500 font-normal">Dinero queda con Delia</span>
+          </button>
+        </div>
+
+        <!-- Botones Táctiles Rápidos de Cantidad -->
+        <div class="flex items-center justify-between bg-amber-50/70 p-3 rounded-2xl border border-amber-100">
+          <button onclick="ajustarCaldos(-1)" class="w-12 h-12 bg-white text-amber-700 rounded-xl shadow-sm border border-amber-200 text-2xl font-bold flex items-center justify-center active:scale-90 transition-transform">
+            -
+          </button>
+          
+          <div class="text-center">
+            <span id="caldos-cantidad" class="text-4xl font-extrabold text-stone-800">1</span>
+            <span class="block text-xs font-bold text-amber-700" id="caldos-total-soles">Total: S/ 15.00</span>
+          </div>
+
+          <button onclick="ajustarCaldos(1)" class="w-12 h-12 bg-amber-600 text-white rounded-xl shadow-md text-2xl font-bold flex items-center justify-center active:scale-90 transition-transform">
+            +
+          </button>
+        </div>
+
+        <!-- Botones de incremento rápido (+1, +3, +5, +10) -->
+        <div class="grid grid-cols-4 gap-1.5 pt-1">
+          <button onclick="setCaldosValor(1)" class="py-1.5 text-xs bg-stone-100 hover:bg-stone-200 font-bold rounded-lg text-stone-700">+1</button>
+          <button onclick="setCaldosValor(3)" class="py-1.5 text-xs bg-stone-100 hover:bg-stone-200 font-bold rounded-lg text-stone-700">+3</button>
+          <button onclick="setCaldosValor(5)" class="py-1.5 text-xs bg-stone-100 hover:bg-stone-200 font-bold rounded-lg text-stone-700">+5</button>
+          <button onclick="setCaldosValor(10)" class="py-1.5 text-xs bg-stone-100 hover:bg-stone-200 font-bold rounded-lg text-stone-700">+10</button>
+        </div>
+
+        <button onclick="guardarVentaCaldos()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-bold rounded-xl shadow-md shadow-emerald-700/20 flex items-center justify-center space-x-2 transition-all">
+          <i class="ph ph-check-circle text-xl"></i>
+          <span>Registrar Venta de Caldos</span>
+        </button>
+      </div>
+
+      <!-- TARJETA: Registro de Insumos y Gastos (Wilder, Delia y Caja) -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="text-xl">🛒</span>
+            <h2 class="font-bold text-stone-800 text-base">Insumos y Gastos</h2>
+          </div>
+          <span class="text-xs text-stone-400 font-medium">Compras del caldo</span>
+        </div>
+
+        <!-- Insumo Frecuente con Barra de Desplazamiento Visible -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="block text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+              Insumo frecuente (Desliza con el dedo 👉)
+            </label>
+            <span class="text-[10px] text-amber-700 font-semibold bg-amber-50 px-1.5 py-0.5 rounded">Toca para llenar</span>
+          </div>
+
+          <!-- Contenedor con scrollbar horizontal claramente visible y estilizado -->
+          <div class="flex overflow-x-auto space-x-2 pb-2.5 pt-1 custom-scrollbar" id="chip-container">
+            <button type="button" onclick="setGastoRapido('Presas de Gallina')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🍗 Presas de gallina</button>
+            <button type="button" onclick="setGastoRapido('Papa por kilos')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🥔 Papa x kilo</button>
+            <button type="button" onclick="setGastoRapido('Huevos de gallina (plancha / jaba)')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🥚 Huevos gallina</button>
+            <button type="button" onclick="setGastoRapido('Fideos / Tallarín')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🍜 Fideos tallarín</button>
+            <button type="button" onclick="setGastoRapido('Maíz Cancha')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🌽 Maíz Cancha</button>
+            <button type="button" onclick="setGastoRapido('Balón de Gas doméstico')" class="shrink-0 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-800 text-xs font-semibold rounded-xl border border-rose-200 shadow-sm transition-all">🔥 Balón Gas</button>
+            <button type="button" onclick="setGastoRapido('Cebolla china por paquete')" class="shrink-0 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 text-emerald-900 text-xs font-semibold rounded-xl border border-emerald-200 shadow-sm transition-all">🌱 Cebolla china</button>
+            <button type="button" onclick="setGastoRapido('Perejil por paquete')" class="shrink-0 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 text-emerald-900 text-xs font-semibold rounded-xl border border-emerald-200 shadow-sm transition-all">🌿 Perejil</button>
+            <button type="button" onclick="setGastoRapido('Nabo por unidad')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🥕 Nabo</button>
+            <button type="button" onclick="setGastoRapido('Zapallo por kilo')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🎃 Zapallo</button>
+            <button type="button" onclick="setGastoRapido('Apio por unidad')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🥬 Apio</button>
+            <button type="button" onclick="setGastoRapido('Zanahoria por kilo')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🥕 Zanahoria</button>
+            <button type="button" onclick="setGastoRapido('Cebolla roja por kilo')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🧅 Cebolla roja</button>
+            <button type="button" onclick="setGastoRapido('Ajos por kilo')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🧄 Ajos</button>
+            <button type="button" onclick="setGastoRapido('Kion por kilo')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🫚 Kion</button>
+            <button type="button" onclick="setGastoRapido('Sal por paquete')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🧂 Sal paquete</button>
+            <button type="button" onclick="setGastoRapido('Ajinomoto por kilo')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🧂 Ajinomoto</button>
+            <button type="button" onclick="setGastoRapido('Doña Gusta gallina blister x10')" class="shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 active:bg-amber-300 text-amber-900 text-xs font-bold rounded-xl border border-amber-300 shadow-sm transition-all">✨ Doña Gusta x10</button>
+          </div>
+        </div>
+
+        <div class="space-y-2.5">
+          <div>
+            <label class="block text-[11px] font-semibold text-stone-500 mb-1">Descripción del insumo:</label>
+            <input type="text" id="gasto-descripcion" placeholder="Ej. 1 plancha huevos, 10kg papa amarilla..." class="w-full px-3.5 py-2.5 bg-stone-50 rounded-xl border border-stone-200 text-sm focus:bg-white focus:outline-none focus:border-amber-500">
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-semibold text-stone-500 mb-1">Costo en Soles:</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-stone-400 font-bold text-sm pointer-events-none">S/</span>
+                <input type="number" step="0.10" id="gasto-monto" placeholder="0.00" value="" class="w-full pl-9 pr-3 py-2.5 bg-stone-50 rounded-xl border border-stone-200 text-sm font-bold text-stone-800 focus:bg-white focus:outline-none focus:border-amber-500">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-stone-500 mb-1">¿Quién pagó el gasto?</label>
+              <select id="gasto-pagador" class="w-full px-3 py-2.5 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold text-stone-700 focus:bg-white focus:outline-none focus:border-amber-500">
+                <option value="wilder">🧔 Bolsillo Wilder</option>
+                <option value="delia">👩 Bolsillo Delia</option>
+                <option value="caja">💵 Caja / Efectivo del día</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="guardarGastoInsumo()" class="w-full py-3 bg-rose-600 hover:bg-rose-700 active:scale-98 text-white font-bold rounded-xl text-sm shadow-md shadow-rose-600/20 flex items-center justify-center space-x-2 transition-all">
+          <i class="ph ph-minus-circle text-lg"></i>
+          <span>Anotar Gasto / Insumo</span>
+        </button>
+      </div>
+
+      <!-- TARJETA: Adelantos / Cuentas de Willians -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="text-xl">🤝</span>
+            <h2 class="font-bold text-stone-800 text-base">Adelanto a Willians</h2>
+          </div>
+          <span class="text-xs bg-blue-50 text-blue-700 font-bold px-2 py-0.5 rounded-full border border-blue-200">
+            A descontar de su 50%
+          </span>
+        </div>
+        <p class="text-xs text-stone-500 leading-snug">
+          Dinero entregado a Willians de bolsillo para cubrir sus cuentas personales o gastos personales.
+        </p>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div class="col-span-2">
+            <input type="text" id="adelanto-motivo" placeholder="Motivo (ej. cuenta de Willians, pasaje)" class="w-full px-3 py-2.5 bg-stone-50 rounded-xl border border-stone-200 text-xs focus:bg-white focus:outline-none focus:border-blue-500">
+          </div>
+          <div>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center text-stone-400 font-bold text-xs pointer-events-none">S/</span>
+              <input type="number" step="0.5" id="adelanto-monto" placeholder="0.00" value="" class="w-full pl-7 pr-2 py-2.5 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold focus:bg-white focus:outline-none focus:border-blue-500">
+            </div>
+          </div>
+        </div>
+
+        <button onclick="guardarAdelantoWillians()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 flex items-center justify-center space-x-1.5 transition-all">
+          <i class="ph ph-hand-coins text-base"></i>
+          <span>Registrar Adelanto a Willians</span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: LIQUIDACIÓN Y CUADRE 50/50           -->
+    <!-- ========================================== -->
+    <section id="tab-cuadre" class="hidden space-y-4">
+      
+      <!-- Filtro de Rango Temporal -->
+      <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-stone-200 space-y-2">
+        <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400">Periodo de Liquidación</span>
+        <div class="grid grid-cols-3 gap-1.5">
+          <button onclick="setFiltroCuadre('hoy')" id="filtro-hoy" class="py-2 text-xs font-bold rounded-xl bg-amber-100 text-amber-800 shadow-sm">Hoy</button>
+          <button onclick="setFiltroCuadre('semana')" id="filtro-semana" class="py-2 text-xs font-semibold rounded-xl bg-stone-100 text-stone-600">Esta Semana</button>
+          <button onclick="setFiltroCuadre('todo')" id="filtro-todo" class="py-2 text-xs font-semibold rounded-xl bg-stone-100 text-stone-600">Todo</button>
+        </div>
+        <div class="flex items-center justify-between text-xs text-stone-500 font-medium pt-1">
+          <span id="periodo-texto">Periodo actual</span>
+          <button onclick="recalcularCuadre()" class="text-amber-700 font-bold flex items-center space-x-1 active:scale-95">
+            <i class="ph ph-arrow-clockwise"></i>
+            <span>Recalcular</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Resumen Operativo General (Negocio) -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-3">
+        <h3 class="text-xs font-extrabold uppercase tracking-wider text-stone-500">1. Estado de Resultados del Negocio</h3>
+        
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-stone-50 p-3 rounded-xl border border-stone-100">
+            <span class="text-[11px] font-semibold text-stone-500 block">Total Caldos</span>
+            <span id="cuadre-total-caldos" class="text-2xl font-black text-stone-800">0</span>
+            <span class="text-[10px] text-stone-500 block" id="cuadre-desglose-turnos">Mñn: 0 | Tarde: 0</span>
+          </div>
+          <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+            <span class="text-[11px] font-semibold text-emerald-700 block">Venta Bruta (x S/15)</span>
+            <span id="cuadre-venta-bruta" class="text-2xl font-black text-emerald-700">S/ 0.00</span>
+            <span class="text-[10px] text-emerald-600 block">Ingreso Total</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between py-2 px-3 bg-rose-50 rounded-xl border border-rose-100 text-xs font-semibold">
+          <span class="text-rose-700">(-) Costo Total Insumos / Gastos:</span>
+          <span id="cuadre-total-gastos" class="font-black text-rose-800">S/ 0.00</span>
+        </div>
+
+        <!-- Utilidad Neta Real -->
+        <div class="p-3.5 bg-amber-500 text-white rounded-xl flex items-center justify-between shadow-sm">
+          <div>
+            <span class="text-xs font-bold text-amber-100 block tracking-wide">GANANCIA NETA DEL CALDO</span>
+            <span class="text-[11px] text-amber-100">A repartir: 50% Willians / 50% Wilder-Familia</span>
+          </div>
+          <div class="text-right">
+            <span id="cuadre-ganancia-neta" class="text-2xl font-black">S/ 0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TARJETA: Control Específico de Delia (Insumos vs Caldos de la Tarde) -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-purple-200 space-y-3 relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-purple-600 text-white text-[10px] font-extrabold uppercase px-3 py-1 rounded-bl-xl tracking-wider">
+          Control Delia
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-black text-sm">
+            D
+          </div>
+          <div>
+            <h4 class="font-black text-stone-800 text-sm">Compras y Caldos de Delia</h4>
+            <span class="text-[11px] text-stone-400 font-medium">Cuando Wilder no va o en compras directas</span>
+          </div>
+        </div>
+
+        <div class="bg-purple-50/70 p-3 rounded-xl border border-purple-100 space-y-2 text-xs">
+          <div class="flex justify-between items-center">
+            <span class="text-stone-600">🍲 Caldos cobrados en la tarde (1pm+):</span>
+            <span id="delia-caldos-cobrados" class="font-bold text-stone-800">S/ 0.00 (0 platos)</span>
+          </div>
+          <div class="flex justify-between items-center text-purple-800 font-semibold">
+            <span>🛒 Insumos pagados por Delia de su bolsillo:</span>
+            <span id="delia-insumos-pagados" class="font-bold">S/ 0.00</span>
+          </div>
+          <div class="border-t border-purple-200 pt-2 flex justify-between items-center">
+            <span class="font-extrabold text-stone-800" id="delia-balance-etiqueta">Balance Delia:</span>
+            <span id="delia-balance-resultado" class="text-sm font-black text-purple-700">S/ 0.00</span>
+          </div>
+        </div>
+        <p class="text-[11px] text-stone-500 leading-snug italic" id="delia-explicacion">
+          Si Delia gastó más en insumos de lo que cobró en la tarde, se le reintegra la diferencia de las ganancias de la mañana.
+        </p>
+      </div>
+
+      <!-- TARJETA: Liquidación Willians -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-blue-200 space-y-2.5 relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-extrabold uppercase px-3 py-1 rounded-bl-xl tracking-wider">
+          Hijo Willians
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-black text-sm">
+            W
+          </div>
+          <div>
+            <h4 class="font-black text-stone-800 text-sm">Cierre de Pago a Willians</h4>
+            <span class="text-[11px] text-stone-400 font-medium">Reparto acordado al 50%</span>
+          </div>
+        </div>
+
+        <div class="space-y-1.5 text-xs pt-1">
+          <div class="flex justify-between text-stone-600 font-medium">
+            <span>Su 50% de ganancia neta:</span>
+            <span id="liq-willians-mitad" class="font-bold text-stone-800">S/ 0.00</span>
+          </div>
+          <div class="flex justify-between text-rose-600 font-medium">
+            <span>(-) Adelantos recibidos de papá:</span>
+            <span id="liq-willians-adelantos" class="font-bold">- S/ 0.00</span>
+          </div>
+          <div class="border-t border-stone-200 pt-2 flex justify-between items-baseline">
+            <span class="font-extrabold text-stone-800 text-sm">SALDO FINAL A ENTREGARLE:</span>
+            <span id="liq-willians-total" class="text-xl font-black text-blue-700">S/ 0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TARJETA: Liquidación y Reembolsos Wilder & Delia -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-amber-300 space-y-2.5 relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-amber-600 text-white text-[10px] font-extrabold uppercase px-3 py-1 rounded-bl-xl tracking-wider">
+          Wilder & Delia
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-black text-sm">
+            W+D
+          </div>
+          <div>
+            <h4 class="font-black text-stone-800 text-sm">Conciliación Bolsillo de Wilder</h4>
+            <span class="text-[11px] text-stone-400 font-medium">Ganancia 50% + Reembolsos Insumos</span>
+          </div>
+        </div>
+
+        <div class="space-y-1.5 text-xs pt-1 text-stone-600 font-medium">
+          <div class="flex justify-between">
+            <span>Su 50% de ganancia neta familiar:</span>
+            <span id="liq-wilder-mitad" class="font-bold text-stone-800">S/ 0.00</span>
+          </div>
+          <div class="flex justify-between text-emerald-700">
+            <span>(+) Reembolso insumos pagados por Wilder:</span>
+            <span id="liq-wilder-reembolso" class="font-bold">+ S/ 0.00</span>
+          </div>
+          <div class="flex justify-between text-purple-700">
+            <span>(+) Reembolso insumos pagados por Delia:</span>
+            <span id="liq-delia-reembolso" class="font-bold">+ S/ 0.00</span>
+          </div>
+          <div class="flex justify-between text-blue-700">
+            <span>(+) Retorno de adelanto dado a Willians:</span>
+            <span id="liq-wilder-recupera-adelanto" class="font-bold">+ S/ 0.00</span>
+          </div>
+          <div class="flex justify-between text-amber-800 bg-amber-50 p-2 rounded-xl">
+            <span>(ℹ) Cobrado en la tarde por Sra. Delia:</span>
+            <span id="liq-wilder-delia-tarde" class="font-bold">S/ 0.00</span>
+          </div>
+          <div class="border-t border-stone-200 pt-2 flex justify-between items-baseline">
+            <div>
+              <span class="font-extrabold text-stone-800 text-sm block">DINERO LÍQUIDO EN CAJA/WILDER:</span>
+              <span class="text-[10px] text-stone-400 font-normal">(Ingreso mañana menos insumos pagados y pago a Willians)</span>
+            </div>
+            <span id="liq-wilder-saldo-mano" class="text-xl font-black text-amber-700">S/ 0.00</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: HISTORIAL DE REGISTROS               -->
+    <!-- ========================================== -->
+    <section id="tab-historial" class="hidden space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-black text-stone-800 uppercase tracking-wider">Últimos Movimientos</h3>
+        <span id="contador-movimientos" class="text-xs bg-stone-200 text-stone-700 px-2.5 py-0.5 rounded-full font-bold">0 registros</span>
+      </div>
+
+      <!-- Lista dinámica de registros -->
+      <div id="lista-movimientos" class="space-y-2">
+        <!-- Renderizado dinámico vía JavaScript -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Barra de Navegación Inferior (Mobile Tabs) -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-200 z-40 safe-bottom">
+    <div class="max-w-md mx-auto grid grid-cols-3 px-2 py-1.5">
+      <button onclick="cambiarTab('registro')" id="nav-registro" class="flex flex-col items-center justify-center py-1 text-amber-600 font-bold">
+        <i class="ph ph-plus-circle text-2xl"></i>
+        <span class="text-[11px] mt-0.5">Anotar</span>
+      </button>
+      <button onclick="cambiarTab('cuadre')" id="nav-cuadre" class="flex flex-col items-center justify-center py-1 text-stone-400 font-medium">
+        <i class="ph ph-scales text-2xl"></i>
+        <span class="text-[11px] mt-0.5">Cuadre 50/50</span>
+      </button>
+      <button onclick="cambiarTab('historial')" id="nav-historial" class="flex flex-col items-center justify-center py-1 text-stone-400 font-medium">
+        <i class="ph ph-notebook text-2xl"></i>
+        <span class="text-[11px] mt-0.5">Historial</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MODAL: Respaldo y Opciones -->
+  <div id="modal-backup" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <i class="ph ph-shield-check text-2xl text-amber-600"></i>
+          <h3 class="font-bold text-stone-800 text-base">Copia de Seguridad y Datos</h3>
+        </div>
+        <button onclick="closeModal('modal-backup')" class="text-stone-400 hover:text-stone-700 text-xl font-bold p-1">✕</button>
+      </div>
+
+      <p class="text-xs text-stone-600 leading-relaxed">
+        Tus registros están seguros en este navegador. Puedes exportar una copia en archivo JSON o restaurar tus apuntes en cualquier momento.
+      </p>
+
+      <div class="space-y-2 pt-1">
+        <button onclick="exportarDatos()" class="w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-2 shadow-sm">
+          <i class="ph ph-download-simple text-base"></i>
+          <span>Descargar Copia de Seguridad (JSON)</span>
+        </button>
+
+        <label class="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 cursor-pointer border border-stone-300">
+          <i class="ph ph-upload-simple text-base"></i>
+          <span>Restaurar Copia desde Archivo</span>
+          <input type="file" id="archivo-importar" accept=".json" onchange="importarDatos(event)" class="hidden">
+        </label>
+
+        <button onclick="cargarEjemploHistorico()" class="w-full py-2 text-stone-600 hover:text-amber-700 text-[11px] font-semibold underline text-center">
+          Cargar apuntes del cuaderno (Ejemplo con Delia y Wilder)
+        </button>
+
+        <button onclick="solicitarLimpiezaTotal()" class="w-full py-2 text-rose-600 hover:text-rose-800 text-[11px] font-bold text-center">
+          Borrar todos los datos y empezar de cero
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Box -->
+  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-stone-900 text-white px-4 py-2.5 rounded-2xl shadow-xl text-xs font-semibold flex items-center space-x-2 transition-all duration-300 opacity-0 pointer-events-none">
+    <i id="toast-icon" class="ph ph-check text-base text-emerald-400"></i>
+    <span id="toast-mensaje">Operación realizada</span>
+  </div>
+
+  <script>
+    // PRECIO FIJO POR CALDO DE GALLINA
+    const PRECIO_CALDO = 15.00;
+
+    // Estado local para selector de caldo
+    let estadoCaldo = {
+      turno: 'manana', // 'manana' (Wilder) o 'tarde' (Delia)
+      cantidad: 1
+    };
+
+    // Filtro temporal para el cuadre
+    let filtroActual = 'hoy';
+
+    // Estructura de base de datos local
+    let appData = {
+      ventas: [],    // { id, fecha, turno, cantidad, total }
+      gastos: [],    // { id, fecha, descripcion, monto, pagador: 'wilder' | 'delia' | 'caja' }
+      adelantos: []  // { id, fecha, motivo, monto, beneficiario: 'willians' }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      cargarDatosStorage();
+      setTodayDate();
+      actualizarWidgetCaldo();
+      limpiarCamposGasto();
+      recalcularCuadre();
+      renderizarHistorial();
+    });
+
+    function setTodayDate() {
+      const hoy = new Date();
+      const offset = hoy.getTimezoneOffset();
+      const localDate = new Date(hoy.getTime() - (offset * 60 * 1000));
+      const fechaStr = localDate.toISOString().split('T')[0];
+      document.getElementById('fecha-operacion').value = fechaStr;
+    }
+
+    function cargarDatosStorage() {
+      const datosGuardados = localStorage.getItem('caldo_control_db_v2');
+      if (datosGuardados) {
+        try {
+          appData = JSON.parse(datosGuardados);
+        } catch (e) {
+          console.error("Error cargando LocalStorage", e);
+        }
+      } else {
+        // Migración suave desde la clave previa si existía
+        const previa = localStorage.getItem('caldo_control_db');
+        if (previa) {
+          try {
+            appData = JSON.parse(previa);
+            guardarDatosStorage();
+          } catch (e) {}
+        }
+      }
+    }
+
+    function guardarDatosStorage() {
+      localStorage.setItem('caldo_control_db_v2', JSON.stringify(appData));
+      recalcularCuadre();
+      renderizarHistorial();
+    }
+
+    function cambiarTab(tab) {
+      document.getElementById('tab-registro').classList.add('hidden');
+      document.getElementById('tab-cuadre').classList.add('hidden');
+      document.getElementById('tab-historial').classList.add('hidden');
+
+      document.getElementById('nav-registro').className = 'flex flex-col items-center justify-center py-1 text-stone-400 font-medium';
+      document.getElementById('nav-cuadre').className = 'flex flex-col items-center justify-center py-1 text-stone-400 font-medium';
+      document.getElementById('nav-historial').className = 'flex flex-col items-center justify-center py-1 text-stone-400 font-medium';
+
+      if (tab === 'registro') {
+        document.getElementById('tab-registro').classList.remove('hidden');
+        document.getElementById('nav-registro').className = 'flex flex-col items-center justify-center py-1 text-amber-600 font-bold';
+      } else if (tab === 'cuadre') {
+        document.getElementById('tab-cuadre').classList.remove('hidden');
+        document.getElementById('nav-cuadre').className = 'flex flex-col items-center justify-center py-1 text-amber-600 font-bold';
+        recalcularCuadre();
+      } else if (tab === 'historial') {
+        document.getElementById('tab-historial').classList.remove('hidden');
+        document.getElementById('nav-historial').className = 'flex flex-col items-center justify-center py-1 text-amber-600 font-bold';
+        renderizarHistorial();
+      }
+    }
+
+    function selectTurno(turno) {
+      estadoCaldo.turno = turno;
+      const btnManana = document.getElementById('btn-turno-manana');
+      const btnTarde = document.getElementById('btn-turno-tarde');
+
+      if (turno === 'manana') {
+        btnManana.className = "py-2 px-2 text-xs font-bold rounded-lg text-center transition-all bg-white text-stone-800 shadow-sm border border-stone-200";
+        btnTarde.className = "py-2 px-2 text-xs font-semibold rounded-lg text-center transition-all text-stone-600 hover:text-stone-900";
+      } else {
+        btnTarde.className = "py-2 px-2 text-xs font-bold rounded-lg text-center transition-all bg-white text-stone-800 shadow-sm border border-stone-200";
+        btnManana.className = "py-2 px-2 text-xs font-semibold rounded-lg text-center transition-all text-stone-600 hover:text-stone-900";
+      }
+    }
+
+    function ajustarCaldos(delta) {
+      estadoCaldo.cantidad = Math.max(1, estadoCaldo.cantidad + delta);
+      actualizarWidgetCaldo();
+    }
+
+    function setCaldosValor(val) {
+      estadoCaldo.cantidad = val;
+      actualizarWidgetCaldo();
+    }
+
+    function actualizarWidgetCaldo() {
+      document.getElementById('caldos-cantidad').textContent = estadoCaldo.cantidad;
+      const total = estadoCaldo.cantidad * PRECIO_CALDO;
+      document.getElementById('caldos-total-soles').textContent = `Total: S/ ${total.toFixed(2)}`;
+    }
+
+    function guardarVentaCaldos() {
+      const fecha = document.getElementById('fecha-operacion').value;
+      if (!fecha) {
+        mostrarNotificacion('Por favor selecciona una fecha');
+        return;
+      }
+
+      const total = estadoCaldo.cantidad * PRECIO_CALDO;
+      const nuevoRegistro = {
+        id: 'caldo_' + Date.now(),
+        fecha: fecha,
+        tipo: 'caldo',
+        turno: estadoCaldo.turno, // 'manana' o 'tarde'
+        cantidad: estadoCaldo.cantidad,
+        total: total
+      };
+
+      appData.ventas.unshift(nuevoRegistro);
+      guardarDatosStorage();
+
+      mostrarNotificacion(`✅ Anotados ${estadoCaldo.cantidad} caldos (S/ ${total.toFixed(2)})`);
+      estadoCaldo.cantidad = 1;
+      actualizarWidgetCaldo();
+    }
+
+    function setGastoRapido(nombre) {
+      document.getElementById('gasto-descripcion').value = nombre;
+      const montoInput = document.getElementById('gasto-monto');
+      montoInput.value = '';
+      montoInput.placeholder = '0.00';
+      montoInput.focus();
+    }
+
+    function limpiarCamposGasto() {
+      const descInput = document.getElementById('gasto-descripcion');
+      const montoInput = document.getElementById('gasto-monto');
+      if (descInput) descInput.value = '';
+      if (montoInput) {
+        montoInput.value = '';
+        montoInput.placeholder = '0.00';
+      }
+    }
+
+    function guardarGastoInsumo() {
+      const fecha = document.getElementById('fecha-operacion').value;
+      const descInput = document.getElementById('gasto-descripcion');
+      const montoInput = document.getElementById('gasto-monto');
+      const pagador = document.getElementById('gasto-pagador').value; // 'wilder', 'delia' o 'caja'
+
+      const descripcion = descInput.value.trim();
+      const montoStr = montoInput.value.trim();
+      const monto = parseFloat(montoStr);
+
+      if (!descripcion) {
+        mostrarNotificacion('Escribe qué producto o insumo se compró');
+        return;
+      }
+      if (!montoStr || isNaN(monto) || monto <= 0) {
+        mostrarNotificacion('Ingresa el monto del gasto (mayor a 0.00)');
+        montoInput.focus();
+        return;
+      }
+
+      const nuevoGasto = {
+        id: 'gasto_' + Date.now(),
+        fecha: fecha,
+        tipo: 'gasto',
+        descripcion: descripcion,
+        monto: monto,
+        pagador: pagador // 'wilder', 'delia' o 'caja'
+      };
+
+      appData.gastos.unshift(nuevoGasto);
+      guardarDatosStorage();
+
+      // Limpiar de inmediato el formulario para no dejar residuos
+      limpiarCamposGasto();
+
+      const pagadorNombre = pagador === 'wilder' ? 'Wilder' : (pagador === 'delia' ? 'Delia' : 'Caja');
+      mostrarNotificacion(`✅ Gasto guardado: S/ ${monto.toFixed(2)} (${pagadorNombre})`);
+    }
+
+    function guardarAdelantoWillians() {
+      const fecha = document.getElementById('fecha-operacion').value;
+      const motivoInput = document.getElementById('adelanto-motivo');
+      const montoInput = document.getElementById('adelanto-monto');
+
+      const motivo = motivoInput.value.trim() || 'Adelanto / cuenta personal';
+      const montoStr = montoInput.value.trim();
+      const monto = parseFloat(montoStr);
+
+      if (!montoStr || isNaN(monto) || monto <= 0) {
+        mostrarNotificacion('Ingresa el monto adelantado a Willians');
+        montoInput.focus();
+        return;
+      }
+
+      const nuevoAdelanto = {
+        id: 'adelanto_' + Date.now(),
+        fecha: fecha,
+        tipo: 'adelanto',
+        beneficiario: 'willians',
+        motivo: motivo,
+        monto: monto
+      };
+
+      appData.adelantos.unshift(nuevoAdelanto);
+      guardarDatosStorage();
+
+      motivoInput.value = '';
+      montoInput.value = '';
+      montoInput.placeholder = '0.00';
+      mostrarNotificacion(`🤝 Adelanto anotado a Willians: S/ ${monto.toFixed(2)}`);
+    }
+
+    function setFiltroCuadre(filtro) {
+      filtroActual = filtro;
+      
+      const btnHoy = document.getElementById('filtro-hoy');
+      const btnSem = document.getElementById('filtro-semana');
+      const btnTodo = document.getElementById('filtro-todo');
+
+      btnHoy.className = "py-2 text-xs font-semibold rounded-xl bg-stone-100 text-stone-600";
+      btnSem.className = "py-2 text-xs font-semibold rounded-xl bg-stone-100 text-stone-600";
+      btnTodo.className = "py-2 text-xs font-semibold rounded-xl bg-stone-100 text-stone-600";
+
+      if (filtro === 'hoy') {
+        btnHoy.className = "py-2 text-xs font-bold rounded-xl bg-amber-100 text-amber-800 shadow-sm";
+      } else if (filtro === 'semana') {
+        btnSem.className = "py-2 text-xs font-bold rounded-xl bg-amber-100 text-amber-800 shadow-sm";
+      } else {
+        btnTodo.className = "py-2 text-xs font-bold rounded-xl bg-amber-100 text-amber-800 shadow-sm";
+      }
+
+      recalcularCuadre();
+    }
+
+    function fechaDentroDeFiltro(fechaStr) {
+      const fechaOp = document.getElementById('fecha-operacion').value;
+      if (filtroActual === 'todo') return true;
+
+      if (filtroActual === 'hoy') {
+        return fechaStr === fechaOp;
+      }
+
+      if (filtroActual === 'semana') {
+        // Calcular inicio y fin de semana del Lunes al Domingo
+        const d = new Date(fechaOp + 'T00:00:00');
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        const lunes = new Date(d.setDate(diff));
+        const domingo = new Date(lunes);
+        domingo.setDate(lunes.getDate() + 6);
+
+        const fechaItem = new Date(fechaStr + 'T00:00:00');
+        return fechaItem >= lunes && fechaItem <= domingo;
+      }
+
+      return true;
+    }
+
+    function recalcularCuadre() {
+      const fechaOp = document.getElementById('fecha-operacion').value;
+      const textoPeriodo = document.getElementById('periodo-texto');
+      if (filtroActual === 'hoy') {
+        textoPeriodo.textContent = `Viendo día: ${fechaOp}`;
+      } else if (filtroActual === 'semana') {
+        textoPeriodo.textContent = `Viendo semana de: ${fechaOp}`;
+      } else {
+        textoPeriodo.textContent = `Viendo historial completo`;
+      }
+
+      // Filtrar registros según rango
+      const ventasFiltradas = appData.ventas.filter(v => fechaDentroDeFiltro(v.fecha));
+      const gastosFiltrados = appData.gastos.filter(g => fechaDentroDeFiltro(g.fecha));
+      const adelantosFiltrados = appData.adelantos.filter(a => fechaDentroDeFiltro(a.fecha));
+
+      // Contabilización de Ventas
+      let totalCaldos = 0;
+      let caldosManana = 0;
+      let caldosTarde = 0;
+      let ventaMananaSoles = 0;
+      let ventaTardeDeliaSoles = 0; // Dinero que quedó con Delia
+
+      ventasFiltradas.forEach(v => {
+        totalCaldos += v.cantidad;
+        if (v.turno === 'manana') {
+          caldosManana += v.cantidad;
+          ventaMananaSoles += v.total;
+        } else {
+          caldosTarde += v.cantidad;
+          ventaTardeDeliaSoles += v.total;
+        }
+      });
+
+      const ventaBrutaTotal = totalCaldos * PRECIO_CALDO;
+
+      // Contabilización de Insumos por pagador
+      let totalGastos = 0;
+      let gastosWilderBolsillo = 0;
+      let gastosDeliaBolsillo = 0;
+      let gastosCaja = 0;
+
+      gastosFiltrados.forEach(g => {
+        totalGastos += g.monto;
+        if (g.pagador === 'wilder') {
+          gastosWilderBolsillo += g.monto;
+        } else if (g.pagador === 'delia') {
+          gastosDeliaBolsillo += g.monto;
+        } else {
+          gastosCaja += g.monto;
+        }
+      });
+
+      // Adelantos a Willians
+      let totalAdelantosWillians = 0;
+      adelantosFiltrados.forEach(a => {
+        totalAdelantosWillians += a.monto;
+      });
+
+      // 1. Ganancia Neta Real (Ventas totales menos todos los insumos)
+      const gananciaNeta = Math.max(0, ventaBrutaTotal - totalGastos);
+
+      // 2. Reparto 50 / 50
+      const mitadWillians = gananciaNeta / 2;
+      const mitadWilderFamilia = gananciaNeta / 2;
+
+      // 3. Liquidación Willians: Su 50% menos adelantos recibidos
+      const saldoFinalWillians = mitadWillians - totalAdelantosWillians;
+
+      // 4. Balance propio de Delia:
+      // Lo que cobró en la tarde menos lo que gastó de su bolsillo
+      // Si gastó más de lo cobrado => balance negativo (el negocio le debe a Delia)
+      // Si cobró más de lo gastado => balance positivo (Delia retiene saldo para la casa)
+      const balanceDelia = ventaTardeDeliaSoles - gastosDeliaBolsillo;
+
+      // 5. Dinero Líquido en Mano de Wilder / Caja Matinal
+      // Entró en la mañana: ventaMananaSoles
+      // Wilder puso de su bolsillo compras: gastosWilderBolsillo
+      // Wilder entregó a Willians: totalAdelantosWillians
+      // A Willians se le debe entregar: Math.max(0, saldoFinalWillians)
+      // Y si Delia gastó más de lo cobrado, se le restituye de la mañana: Math.max(0, -balanceDelia)
+      const dineroLiquidoWilder = ventaMananaSoles - gastosWilderBolsillo - totalAdelantosWillians - Math.max(0, saldoFinalWillians) - Math.max(0, -balanceDelia);
+
+      // Render en Interfaz UI
+      document.getElementById('cuadre-total-caldos').textContent = totalCaldos;
+      document.getElementById('cuadre-desglose-turnos').textContent = `Mñn: ${caldosManana} | Tarde: ${caldosTarde}`;
+      document.getElementById('cuadre-venta-bruta').textContent = `S/ ${ventaBrutaTotal.toFixed(2)}`;
+      document.getElementById('cuadre-total-gastos').textContent = `S/ ${totalGastos.toFixed(2)}`;
+      document.getElementById('cuadre-ganancia-neta').textContent = `S/ ${gananciaNeta.toFixed(2)}`;
+
+      // Tarjeta Delia
+      document.getElementById('delia-caldos-cobrados').textContent = `S/ ${ventaTardeDeliaSoles.toFixed(2)} (${caldosTarde} platos)`;
+      document.getElementById('delia-insumos-pagados').textContent = `S/ ${gastosDeliaBolsillo.toFixed(2)}`;
+      
+      const lblDelia = document.getElementById('delia-balance-etiqueta');
+      const valDelia = document.getElementById('delia-balance-resultado');
+      const expDelia = document.getElementById('delia-explicacion');
+
+      if (balanceDelia >= 0) {
+        lblDelia.textContent = 'Efectivo restante en manos de Delia:';
+        valDelia.textContent = `+ S/ ${balanceDelia.toFixed(2)}`;
+        valDelia.className = "text-sm font-black text-emerald-700";
+        expDelia.textContent = `Delia cubrió sus compras con los caldos de la tarde y conserva S/ ${balanceDelia.toFixed(2)} como parte de la ganancia del hogar.`;
+      } else {
+        const porReembolsar = Math.abs(balanceDelia);
+        lblDelia.textContent = 'Saldo a devolver a Delia de la mañana:';
+        valDelia.textContent = `S/ ${porReembolsar.toFixed(2)} a su favor`;
+        valDelia.className = "text-sm font-black text-purple-700";
+        expDelia.textContent = `Delia invirtió más de su bolsillo de lo que cobró en la tarde. Se le restituye S/ ${porReembolsar.toFixed(2)} de las ventas de la mañana.`;
+      }
+
+      // Tarjeta Willians
+      document.getElementById('liq-willians-mitad').textContent = `S/ ${mitadWillians.toFixed(2)}`;
+      document.getElementById('liq-willians-adelantos').textContent = `- S/ ${totalAdelantosWillians.toFixed(2)}`;
+      const williansSpan = document.getElementById('liq-willians-total');
+      if (saldoFinalWillians < 0) {
+        williansSpan.className = "text-xl font-black text-rose-600";
+        williansSpan.textContent = `S/ ${saldoFinalWillians.toFixed(2)} (Recibió de más)`;
+      } else {
+        williansSpan.className = "text-xl font-black text-blue-700";
+        williansSpan.textContent = `S/ ${saldoFinalWillians.toFixed(2)}`;
+      }
+
+      // Tarjeta Wilder y Delia
+      document.getElementById('liq-wilder-mitad').textContent = `S/ ${mitadWilderFamilia.toFixed(2)}`;
+      document.getElementById('liq-wilder-reembolso').textContent = `+ S/ ${gastosWilderBolsillo.toFixed(2)}`;
+      document.getElementById('liq-delia-reembolso').textContent = `+ S/ ${gastosDeliaBolsillo.toFixed(2)}`;
+      document.getElementById('liq-wilder-recupera-adelanto').textContent = `+ S/ ${totalAdelantosWillians.toFixed(2)}`;
+      document.getElementById('liq-wilder-delia-tarde').textContent = `S/ ${ventaTardeDeliaSoles.toFixed(2)} (${caldosTarde} caldos)`;
+      
+      const wilderSpan = document.getElementById('liq-wilder-saldo-mano');
+      wilderSpan.textContent = `S/ ${dineroLiquidoWilder.toFixed(2)}`;
+    }
+
+    function renderizarHistorial() {
+      const contenedor = document.getElementById('lista-movimientos');
+      const contador = document.getElementById('contador-movimientos');
+
+      const todos = [];
+
+      appData.ventas.forEach(v => todos.push({ ...v, origen: 'venta' }));
+      appData.gastos.forEach(g => todos.push({ ...g, origen: 'gasto' }));
+      appData.adelantos.forEach(a => todos.push({ ...a, origen: 'adelanto' }));
+
+      todos.sort((a, b) => (b.fecha + (b.id || '')).localeCompare(a.fecha + (a.id || '')));
+
+      contador.textContent = `${todos.length} registros`;
+
+      if (todos.length === 0) {
+        contenedor.innerHTML = `
+          <div class="bg-white p-8 rounded-2xl border border-stone-200 text-center space-y-2">
+            <span class="text-4xl">📝</span>
+            <p class="text-xs text-stone-500 font-medium">Aún no hay movimientos registrados.<br>Empieza anotando caldos o gastos en la pestaña "Anotar".</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      todos.forEach(item => {
+        if (item.origen === 'venta') {
+          const esManana = item.turno === 'manana';
+          html += `
+            <div class="bg-white p-3 rounded-2xl border border-stone-200 flex items-center justify-between shadow-sm">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl ${esManana ? 'bg-amber-100 text-amber-700' : 'bg-purple-100 text-purple-700'} flex items-center justify-center text-lg font-bold">
+                  🍲
+                </div>
+                <div>
+                  <div class="flex items-center space-x-1.5">
+                    <span class="text-xs font-extrabold text-stone-800">${item.cantidad} Caldos</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded font-semibold ${esManana ? 'bg-amber-100 text-amber-800' : 'bg-purple-100 text-purple-800'}">
+                      ${esManana ? 'Mañana (Wilder)' : 'Tarde (Delia)'}
+                    </span>
+                  </div>
+                  <span class="text-[10px] text-stone-400 block font-medium">${item.fecha}</span>
+                </div>
+              </div>
+              <div class="text-right flex items-center space-x-2">
+                <span class="text-sm font-black text-emerald-700">+S/ ${item.total.toFixed(2)}</span>
+                <button onclick="eliminarRegistro('ventas', '${item.id}')" class="text-stone-300 hover:text-rose-600 p-1 text-base">
+                  <i class="ph ph-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        } else if (item.origen === 'gasto') {
+          const pagadorLabel = item.pagador === 'wilder' ? 'Bolsillo Wilder' : (item.pagador === 'delia' ? 'Bolsillo Delia' : 'Caja');
+          const pagadorColor = item.pagador === 'wilder' ? 'bg-amber-50 text-amber-800 border-amber-200' : (item.pagador === 'delia' ? 'bg-purple-50 text-purple-800 border-purple-200' : 'bg-stone-100 text-stone-700 border-stone-200');
+
+          html += `
+            <div class="bg-white p-3 rounded-2xl border border-stone-200 flex items-center justify-between shadow-sm">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-lg">
+                  🛒
+                </div>
+                <div>
+                  <span class="text-xs font-bold text-stone-800 block">${item.descripcion}</span>
+                  <div class="flex items-center space-x-1.5 mt-0.5">
+                    <span class="text-[10px] text-stone-400 font-medium">${item.fecha}</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.2 rounded border ${pagadorColor}">${pagadorLabel}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="text-right flex items-center space-x-2">
+                <span class="text-sm font-black text-rose-600">-S/ ${item.monto.toFixed(2)}</span>
+                <button onclick="eliminarRegistro('gastos', '${item.id}')" class="text-stone-300 hover:text-rose-600 p-1 text-base">
+                  <i class="ph ph-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        } else if (item.origen === 'adelanto') {
+          html += `
+            <div class="bg-white p-3 rounded-2xl border border-blue-100 flex items-center justify-between shadow-sm">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg">
+                  🤝
+                </div>
+                <div>
+                  <span class="text-xs font-bold text-stone-800 block">Adelanto a Willians</span>
+                  <span class="text-[10px] text-stone-500 block">${item.motivo} • ${item.fecha}</span>
+                </div>
+              </div>
+              <div class="text-right flex items-center space-x-2">
+                <span class="text-sm font-black text-blue-700">S/ ${item.monto.toFixed(2)}</span>
+                <button onclick="eliminarRegistro('adelantos', '${item.id}')" class="text-stone-300 hover:text-rose-600 p-1 text-base">
+                  <i class="ph ph-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      contenedor.innerHTML = html;
+    }
+
+    function eliminarRegistro(coleccion, id) {
+      appData[coleccion] = appData[coleccion].filter(i => i.id !== id);
+      guardarDatosStorage();
+      mostrarNotificacion('Registro eliminado');
+    }
+
+    function exportarDatos() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+      const link = document.createElement('a');
+      link.setAttribute("href", dataStr);
+      link.setAttribute("download", `caldo_control_${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      mostrarNotificacion('Copia descargada con éxito');
+    }
+
+    function importarDatos(event) {
+      const archivo = event.target.files[0];
+      if (!archivo) return;
+      const lector = new FileReader();
+      lector.onload = function(e) {
+        try {
+          const importado = JSON.parse(e.target.result);
+          if (importado.ventas && importado.gastos && importado.adelantos) {
+            appData = importado;
+            guardarDatosStorage();
+            closeModal('modal-backup');
+            mostrarNotificacion('✅ Copia restaurada correctamente');
+          } else {
+            mostrarNotificacion('El archivo no contiene la estructura correcta');
+          }
+        } catch (err) {
+          mostrarNotificacion('Error al leer el archivo');
+        }
+      };
+      lector.readAsText(archivo);
+    }
+
+    function cargarEjemploHistorico() {
+      appData = {
+        ventas: [
+          { id: 'v1', fecha: '2026-08-26', tipo: 'caldo', turno: 'manana', cantidad: 6, total: 90.00 },
+          { id: 'v2', fecha: '2026-08-27', tipo: 'caldo', turno: 'manana', cantidad: 9, total: 135.00 },
+          { id: 'v3', fecha: '2026-08-28', tipo: 'caldo', turno: 'manana', cantidad: 7, total: 105.00 },
+          { id: 'v4', fecha: '2026-08-28', tipo: 'caldo', turno: 'tarde', cantidad: 3, total: 45.00 }
+        ],
+        gastos: [
+          { id: 'g1', fecha: '2026-08-27', tipo: 'gasto', descripcion: 'Presas de Gallina', monto: 22.00, pagador: 'wilder' },
+          { id: 'g2', fecha: '2026-08-27', tipo: 'gasto', descripcion: 'Maíz Cancha', monto: 8.00, pagador: 'wilder' },
+          { id: 'g3', fecha: '2026-08-27', tipo: 'gasto', descripcion: 'Fideos Tallarín', monto: 4.50, pagador: 'wilder' },
+          { id: 'g4', fecha: '2026-08-28', tipo: 'gasto', descripcion: 'Insumos compras Wilder', monto: 110.00, pagador: 'wilder' },
+          { id: 'g5', fecha: '2026-08-28', tipo: 'gasto', descripcion: 'Frutas y verduras compradas por Delia', monto: 18.50, pagador: 'delia' }
+        ],
+        adelantos: [
+          { id: 'a1', fecha: '2026-08-26', tipo: 'adelanto', beneficiario: 'willians', motivo: 'Adelanto personal Willi', monto: 45.00 },
+          { id: 'a2', fecha: '2026-08-27', tipo: 'adelanto', beneficiario: 'willians', motivo: 'Cuentas personales Willi', monto: 50.00 }
+        ]
+      };
+      guardarDatosStorage();
+      closeModal('modal-backup');
+      mostrarNotificacion('Apuntes de ejemplo cargados');
+    }
+
+    function solicitarLimpiezaTotal() {
+      appData = { ventas: [], gastos: [], adelantos: [] };
+      guardarDatosStorage();
+      closeModal('modal-backup');
+      mostrarNotificacion('Todos los datos han sido reiniciados');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function mostrarNotificacion(mensaje) {
+      const toast = document.getElementById('toast');
+      const toastMensaje = document.getElementById('toast-mensaje');
+      toastMensaje.textContent = mensaje;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
