@@ -1,638 +1,1464 @@
-<!-- SELECTOR DE NEGOCIO (CALDO vs YADIRA) -->
-<div class="max-w-md mx-auto px-3 pb-2 pt-1">
-  <div class="grid grid-cols-2 gap-1.5 p-1 bg-amber-700/60 rounded-xl text-xs font-bold">
-    <button id="btn-modulo-caldo" onclick="cambiarModulo('caldo')" class="py-1.5 rounded-lg bg-white text-amber-800 shadow-sm flex items-center justify-center space-x-1 transition-all">
-      <span>🍲</span>
-      <span>Caldo 50/50</span>
-    </button>
-    <button id="btn-modulo-yadira" onclick="cambiarModulo('yadira')" class="py-1.5 rounded-lg text-amber-100 hover:text-white flex items-center justify-center space-x-1 transition-all">
-      <span>🥤</span>
-      <span>Cafetería Yadira</span>
-    </button>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Control de Negocio - Wilder & Familia</title>
+  <style>
+    :root {
+      --primary: #ea580c;
+      --primary-dark: #c2410c;
+      --primary-light: #fff7ed;
+      --secondary: #0284c7;
+      --secondary-light: #f0f9ff;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --emerald: #059669;
+      --emerald-light: #ecfdf5;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-<!-- Selector de Fecha de Operación Compartida -->
-<div class="bg-white p-3 rounded-2xl shadow-sm border border-stone-200 flex items-center justify-between mb-4">
-  <div class="flex items-center space-x-2.5">
-    <div class="p-2 bg-amber-50 rounded-xl text-amber-600">
-      <i class="ph ph-calendar-blank text-lg"></i>
-    </div>
-    <div>
-      <span class="text-[10px] font-bold tracking-wider uppercase text-stone-400">Fecha de Operación</span>
-      <input type="date" id="fecha-operacion" class="block font-bold text-stone-800 text-xs focus:outline-none bg-transparent cursor-pointer">
-    </div>
-  </div>
-  <button onclick="setTodayDate()" class="text-xs font-bold px-3 py-1.5 bg-amber-100 text-amber-800 rounded-xl active:scale-95 border border-amber-200">
-    Hoy
-  </button>
-</div>
+    body {
+      background-color: #f1f5f9;
+      color: var(--slate-800);
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
 
-<!-- ############################################################### -->
-<!-- CONTENEDOR MODULO 1: CALDO DE GALLINA (50/50)                  -->
-<!-- ############################################################### -->
-<div id="modulo-caldo" class="space-y-4">
+    .app-container {
+      max-width: 520px;
+      margin: 0 auto;
+      background: #f8fafc;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+      color: white;
+      padding: 18px 18px 22px 18px;
+      border-bottom-left-radius: var(--radius-xl);
+      border-bottom-right-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .brand-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    .btn-header-action {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      padding: 7px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* SWITCHER CALDO / CAFETERÍA */
+    .business-switcher {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: rgba(0, 0, 0, 0.18);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      gap: 4px;
+    }
+
+    .switcher-btn {
+      border: none;
+      padding: 9px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: rgba(255, 255, 255, 0.85);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .switcher-btn.active {
+      background: white;
+      color: var(--primary-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* FECHA BAR */
+    .date-bar {
+      margin: 14px 16px 0 16px;
+      background: white;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--slate-200);
+    }
+
+    .date-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .date-input {
+      border: none;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--slate-800);
+      outline: none;
+      background: transparent;
+    }
+
+    .btn-today {
+      background: var(--slate-100);
+      border: 1px solid var(--slate-300);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--slate-700);
+    }
+
+    /* CONTENT TABS */
+    .tab-content {
+      display: none;
+      padding: 14px 16px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* CARDS */
+    .card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--slate-200);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--slate-800);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .card-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
+    }
+
+    .badge-orange { background: var(--primary-light); color: var(--primary-dark); }
+    .badge-blue { background: var(--secondary-light); color: var(--secondary); }
+    .badge-purple { background: var(--purple-light); color: var(--purple); }
+    .badge-green { background: var(--emerald-light); color: var(--emerald); }
+
+    /* STOCK DE PRESAS METRICS */
+    .stock-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+      background: var(--slate-50);
+      padding: 10px;
+      border-radius: var(--radius-md);
+      text-align: center;
+      border: 1px dashed var(--slate-300);
+    }
+
+    .stock-item-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--slate-900);
+    }
+
+    .stock-item-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--slate-600);
+      margin-top: 2px;
+      line-height: 1.1;
+    }
+
+    /* FORMS & INPUTS */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--slate-700);
+      margin-bottom: 5px;
+    }
+
+    .input-text, .select-box {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--slate-300);
+      border-radius: 9px;
+      font-size: 14px;
+      outline: none;
+      background: white;
+      color: var(--slate-900);
+      font-weight: 500;
+    }
+
+    .input-text:focus, .select-box:focus {
+      border-color: var(--primary);
+    }
+
+    /* COUNTER GRANDE */
+    .counter-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 14px 0;
+    }
+
+    .btn-counter {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      font-size: 24px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--slate-100);
+      color: var(--slate-800);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .counter-display {
+      text-align: center;
+      min-width: 110px;
+    }
+
+    .counter-number {
+      font-size: 40px;
+      font-weight: 900;
+      color: var(--primary-dark);
+      line-height: 1;
+    }
+
+    .counter-total {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--slate-600);
+      margin-top: 4px;
+    }
+
+    /* QUICK PILLS */
+    .pills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pill-btn {
+      background: var(--slate-100);
+      border: 1px solid var(--slate-200);
+      padding: 7px 0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--slate-700);
+      cursor: pointer;
+    }
+
+    /* SHIFT SELECTOR (Wilder vs Delia) */
+    .shift-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .shift-btn {
+      border: 2px solid var(--slate-200);
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--slate-750);
+      line-height: 1.2;
+    }
+
+    .shift-btn.active-wilder {
+      border-color: #0284c7;
+      background: #f0f9ff;
+      color: #0369a1;
+    }
+
+    .shift-btn.active-delia {
+      border-color: #7c3aed;
+      background: #f5f3ff;
+      color: #6d28d9;
+    }
+
+    /* BOTÓN PRIMARIO */
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-submit:active {
+      background: var(--primary-dark);
+      transform: scale(0.99);
+    }
+
+    .btn-purple {
+      background: var(--purple);
+    }
+
+    /* SCROLL HORIZONTAL DE INSUMOS */
+    .scroll-ingredients {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 2px 10px 2px;
+      margin-bottom: 10px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .scroll-ingredients::-webkit-scrollbar {
+      height: 5px;
+    }
+    .scroll-ingredients::-webkit-scrollbar-thumb {
+      background: var(--slate-300);
+      border-radius: 4px;
+    }
+
+    .chip-item {
+      flex: 0 0 auto;
+      background: var(--slate-100);
+      border: 1px solid var(--slate-300);
+      padding: 7px 11px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--slate-800);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .chip-item:active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+    }
+
+    /* PESTAÑA CUADRE 50/50 */
+    .balance-box {
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .balance-main {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+    }
+
+    .balance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .balance-subcard {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .balance-val {
+      font-size: 18px;
+      font-weight: 900;
+      margin-top: 2px;
+    }
+
+    /* TARJETAS DE LIQUIDACIÓN */
+    .split-card {
+      border-left: 5px solid;
+    }
+    .split-willi { border-color: #059669; background: #f0fdf4; }
+    .split-wilder { border-color: #0284c7; background: #f0f9ff; }
+    .split-delia { border-color: #7c3aed; background: #faf5ff; }
+
+    /* FOOTER NAV */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-width: 520px;
+      margin: 0 auto;
+      background: white;
+      border-top: 1px solid var(--slate-200);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 6px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.04);
+      z-index: 100;
+    }
+
+    .nav-btn {
+      border: none;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--slate-400);
+      cursor: pointer;
+      gap: 3px;
+      flex: 1;
+    }
+
+    .nav-btn.active {
+      color: var(--primary);
+    }
+
+    .nav-btn-icon {
+      font-size: 19px;
+    }
+
+    /* HISTORIAL LIST */
+    .hist-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--slate-100);
+      font-size: 13px;
+    }
+
+    .hist-item:last-child {
+      border-bottom: none;
+    }
+
+    .hist-desc {
+      font-weight: 600;
+      color: var(--slate-800);
+    }
+
+    .hist-meta {
+      font-size: 11px;
+      color: var(--slate-400);
+    }
+
+    .hist-monto {
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .text-green { color: var(--emerald); }
+    .text-red { color: #dc2626; }
+    .text-blue { color: var(--secondary); }
+    .text-purple { color: var(--purple); }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
   
-  <!-- SUB-TAB CALDO: ANOTAR -->
-  <section id="caldo-tab-anotar" class="space-y-4">
-
-    <!-- 1. CONTROL DE PRESAS Y OLLA -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <span class="text-xl">🍗</span>
-          <h2 class="font-bold text-stone-800 text-sm">Control de Presas (Olla)</h2>
-        </div>
-        <span class="text-[11px] bg-stone-100 text-stone-600 font-bold px-2 py-0.5 rounded-full">
-          Stock de Gallina
-        </span>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2 text-xs">
-        <div>
-          <label class="block text-[10px] font-semibold text-stone-500 mb-1">Presas de ayer (sobraron):</label>
-          <input type="number" id="stock-ayer" min="0" value="0" oninput="calcularStockPresas()" class="w-full px-3 py-2 bg-stone-50 rounded-xl border border-stone-200 font-bold text-stone-800 focus:bg-white focus:outline-none focus:border-amber-500 text-center">
-        </div>
-        <div>
-          <label class="block text-[10px] font-semibold text-stone-500 mb-1">Presas compradas hoy:</label>
-          <input type="number" id="stock-hoy" min="0" value="0" oninput="calcularStockPresas()" class="w-full px-3 py-2 bg-stone-50 rounded-xl border border-stone-200 font-bold text-stone-800 focus:bg-white focus:outline-none focus:border-amber-500 text-center">
-        </div>
-      </div>
-
-      <!-- Indicadores de Stock Resultante -->
-      <div class="grid grid-cols-3 gap-1.5 p-2.5 bg-amber-50/70 rounded-xl border border-amber-100 text-center">
-        <div>
-          <span class="block text-[9px] uppercase font-bold text-amber-800">Total Olla</span>
-          <span id="stock-total-olla" class="text-base font-black text-stone-800">0</span>
-        </div>
-        <div>
-          <span class="block text-[9px] uppercase font-bold text-amber-800">Vendidas Hoy</span>
-          <span id="stock-vendidas-hoy" class="text-base font-black text-emerald-700">0</span>
-        </div>
-        <div>
-          <span class="block text-[9px] uppercase font-bold text-amber-800">Quedan p/ Mañana</span>
-          <span id="stock-saldo-manana" class="text-base font-black text-amber-900">0</span>
-        </div>
-      </div>
-      <button onclick="guardarConfigStock()" class="w-full py-2 bg-stone-800 text-white rounded-xl text-xs font-bold hover:bg-stone-900 active:scale-98 transition-all">
-        Guardar Stock del Día
-      </button>
-    </div>
-
-    <!-- 2. ANOTAR CALDOS (S/ 15.00) -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <span class="text-xl">🥣</span>
-          <h2 class="font-bold text-stone-800 text-sm">Venta de Caldos</h2>
-        </div>
-        <span class="text-xs bg-emerald-100 text-emerald-800 font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200">
-          S/ 15.00 c/u
-        </span>
-      </div>
-
-      <!-- Selector de Turno -->
-      <div class="grid grid-cols-2 gap-2 p-1 bg-stone-100 rounded-xl">
-        <button type="button" id="btn-turno-manana" onclick="selectTurno('manana')" class="py-2 px-2 text-xs font-bold rounded-lg text-center transition-all bg-white text-stone-800 shadow-sm border border-stone-200">
-          🌅 Mañana (Wilder)
-          <span class="block text-[10px] text-stone-500 font-normal">Efectivo / Yape Wilder</span>
-        </button>
-        <button type="button" id="btn-turno-tarde" onclick="selectTurno('tarde')" class="py-2 px-2 text-xs font-semibold rounded-lg text-center transition-all text-stone-600 hover:text-stone-900">
-          🌆 Tarde (Delia 1pm+)
-          <span class="block text-[10px] text-stone-500 font-normal">Dinero queda con Delia</span>
-        </button>
-      </div>
-
-      <!-- Botones Táctiles de Cantidad -->
-      <div class="flex items-center justify-between bg-amber-50/70 p-3 rounded-2xl border border-amber-100">
-        <button onclick="ajustarCaldos(-1)" class="w-12 h-12 bg-white text-amber-700 rounded-xl shadow-sm border border-amber-200 text-2xl font-bold flex items-center justify-center active:scale-90 transition-transform">-</button>
-        <div class="text-center">
-          <span id="caldos-cantidad" class="text-4xl font-extrabold text-stone-800">1</span>
-          <span class="block text-xs font-bold text-amber-700" id="caldos-total-soles">Total: S/ 15.00</span>
-        </div>
-        <button onclick="ajustarCaldos(1)" class="w-12 h-12 bg-amber-600 text-white rounded-xl shadow-md text-2xl font-bold flex items-center justify-center active:scale-90 transition-transform">+</button>
-      </div>
-
-      <!-- Botones rápidos -->
-      <div class="grid grid-cols-4 gap-1.5 pt-1">
-        <button onclick="setCaldosValor(1)" class="py-1.5 text-xs bg-stone-100 hover:bg-stone-200 font-bold rounded-lg text-stone-700">+1</button>
-        <button onclick="setCaldosValor(3)" class="py-1.5 text-xs bg-stone-100 hover:bg-stone-200 font-bold rounded-lg text-stone-700">+3</button>
-        <button onclick="setCaldosValor(5)" class="py-1.5 text-xs bg-stone-100 hover:bg-stone-200 font-bold rounded-lg text-stone-700">+5</button>
-        <button onclick="setCaldosValor(10)" class="py-1.5 text-xs bg-stone-100 hover:bg-stone-200 font-bold rounded-lg text-stone-700">+10</button>
-      </div>
-
-      <button onclick="guardarVentaCaldos()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-bold rounded-xl shadow-md shadow-emerald-700/20 flex items-center justify-center space-x-2 transition-all">
-        <i class="ph ph-check-circle text-lg"></i>
-        <span>Registrar Venta de Caldos</span>
-      </button>
-    </div>
-
-    <!-- 3. INSUMOS Y GASTOS (WILDER, DELIA, CAJA) -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <span class="text-xl">🛒</span>
-          <h2 class="font-bold text-stone-800 text-sm">Insumos y Gastos</h2>
-        </div>
-        <span class="text-xs text-stone-400 font-medium">Compras del caldo</span>
-      </div>
-
+  <!-- CABECERA PRINCIPAL -->
+  <header class="header">
+    <div class="header-top">
       <div>
-        <div class="flex items-center justify-between mb-1.5">
-          <label class="block text-[11px] font-bold text-stone-500 uppercase tracking-wider">
-            Insumo frecuente (Desliza con el dedo 👉)
-          </label>
-          <span class="text-[10px] text-amber-700 font-semibold bg-amber-50 px-1.5 py-0.5 rounded">Toca para llenar</span>
-        </div>
-
-        <!-- Scrollbar horizontal de insumos completos -->
-        <div class="flex overflow-x-auto space-x-2 pb-2.5 pt-1 custom-scrollbar">
-          <button type="button" onclick="setGastoRapido('Presas de Gallina')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🍗 Presas gallina</button>
-          <button type="button" onclick="setGastoRapido('Papa por kilos')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🥔 Papa x kilo</button>
-          <button type="button" onclick="setGastoRapido('Huevos de gallina (plancha / jaba)')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🥚 Huevos gallina</button>
-          <button type="button" onclick="setGastoRapido('Fideos / Tallarín')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🍜 Fideos tallarín</button>
-          <button type="button" onclick="setGastoRapido('Maíz Cancha')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🌽 Maíz Cancha</button>
-          <button type="button" onclick="setGastoRapido('Balón de Gas doméstico')" class="shrink-0 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-800 text-xs font-semibold rounded-xl border border-rose-200 shadow-sm transition-all">🔥 Balón Gas</button>
-          <button type="button" onclick="setGastoRapido('Cebolla china por paquete')" class="shrink-0 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 text-emerald-900 text-xs font-semibold rounded-xl border border-emerald-200 shadow-sm transition-all">🌱 Cebolla china</button>
-          <button type="button" onclick="setGastoRapido('Perejil por paquete')" class="shrink-0 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 text-emerald-900 text-xs font-semibold rounded-xl border border-emerald-200 shadow-sm transition-all">🌿 Perejil</button>
-          <button type="button" onclick="setGastoRapido('Nabo por unidad')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🥕 Nabo</button>
-          <button type="button" onclick="setGastoRapido('Zapallo por kilo')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🎃 Zapallo</button>
-          <button type="button" onclick="setGastoRapido('Apio por unidad')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🥬 Apio</button>
-          <button type="button" onclick="setGastoRapido('Zanahoria por kilo')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🥕 Zanahoria</button>
-          <button type="button" onclick="setGastoRapido('Cebolla roja por kilo')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🧅 Cebolla roja</button>
-          <button type="button" onclick="setGastoRapido('Ajos por kilo')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🧄 Ajos</button>
-          <button type="button" onclick="setGastoRapido('Kion por kilo')" class="shrink-0 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-stone-800 text-xs font-semibold rounded-xl border border-amber-200 shadow-sm transition-all">🫚 Kion</button>
-          <button type="button" onclick="setGastoRapido('Sal por paquete')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🧂 Sal paquete</button>
-          <button type="button" onclick="setGastoRapido('Ajinomoto por kilo')" class="shrink-0 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 active:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl border border-stone-200 shadow-sm transition-all">🧂 Ajinomoto</button>
-          <button type="button" onclick="setGastoRapido('Doña Gusta gallina blister x10')" class="shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 active:bg-amber-300 text-amber-900 text-xs font-bold rounded-xl border border-amber-300 shadow-sm transition-all">✨ Doña Gusta x10</button>
-        </div>
+        <div class="brand-title">🍲 Caldo & Cafetería</div>
+        <div class="brand-sub">Wilder, Delia, Willians & Yadira</div>
       </div>
+      <button class="btn-header-action" onclick="abrirRespaldo()">
+        💾 Respaldo
+      </button>
+    </div>
 
-      <div class="space-y-2.5">
-        <div>
-          <label class="block text-[11px] font-semibold text-stone-500 mb-1">Descripción del insumo:</label>
-          <input type="text" id="gasto-descripcion" placeholder="Ej. 1 plancha huevos, 10kg papa..." class="w-full px-3.5 py-2.5 bg-stone-50 rounded-xl border border-stone-200 text-xs focus:bg-white focus:outline-none focus:border-amber-500">
+    <!-- CAMBIAR DE NEGOCIO -->
+    <div class="business-switcher">
+      <button class="switcher-btn active" id="btn-negocio-caldo" onclick="cambiarNegocio('caldo')">
+        🍗 Caldo 50/50
+      </button>
+      <button class="switcher-btn" id="btn-negocio-yadira" onclick="cambiarNegocio('yadira')">
+        🥤 Cafetería Yadira
+      </button>
+    </div>
+  </header>
+
+  <!-- BARRA DE FECHA DE TRABAJO -->
+  <div class="date-bar">
+    <div class="date-bar-left">
+      <span style="font-size: 16px;">📅</span>
+      <input type="date" id="fecha-operacion" class="date-input" onchange="alCambiarFecha()">
+    </div>
+    <button class="btn-today" onclick="ponerFechaHoy()">Hoy</button>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- SECCIÓN 1: NEGOCIO DE CALDO DE GALLINA (50/50) -->
+  <!-- ============================================== -->
+  <div id="seccion-caldo">
+    
+    <!-- SUB-PESTAÑA 1: ANOTAR REGISTROS -->
+    <div id="tab-caldo-anotar" class="tab-content active">
+      
+      <!-- 1. CONTROL DE PRESAS (OLLA) -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🍗 Control de Presas (Olla)</div>
+          <span class="card-badge badge-orange" id="badge-stock-estado">Stock Activo</span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2.5">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <label class="form-label">Sobraron de ayer:</label>
+            <input type="number" id="presas-ayer" class="input-text" placeholder="0" min="0" oninput="calcularStockPresas()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Compradas hoy:</label>
+            <input type="number" id="presas-hoy" class="input-text" placeholder="0" min="0" oninput="calcularStockPresas()">
+          </div>
+        </div>
+
+        <div class="stock-grid">
           <div>
-            <label class="block text-[11px] font-semibold text-stone-500 mb-1">Costo en Soles:</label>
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 font-bold text-xs pointer-events-none">S/</span>
-              <input type="number" step="0.10" id="gasto-monto" placeholder="0.00" value="" class="w-full pl-8 pr-2 py-2.5 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold text-stone-800 focus:bg-white focus:outline-none focus:border-amber-500">
-            </div>
+            <div class="stock-item-val" id="stock-total-olla">0</div>
+            <div class="stock-item-lbl">Total Olla</div>
           </div>
           <div>
-            <label class="block text-[11px] font-semibold text-stone-500 mb-1">¿Quién pagó?</label>
-            <select id="gasto-pagador" class="w-full px-2.5 py-2.5 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold text-stone-700 focus:bg-white focus:outline-none focus:border-amber-500">
+            <div class="stock-item-val text-green" id="stock-vendidas">0</div>
+            <div class="stock-item-lbl">Caldos Vendidos</div>
+          </div>
+          <div>
+            <div class="stock-item-val text-purple" id="stock-quedan">0</div>
+            <div class="stock-item-lbl">Quedan p/ Mañana</div>
+          </div>
+          <div>
+            <button onclick="guardarStockPresas()" style="width:100%; height:100%; border:none; background:var(--primary); color:white; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">
+              Fijar Stock
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. VENTA DE CALDOS -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🍲 Venta de Caldos</div>
+          <span class="card-badge badge-blue">S/ 15.00 c/u</span>
+        </div>
+
+        <div class="shift-toggle">
+          <div class="shift-btn active-wilder" id="btn-turno-wilder" onclick="seleccionarTurno('wilder')">
+            🌅 Mañana (Wilder)<br><span style="font-size:10px; font-weight:normal;">Efectivo / Yape Wilder</span>
+          </div>
+          <div class="shift-btn" id="btn-turno-delia" onclick="seleccionarTurno('delia')">
+            🌆 Tarde (Delia 1pm+)<br><span style="font-size:10px; font-weight:normal;">Dinero queda con Delia</span>
+          </div>
+        </div>
+
+        <div class="counter-wrapper">
+          <button class="btn-counter" onclick="cambiarCantCaldos(-1)">-</button>
+          <div class="counter-display">
+            <div class="counter-number" id="caldos-count">1</div>
+            <div class="counter-total" id="caldos-total-soles">Total: S/ 15.00</div>
+          </div>
+          <button class="btn-counter" onclick="cambiarCantCaldos(1)">+</button>
+        </div>
+
+        <div class="pills-grid">
+          <button class="pill-btn" onclick="sumarCaldosRapido(1)">+1</button>
+          <button class="pill-btn" onclick="sumarCaldosRapido(3)">+3</button>
+          <button class="pill-btn" onclick="sumarCaldosRapido(5)">+5</button>
+          <button class="pill-btn" onclick="sumarCaldosRapido(10)">+10</button>
+        </div>
+
+        <button class="btn-submit" onclick="registrarVentaCaldos()">
+          ✓ Registrar Venta de Caldos
+        </button>
+      </div>
+
+      <!-- 3. INSUMOS Y GASTOS OPERATIVOS -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🛒 Insumos y Gastos</div>
+          <span class="card-badge badge-orange">Compras del caldo</span>
+        </div>
+
+        <label class="form-label" style="margin-bottom: 2px;">Insumo frecuente (Desliza con el dedo 👉):</label>
+        <div class="scroll-ingredients">
+          <span class="chip-item" onclick="cargarInsumo('Presas de gallina')">🍗 Presas gallina</span>
+          <span class="chip-item" onclick="cargarInsumo('Papa x kilo')">🥔 Papa x kilo</span>
+          <span class="chip-item" onclick="cargarInsumo('Huevos gallina')">🥚 Huevos gallina</span>
+          <span class="chip-item" onclick="cargarInsumo('Fideos tallarín')">🍜 Fideos tallarín</span>
+          <span class="chip-item" onclick="cargarInsumo('Maíz Cancha')">🌽 Maíz Cancha</span>
+          <span class="chip-item" onclick="cargarInsumo('Balón de Gas')">🔥 Balón Gas</span>
+          <span class="chip-item" onclick="cargarInsumo('Cebolla china')">🌱 Cebolla china</span>
+          <span class="chip-item" onclick="cargarInsumo('Perejil')">🌿 Perejil</span>
+          <span class="chip-item" onclick="cargarInsumo('Nabo')">🥕 Nabo</span>
+          <span class="chip-item" onclick="cargarInsumo('Zapallo')">🎃 Zapallo</span>
+          <span class="chip-item" onclick="cargarInsumo('Apio')">🥬 Apio</span>
+          <span class="chip-item" onclick="cargarInsumo('Zanahoria')">🥕 Zanahoria</span>
+          <span class="chip-item" onclick="cargarInsumo('Cebolla roja')">🧅 Cebolla roja</span>
+          <span class="chip-item" onclick="cargarInsumo('Ajos')">🧄 Ajos</span>
+          <span class="chip-item" onclick="cargarInsumo('Kion')">🫚 Kion</span>
+          <span class="chip-item" onclick="cargarInsumo('Sal paquete')">🧂 Sal paquete</span>
+          <span class="chip-item" onclick="cargarInsumo('Ajinomoto')">🧂 Ajinomoto</span>
+          <span class="chip-item" onclick="cargarInsumo('Doña Gusta x10')">✨ Doña Gusta x10</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Descripción del insumo:</label>
+          <input type="text" id="gasto-concepto" class="input-text" placeholder="Ej. 1 plancha huevos, 10kg papa">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <label class="form-label">Costo en Soles:</label>
+            <input type="number" step="0.5" id="gasto-monto" class="input-text" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">¿Quién pagó?</label>
+            <select id="gasto-pagador" class="select-box">
               <option value="wilder">🧔 Bolsillo Wilder</option>
               <option value="delia">👩 Bolsillo Delia</option>
-              <option value="caja">💵 Caja del caldo</option>
+              <option value="caja">💵 Caja del Negocio</option>
             </select>
           </div>
         </div>
-      </div>
 
-      <button onclick="guardarGastoInsumo()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-700 active:scale-98 text-white font-bold rounded-xl text-xs shadow-md shadow-rose-600/20 flex items-center justify-center space-x-1.5 transition-all">
-        <i class="ph ph-minus-circle text-base"></i>
-        <span>Anotar Gasto / Insumo</span>
-      </button>
-    </div>
-
-    <!-- 4. ADELANTOS A WILLIANS -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2.5">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <span class="text-xl">🤝</span>
-          <h2 class="font-bold text-stone-800 text-sm">Adelanto a Willians</h2>
-        </div>
-        <span class="text-xs bg-blue-50 text-blue-700 font-bold px-2 py-0.5 rounded-full border border-blue-200">
-          Descuento de su 50%
-        </span>
-      </div>
-
-      <div class="grid grid-cols-3 gap-2">
-        <div class="col-span-2">
-          <input type="text" id="adelanto-motivo" placeholder="Motivo (ej. cuenta de Willians)" class="w-full px-3 py-2 bg-stone-50 rounded-xl border border-stone-200 text-xs focus:bg-white focus:outline-none focus:border-blue-500">
-        </div>
-        <div>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center text-stone-400 font-bold text-xs pointer-events-none">S/</span>
-            <input type="number" step="0.5" id="adelanto-monto" placeholder="0.00" value="" class="w-full pl-7 pr-2 py-2 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold focus:bg-white focus:outline-none focus:border-blue-500">
-          </div>
-        </div>
-      </div>
-
-      <button onclick="guardarAdelantoWillians()" class="w-full py-2 bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 flex items-center justify-center space-x-1.5 transition-all">
-        <i class="ph ph-hand-coins text-base"></i>
-        <span>Registrar Adelanto a Willians</span>
-      </button>
-    </div>
-
-  </section>
-
-  <!-- SUB-TAB CALDO: CUADRE 50/50 -->
-  <section id="caldo-tab-cuadre" class="hidden space-y-4">
-    <!-- Filtro Temporal -->
-    <div class="bg-white p-3 rounded-2xl shadow-sm border border-stone-200 space-y-2">
-      <span class="text-[10px] font-bold uppercase tracking-wider text-stone-400">Periodo de Liquidación</span>
-      <div class="grid grid-cols-3 gap-1.5">
-        <button onclick="setFiltroCuadre('hoy')" id="filtro-hoy" class="py-1.5 text-xs font-bold rounded-xl bg-amber-100 text-amber-800 shadow-sm">Hoy</button>
-        <button onclick="setFiltroCuadre('semana')" id="filtro-semana" class="py-1.5 text-xs font-semibold rounded-xl bg-stone-100 text-stone-600">Esta Semana</button>
-        <button onclick="setFiltroCuadre('todo')" id="filtro-todo" class="py-1.5 text-xs font-semibold rounded-xl bg-stone-100 text-stone-600">Todo</button>
-      </div>
-      <div class="flex items-center justify-between text-xs text-stone-500 font-medium pt-0.5">
-        <span id="periodo-texto">Periodo actual</span>
-        <button onclick="recalcularCuadre()" class="text-amber-700 font-bold flex items-center space-x-1 active:scale-95">
-          <i class="ph ph-arrow-clockwise"></i>
-          <span>Recalcular</span>
+        <button class="btn-submit" onclick="registrarGastoInsumo()" style="background: var(--slate-800);">
+          + Anotar Gasto / Insumo
         </button>
       </div>
+
+      <!-- 4. ADELANTO A WILLIANS -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🤝 Adelanto a Willians</div>
+          <span class="card-badge badge-green">Descuento de su 50%</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <label class="form-label">Motivo (ej. cuenta personal):</label>
+            <input type="text" id="adelanto-motivo" class="input-text" placeholder="Para sus cuentas">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Monto (S/):</label>
+            <input type="number" step="0.5" id="adelanto-monto" class="input-text" placeholder="0.00">
+          </div>
+        </div>
+
+        <button class="btn-submit" onclick="registrarAdelantoWilli()" style="background: var(--emerald);">
+          ✓ Registrar Entrega a Willians
+        </button>
+      </div>
+
     </div>
 
-    <!-- Resumen General -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-      <h3 class="text-xs font-extrabold uppercase tracking-wider text-stone-500">1. Estado de Resultados del Negocio</h3>
+    <!-- SUB-PESTAÑA 2: CUADRE 50/50 -->
+    <div id="tab-caldo-cuadre" class="tab-content">
       
-      <div class="grid grid-cols-2 gap-2.5">
-        <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-100">
-          <span class="text-[10px] font-semibold text-stone-500 block">Total Caldos</span>
-          <span id="cuadre-total-caldos" class="text-xl font-black text-stone-800">0</span>
-          <span class="text-[9px] text-stone-500 block" id="cuadre-desglose-turnos">Mñn: 0 | Tarde: 0</span>
-        </div>
-        <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-100">
-          <span class="text-[10px] font-semibold text-emerald-700 block">Venta Bruta (x S/15)</span>
-          <span id="cuadre-venta-bruta" class="text-xl font-black text-emerald-700">S/ 0.00</span>
-          <span class="text-[9px] text-emerald-600 block">Ingreso Total</span>
-        </div>
-      </div>
+      <div class="balance-box balance-main">
+        <div style="font-size:12px; font-weight:700; opacity:0.8; text-transform:uppercase;">Balance General del Día</div>
+        <div style="font-size:30px; font-weight:900; margin-top:4px;" id="cuadre-ganancia-neta">S/ 0.00</div>
+        <div style="font-size:12px; opacity:0.85;">Ganancia Neta Real a Repartir</div>
 
-      <div class="flex items-center justify-between py-2 px-3 bg-rose-50 rounded-xl border border-rose-100 text-xs font-semibold">
-        <span class="text-rose-700">(-) Costo Total Insumos / Gastos:</span>
-        <span id="cuadre-total-gastos" class="font-black text-rose-800">S/ 0.00</span>
-      </div>
-
-      <div class="p-3 bg-amber-500 text-white rounded-xl flex items-center justify-between shadow-sm">
-        <div>
-          <span class="text-xs font-bold text-amber-100 block tracking-wide">GANANCIA NETA DEL CALDO</span>
-          <span class="text-[10px] text-amber-100">A repartir: 50% Willians / 50% Wilder-Familia</span>
-        </div>
-        <div class="text-right">
-          <span id="cuadre-ganancia-neta" class="text-2xl font-black">S/ 0.00</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tarjeta Control Delia -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-purple-200 space-y-2.5 relative overflow-hidden">
-      <div class="absolute top-0 right-0 bg-purple-600 text-white text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-bl-xl tracking-wider">
-        Control Delia
-      </div>
-
-      <div class="flex items-center space-x-2">
-        <div class="w-7 h-7 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-black text-xs">
-          D
-        </div>
-        <div>
-          <h4 class="font-black text-stone-800 text-xs">Compras y Caldos de Delia</h4>
-          <span class="text-[10px] text-stone-400 font-medium">Turno Tarde y compras cuando Wilder no va</span>
-        </div>
-      </div>
-
-      <div class="bg-purple-50/70 p-2.5 rounded-xl border border-purple-100 space-y-1.5 text-xs">
-        <div class="flex justify-between items-center">
-          <span class="text-stone-600">🍲 Caldos cobrados tarde (1pm+):</span>
-          <span id="delia-caldos-cobrados" class="font-bold text-stone-800">S/ 0.00 (0)</span>
-        </div>
-        <div class="flex justify-between items-center text-purple-800 font-semibold">
-          <span>🛒 Insumos pagados por Delia:</span>
-          <span id="delia-insumos-pagados" class="font-bold">S/ 0.00</span>
-        </div>
-        <div class="border-t border-purple-200 pt-1.5 flex justify-between items-center">
-          <span class="font-extrabold text-stone-800 text-xs" id="delia-balance-etiqueta">Balance Delia:</span>
-          <span id="delia-balance-resultado" class="text-xs font-black text-purple-700">S/ 0.00</span>
-        </div>
-      </div>
-      <p class="text-[10px] text-stone-500 leading-snug italic" id="delia-explicacion">
-        Compara el dinero de la tarde con las compras de Delia para reembolsar si gastó de más.
-      </p>
-    </div>
-
-    <!-- Tarjeta Liquidación Willians -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-blue-200 space-y-2 relative overflow-hidden">
-      <div class="absolute top-0 right-0 bg-blue-600 text-white text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-bl-xl tracking-wider">
-        Hijo Willians
-      </div>
-
-      <div class="flex items-center space-x-2">
-        <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-black text-xs">
-          W
-        </div>
-        <div>
-          <h4 class="font-black text-stone-800 text-xs">Cierre de Pago a Willians</h4>
-          <span class="text-[10px] text-stone-400 font-medium">Reparto acordado al 50%</span>
-        </div>
-      </div>
-
-      <div class="space-y-1 text-xs pt-1">
-        <div class="flex justify-between text-stone-600">
-          <span>Su 50% de ganancia neta:</span>
-          <span id="liq-willians-mitad" class="font-bold text-stone-800">S/ 0.00</span>
-        </div>
-        <div class="flex justify-between text-rose-600">
-          <span>(-) Adelantos recibidos de papá:</span>
-          <span id="liq-willians-adelantos" class="font-bold">- S/ 0.00</span>
-        </div>
-        <div class="border-t border-stone-200 pt-1.5 flex justify-between items-baseline">
-          <span class="font-extrabold text-stone-800 text-xs">SALDO FINAL A ENTREGARLE:</span>
-          <span id="liq-willians-total" class="text-lg font-black text-blue-700">S/ 0.00</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tarjeta Wilder & Delia -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-amber-300 space-y-2 relative overflow-hidden">
-      <div class="absolute top-0 right-0 bg-amber-600 text-white text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-bl-xl tracking-wider">
-        Wilder & Delia
-      </div>
-
-      <div class="flex items-center space-x-2">
-        <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-black text-xs">
-          W+D
-        </div>
-        <div>
-          <h4 class="font-black text-stone-800 text-xs">Conciliación Bolsillo Wilder</h4>
-          <span class="text-[10px] text-stone-400 font-medium">Ganancia 50% + Reembolsos</span>
-        </div>
-      </div>
-
-      <div class="space-y-1 text-xs pt-1 text-stone-600">
-        <div class="flex justify-between">
-          <span>Su 50% de ganancia neta:</span>
-          <span id="liq-wilder-mitad" class="font-bold text-stone-800">S/ 0.00</span>
-        </div>
-        <div class="flex justify-between text-emerald-700">
-          <span>(+) Reembolso insumos pagados x Wilder:</span>
-          <span id="liq-wilder-reembolso" class="font-bold">+ S/ 0.00</span>
-        </div>
-        <div class="flex justify-between text-purple-700">
-          <span>(+) Reembolso insumos pagados x Delia:</span>
-          <span id="liq-delia-reembolso" class="font-bold">+ S/ 0.00</span>
-        </div>
-        <div class="flex justify-between text-blue-700">
-          <span>(+) Recupera adelanto dado a Willians:</span>
-          <span id="liq-wilder-recupera-adelanto" class="font-bold">+ S/ 0.00</span>
-        </div>
-        <div class="border-t border-stone-200 pt-1.5 flex justify-between items-baseline">
-          <div>
-            <span class="font-extrabold text-stone-800 text-xs block">DINERO LÍQUIDO EN CAJA/WILDER:</span>
-            <span class="text-[9px] text-stone-400">(Venta mañana - insumos - pago a Willians)</span>
+        <div class="balance-grid">
+          <div class="balance-subcard">
+            <div style="font-size:11px; opacity:0.75;">Venta Total Caldos</div>
+            <div class="balance-val text-green" id="cuadre-venta-total">S/ 0.00</div>
+            <div style="font-size:10px; opacity:0.7;" id="cuadre-caldos-unidades">0 platos</div>
           </div>
-          <span id="liq-wilder-saldo-mano" class="text-lg font-black text-amber-700">S/ 0.00</span>
+          <div class="balance-subcard">
+            <div style="font-size:11px; opacity:0.75;">Total Insumos Gastados</div>
+            <div class="balance-val text-red" id="cuadre-costo-total">S/ 0.00</div>
+            <div style="font-size:10px; opacity:0.7;" id="cuadre-insumos-count">0 compras</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPARTO WILLIANS -->
+      <div class="card split-card split-willi">
+        <div class="card-header" style="border:none; margin:0; padding:0;">
+          <div class="card-title text-green">👦 Cierre Willians (50%)</div>
+          <span class="card-badge badge-green">Socio 50%</span>
+        </div>
+        <div style="margin-top:8px; font-size:13px; color:var(--slate-600);">
+          Ganancia que le corresponde (50% neto): <b id="willi-50-base">S/ 0.00</b><br>
+          Menos adelantos de dinero recibidos: <b class="text-red" id="willi-adelantos-total">- S/ 0.00</b>
+        </div>
+        <div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--slate-300); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:13px; font-weight:800; color:var(--slate-800);">Saldo Líquido a Pagarle:</span>
+          <span style="font-size:20px; font-weight:900; color:var(--emerald);" id="willi-saldo-final">S/ 0.00</span>
+        </div>
+      </div>
+
+      <!-- REPARTO WILDER -->
+      <div class="card split-card split-wilder">
+        <div class="card-header" style="border:none; margin:0; padding:0;">
+          <div class="card-title text-blue">🧔 Cierre Bolsillo Wilder</div>
+          <span class="card-badge badge-blue">Recuperación + 50%</span>
+        </div>
+        <div style="margin-top:8px; font-size:13px; color:var(--slate-600); line-height:1.5;">
+          • Tu 50% de ganancia neta: <b id="wilder-50-base">S/ 0.00</b><br>
+          • Insumos pagados de tu bolsillo a recuperar: <b class="text-green" id="wilder-reembolso-compras">+ S/ 0.00</b><br>
+          • Dinero de caldos mañana en tu mano (Yape/Efe): <b id="wilder-caldos-cobrados">S/ 0.00</b>
+        </div>
+        <div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--slate-300); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:13px; font-weight:800; color:var(--slate-800);">Tu Posición Neta de Caja:</span>
+          <span style="font-size:20px; font-weight:900; color:var(--secondary);" id="wilder-saldo-final">S/ 0.00</span>
+        </div>
+      </div>
+
+      <!-- CONTROL DELIA -->
+      <div class="card split-card split-delia">
+        <div class="card-header" style="border:none; margin:0; padding:0;">
+          <div class="card-title text-purple">👩 Control Turno Delia (Tarde)</div>
+          <span class="card-badge badge-purple">Caldos Tarde vs Gastos</span>
+        </div>
+        <div style="margin-top:8px; font-size:13px; color:var(--slate-600); line-height:1.5;">
+          • Caldos cobrados por Delia (1pm+): <b class="text-purple" id="delia-caldos-monto">S/ 0.00</b> (<span id="delia-caldos-cant">0</span> platos)<br>
+          • Compras pagadas del bolsillo de Delia: <b class="text-red" id="delia-compras-monto">S/ 0.00</b>
+        </div>
+        <div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--slate-300); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12px; font-weight:800; color:var(--slate-800);">Efectivo de caldo que queda en casa:</span>
+          <span style="font-size:18px; font-weight:900; color:var(--purple);" id="delia-neto-quedo">S/ 0.00</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SUB-PESTAÑA 3: HISTORIAL -->
+    <div id="tab-caldo-historial" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📜 Movimientos de la Fecha</div>
+          <button onclick="limpiarMovimientosFecha()" style="border:none; background:transparent; color:#dc2626; font-size:11px; font-weight:700; cursor:pointer;">Borrar Día</button>
+        </div>
+        <div id="lista-movimientos-caldo">
+          <!-- Se llena por JavaScript -->
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- SUB-TAB CALDO: HISTORIAL -->
-  <section id="caldo-tab-historial" class="hidden space-y-3">
-    <div class="flex items-center justify-between">
-      <h3 class="text-xs font-black text-stone-800 uppercase tracking-wider">Historial del Caldo</h3>
-      <span id="contador-movimientos" class="text-xs bg-stone-200 text-stone-700 px-2.5 py-0.5 rounded-full font-bold">0</span>
-    </div>
-    <div id="lista-movimientos" class="space-y-2"></div>
-  </section>
-</div>
+  </div>
 
-<!-- ############################################################### -->
-<!-- CONTENEDOR MODULO 2: CAFETERÍA & JUGUERÍA YADIRA               -->
-<!-- ############################################################### -->
-<div id="modulo-yadira" class="hidden space-y-4">
-  
-  <!-- SUB-TAB YADIRA: VENTAS Y PRODUCTOS -->
-  <section id="yadira-tab-ventas" class="space-y-4">
+
+  <!-- ============================================== -->
+  <!-- SECCIÓN 2: CAFETERÍA DE YADIRA (SEPARADA)      -->
+  <!-- ============================================== -->
+  <div id="seccion-yadira" style="display: none;">
     
-    <div class="bg-gradient-to-r from-pink-500 to-rose-500 p-3.5 rounded-2xl text-white shadow-md flex items-center justify-between">
-      <div>
-        <h2 class="font-extrabold text-sm leading-tight">Cafetería & Jugos de Yadira</h2>
-        <p class="text-[11px] text-pink-100">Caja y ganancias 100% independientes</p>
-      </div>
-      <span class="text-2xl">🧃</span>
-    </div>
+    <div class="tab-content active" style="padding-top:14px;">
+      
+      <!-- RESUMEN CAJA YADIRA -->
+      <div class="balance-box" style="background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); color:white;">
+        <div style="font-size:12px; font-weight:700; opacity:0.8; text-transform:uppercase;">Caja Cafetería Yadira</div>
+        <div style="font-size:30px; font-weight:900; margin-top:4px;" id="yadira-ganancia-neta">S/ 0.00</div>
+        <div style="font-size:12px; opacity:0.85;">Ganancia Neta (Ventas - Gastos de insumos)</div>
 
-    <!-- Catálogo de productos táctiles -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-3">
-      <div class="flex items-center justify-between">
-        <h3 class="text-xs font-extrabold uppercase tracking-wider text-stone-700">Productos Frecuentes</h3>
-        <span class="text-[10px] text-rose-600 font-bold bg-rose-50 px-2 py-0.5 rounded">Toca para cargar</span>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2 text-xs">
-        <button onclick="seleccionarProdYadira('Jugo Especial / Surtido', 8.00)" class="p-2.5 bg-rose-50 hover:bg-rose-100 rounded-xl border border-rose-200 text-left font-bold text-rose-900 transition-all active:scale-95">
-          🥤 Jugo Especial
-          <span class="block text-[11px] font-normal text-rose-700">S/ 8.00</span>
-        </button>
-        <button onclick="seleccionarProdYadira('Jugo Simple (Papaya/Naranja)', 6.00)" class="p-2.5 bg-amber-50 hover:bg-amber-100 rounded-xl border border-amber-200 text-left font-bold text-amber-900 transition-all active:scale-95">
-          🍊 Jugo Papaya/Naranja
-          <span class="block text-[11px] font-normal text-amber-700">S/ 6.00</span>
-        </button>
-        <button onclick="seleccionarProdYadira('Keke por tajada', 3.50)" class="p-2.5 bg-stone-50 hover:bg-stone-100 rounded-xl border border-stone-200 text-left font-bold text-stone-800 transition-all active:scale-95">
-          🍰 Tajada de Keke
-          <span class="block text-[11px] font-normal text-stone-600">S/ 3.50</span>
-        </button>
-        <button onclick="seleccionarProdYadira('Waffle con Miel/Fruta', 7.00)" class="p-2.5 bg-stone-50 hover:bg-stone-100 rounded-xl border border-stone-200 text-left font-bold text-stone-800 transition-all active:scale-95">
-          🧇 Waffle con fruta
-          <span class="block text-[11px] font-normal text-stone-600">S/ 7.00</span>
-        </button>
-        <button onclick="seleccionarProdYadira('Empanada', 4.00)" class="p-2.5 bg-stone-50 hover:bg-stone-100 rounded-xl border border-stone-200 text-left font-bold text-stone-800 transition-all active:scale-95">
-          🥟 Empanada
-          <span class="block text-[11px] font-normal text-stone-600">S/ 4.00</span>
-        </button>
-        <button onclick="seleccionarProdYadira('Café Pasado / Americano', 4.50)" class="p-2.5 bg-stone-50 hover:bg-stone-100 rounded-xl border border-stone-200 text-left font-bold text-stone-800 transition-all active:scale-95">
-          ☕ Café caliente
-          <span class="block text-[11px] font-normal text-stone-600">S/ 4.50</span>
-        </button>
-        <button onclick="seleccionarProdYadira('Frappé frío', 8.50)" class="p-2.5 bg-blue-50 hover:bg-blue-100 rounded-xl border border-blue-200 text-left font-bold text-blue-900 transition-all active:scale-95">
-          🍧 Frappé
-          <span class="block text-[11px] font-normal text-blue-700">S/ 8.50</span>
-        </button>
-        <button onclick="seleccionarProdYadira('Yogurt con fruta', 6.50)" class="p-2.5 bg-pink-50 hover:bg-pink-100 rounded-xl border border-pink-200 text-left font-bold text-pink-900 transition-all active:scale-95">
-          🍓 Yogurt con frutas
-          <span class="block text-[11px] font-normal text-pink-700">S/ 6.50</span>
-        </button>
-      </div>
-
-      <!-- Formulario de Venta Yadira -->
-      <div class="space-y-2 pt-2 border-t border-stone-100">
-        <div>
-          <label class="block text-[10px] font-semibold text-stone-500 mb-0.5">Producto a vender:</label>
-          <input type="text" id="yadira-prod-nombre" placeholder="Nombre del producto..." class="w-full px-3 py-2 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold focus:bg-white focus:outline-none focus:border-rose-500">
-        </div>
-
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-[10px] font-semibold text-stone-500 mb-0.5">Precio Unitario (S/):</label>
-            <input type="number" step="0.5" id="yadira-prod-precio" placeholder="0.00" value="" oninput="recalcVentaYadira()" class="w-full px-3 py-2 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold focus:bg-white focus:outline-none focus:border-rose-500">
+        <div class="balance-grid">
+          <div class="balance-subcard">
+            <div style="font-size:11px; opacity:0.75;">Venta Bruta</div>
+            <div class="balance-val text-green" id="yadira-venta-total">S/ 0.00</div>
           </div>
-          <div>
-            <label class="block text-[10px] font-semibold text-stone-500 mb-0.5">Cantidad:</label>
-            <div class="flex items-center space-x-1">
-              <button onclick="ajustarCantYadira(-1)" class="w-8 h-8 bg-stone-200 rounded-lg font-bold text-xs">-</button>
-              <input type="number" id="yadira-prod-cant" value="1" min="1" oninput="recalcVentaYadira()" class="w-full py-1.5 bg-stone-50 rounded-lg border border-stone-200 text-xs font-bold text-center">
-              <button onclick="ajustarCantYadira(1)" class="w-8 h-8 bg-stone-200 rounded-lg font-bold text-xs">+</button>
-            </div>
+          <div class="balance-subcard">
+            <div style="font-size:11px; opacity:0.75;">Gastos Fruta/Insumos</div>
+            <div class="balance-val text-red" id="yadira-costo-total">S/ 0.00</div>
           </div>
         </div>
+      </div>
 
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-[10px] font-semibold text-stone-500 mb-0.5">Método de Cobro:</label>
-            <select id="yadira-metodo-cobro" class="w-full px-2 py-2 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold text-stone-700">
+      <!-- BOTONES RÁPIDOS DE PRODUCTOS DE YADIRA -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🍹 Registrar Venta de Producto</div>
+          <span class="card-badge badge-purple">Cobro Rápido</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;">
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Jugo Surtido', 7.00)" style="font-size:11px;">🥤 Jugo Surtido (S/7)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Jugo Especial', 9.00)" style="font-size:11px;">🥤 J. Especial (S/9)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Tajada Keke', 3.50)" style="font-size:11px;">🍰 Keke Tajada (S/3.5)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Waffle', 6.00)" style="font-size:11px;">🧇 Waffle (S/6)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Empanada', 4.00)" style="font-size:11px;">🥟 Empanada (S/4)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Café Pasado', 3.00)" style="font-size:11px;">☕ Café (S/3)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Frappé', 8.00)" style="font-size:11px;">🍧 Frappé (S/8)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Yogurt Ensalada', 7.50)" style="font-size:11px;">🍓 Yogurt/Fruta (S/7.5)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Venta Libre', 0)" style="font-size:11px;">✏️ Otro Precio</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Producto:</label>
+          <input type="text" id="yadira-producto-nombre" class="input-text" placeholder="Ej. Jugo de papaya">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <label class="form-label">Precio Cobrado (S/):</label>
+            <input type="number" step="0.5" id="yadira-producto-monto" class="input-text" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Medio de Pago:</label>
+            <select id="yadira-medio-pago" class="select-box">
+              <option value="yape">📱 Yape / Plin</option>
               <option value="efectivo">💵 Efectivo</option>
-              <option value="yape">📱 Yape / Plin Yadira</option>
             </select>
           </div>
-          <div class="flex flex-col justify-end">
-            <span class="text-[10px] text-stone-400 font-semibold">Total a cobrar:</span>
-            <span id="yadira-subtotal-texto" class="text-base font-black text-rose-600">S/ 0.00</span>
-          </div>
         </div>
 
-        <button onclick="guardarVentaYadira()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-700 active:scale-98 text-white font-bold rounded-xl text-xs shadow-md shadow-rose-600/20 flex items-center justify-center space-x-1.5 transition-all">
-          <i class="ph ph-check-circle text-base"></i>
-          <span>Anotar Venta de Yadira</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Gastos e Insumos de Yadira -->
-    <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 space-y-2.5">
-      <div class="flex items-center justify-between">
-        <h3 class="text-xs font-extrabold uppercase tracking-wider text-stone-700">Gastos e Insumos de Cafetería</h3>
-        <span class="text-[10px] text-stone-400">Frutas, leche, café, etc.</span>
-      </div>
-
-      <div class="grid grid-cols-3 gap-2">
-        <div class="col-span-2">
-          <input type="text" id="yadira-gasto-desc" placeholder="Insumo (ej. leche, frutas, descartables)" class="w-full px-3 py-2 bg-stone-50 rounded-xl border border-stone-200 text-xs focus:bg-white focus:outline-none focus:border-rose-500">
-        </div>
-        <div>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center text-stone-400 font-bold text-xs pointer-events-none">S/</span>
-            <input type="number" step="0.5" id="yadira-gasto-monto" placeholder="0.00" value="" class="w-full pl-7 pr-2 py-2 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold focus:bg-white focus:outline-none focus:border-rose-500">
-          </div>
-        </div>
-      </div>
-
-      <button onclick="guardarGastoYadira()" class="w-full py-2 bg-stone-800 hover:bg-stone-900 active:scale-98 text-white font-bold rounded-xl text-xs flex items-center justify-center space-x-1.5 transition-all">
-        <i class="ph ph-receipt text-base"></i>
-        <span>Anotar Gasto Cafetería</span>
-      </button>
-    </div>
-
-  </section>
-
-  <!-- SUB-TAB YADIRA: CAJA Y BALANCE -->
-  <section id="yadira-tab-caja" class="hidden space-y-4">
-    
-    <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-rose-200 space-y-3">
-      <div class="flex items-center justify-between">
-        <h3 class="text-xs font-extrabold uppercase tracking-wider text-rose-700">Caja Neta de Yadira</h3>
-        <button onclick="recalcularYadira()" class="text-rose-600 font-bold text-xs flex items-center space-x-1">
-          <i class="ph ph-arrow-clockwise"></i>
-          <span>Actualizar</span>
+        <button class="btn-submit btn-purple" onclick="registrarVentaYadira()">
+          ✓ Anotar Venta Cafetería
         </button>
       </div>
 
-      <div class="grid grid-cols-2 gap-2 text-xs">
-        <div class="bg-rose-50 p-2.5 rounded-xl border border-rose-100">
-          <span class="text-stone-500 block text-[10px]">Ventas Totales:</span>
-          <span id="yadira-ventas-total" class="text-lg font-black text-rose-700">S/ 0.00</span>
+      <!-- REGISTRAR COMPRA DE FRUTAS / INSUMOS YADIRA -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🍓 Gastos de Cafetería (Insumos)</div>
+          <span class="card-badge badge-purple">Frutas, leche, descartables</span>
         </div>
-        <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
-          <span class="text-stone-500 block text-[10px]">Gastos Insumos:</span>
-          <span id="yadira-gastos-total" class="text-lg font-black text-stone-700">S/ 0.00</span>
+
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <label class="form-label">Insumo comprado:</label>
+            <input type="text" id="yadira-gasto-nombre" class="input-text" placeholder="Ej. Papaya, fresas, vasos">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Costo (S/):</label>
+            <input type="number" step="0.5" id="yadira-gasto-monto" class="input-text" placeholder="0.00">
+          </div>
+        </div>
+
+        <button class="btn-submit" onclick="registrarGastoYadira()" style="background: var(--slate-800);">
+          + Anotar Gasto Insumo Yadira
+        </button>
+      </div>
+
+      <!-- LISTA DE MOVIMIENTOS YADIRA -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📋 Ventas y Gastos de Yadira</div>
+        </div>
+        <div id="lista-movimientos-yadira">
+          <!-- Llenado JS -->
         </div>
       </div>
 
-      <div class="p-3 bg-gradient-to-r from-rose-600 to-pink-600 text-white rounded-xl flex items-center justify-between shadow-sm">
-        <div>
-          <span class="text-[10px] font-bold text-rose-100 uppercase tracking-wide block">GANANCIA NETA YADIRA</span>
-          <span class="text-[10px] text-rose-200">Total ingresos menos insumos</span>
-        </div>
-        <span id="yadira-ganancia-neta" class="text-2xl font-black">S/ 0.00</span>
-      </div>
-
-      <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-100 space-y-1 text-xs">
-        <div class="flex justify-between">
-          <span class="text-stone-500">💵 En Efectivo:</span>
-          <span id="yadira-caja-efectivo" class="font-bold text-stone-800">S/ 0.00</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-stone-500">📱 En Yape / Plin:</span>
-          <span id="yadira-caja-yape" class="font-bold text-stone-800">S/ 0.00</span>
-        </div>
-      </div>
     </div>
 
-    <div class="space-y-2">
-      <h4 class="text-xs font-bold text-stone-600 uppercase tracking-wider">Últimas Ventas de Cafetería</h4>
-      <div id="yadira-lista-movimientos" class="space-y-1.5"></div>
-    </div>
-
-  </section>
-
-</div>
-
-
-<!-- Barra para CALDO -->
-<div id="nav-bar-caldo" class="max-w-md mx-auto grid grid-cols-3 px-2 py-1.5">
-  <button onclick="cambiarTabCaldo('anotar')" id="caldo-nav-anotar" class="flex flex-col items-center justify-center py-1 text-amber-600 font-bold">
-    <i class="ph ph-plus-circle text-2xl"></i>
-    <span class="text-[11px] mt-0.5">Anotar Caldo</span>
-  </button>
-  <button onclick="cambiarTabCaldo('cuadre')" id="caldo-nav-cuadre" class="flex flex-col items-center justify-center py-1 text-stone-400 font-medium">
-    <i class="ph ph-scales text-2xl"></i>
-    <span class="text-[11px] mt-0.5">Cuadre 50/50</span>
-  </button>
-  <button onclick="cambiarTabCaldo('historial')" id="caldo-nav-historial" class="flex flex-col items-center justify-center py-1 text-stone-400 font-medium">
-    <i class="ph ph-notebook text-2xl"></i>
-    <span class="text-[11px] mt-0.5">Historial</span>
-  </button>
-</div>
-
-<!-- Barra para YADIRA -->
-<div id="nav-bar-yadira" class="hidden max-w-md mx-auto grid grid-cols-2 px-2 py-1.5">
-  <button onclick="cambiarTabYadira('ventas')" id="yadira-nav-ventas" class="flex flex-col items-center justify-center py-1 text-rose-600 font-bold">
-    <i class="ph ph-coffee text-2xl"></i>
-    <span class="text-[11px] mt-0.5">Ventas & Menú</span>
-  </button>
-  <button onclick="cambiarTabYadira('caja')" id="yadira-nav-caja" class="flex flex-col items-center justify-center py-1 text-stone-400 font-medium">
-    <i class="ph ph-wallet text-2xl"></i>
-    <span class="text-[11px] mt-0.5">Caja de Yadira</span>
-  </button>
-</div>
-
-
-  <p class="text-xs text-stone-600 leading-relaxed">
-    Tus registros están seguros en este navegador. Puedes exportar una copia en archivo JSON o restaurar tus apuntes en cualquier momento.
-  </p>
-
-  <div class="space-y-2 pt-1">
-    <button onclick="exportarDatos()" class="w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-2 shadow-sm">
-      <i class="ph ph-download-simple text-base"></i>
-      <span>Descargar Copia de Seguridad (JSON)</span>
-    </button>
-
-    <label class="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 cursor-pointer border border-stone-300">
-      <i class="ph ph-upload-simple text-base"></i>
-      <span>Restaurar Copia desde Archivo</span>
-      <input type="file" id="archivo-importar" accept=".json" onchange="importarDatos(event)" class="hidden">
-    </label>
-
-    <button onclick="solicitarLimpiezaTotal()" class="w-full py-2 text-rose-600 hover:text-rose-800 text-[11px] font-bold text-center">
-      Borrar todos los datos y empezar de cero
-    </button>
   </div>
+
+
+  <!-- BARRA DE NAVEGACIÓN INFERIOR (Solo visible en Caldo) -->
+  <nav class="bottom-nav" id="bottom-bar-caldo">
+    <button class="nav-btn active" id="nav-btn-anotar" onclick="navegarSubCaldo('anotar')">
+      <span class="nav-btn-icon">✍️</span>
+      <span>Anotar</span>
+    </button>
+    <button class="nav-btn" id="nav-btn-cuadre" onclick="navegarSubCaldo('cuadre')">
+      <span class="nav-btn-icon">⚖️</span>
+      <span>Cuadre 50/50</span>
+    </button>
+    <button class="nav-btn" id="nav-btn-historial" onclick="navegarSubCaldo('historial')">
+      <span class="nav-btn-icon">📑</span>
+      <span>Historial</span>
+    </button>
+  </nav>
+
 </div>
+
+<script>
+  // ESTADO GLOBAL DE DATOS
+  let appData = {
+    caldos: [],       // { id, fecha, turno, cantidad, precioUnit, total }
+    gastos: [],       // { id, fecha, concepto, monto, pagador }
+    adelantos: [],    // { id, fecha, motivo, monto, destinatario }
+    stockPresas: {},  // { "YYYY-MM-DD": { ayer: 0, hoy: 0 } }
+    yadiraVentas: [], // { id, fecha, producto, monto, medio }
+    yadiraGastos: []  // { id, fecha, concepto, monto }
+  };
+
+  let fechaActual = "";
+  let turnoSeleccionado = "wilder";
+  let cantCaldosInput = 1;
+  const PRECIO_CALDO = 15.00;
+
+  // INICIALIZACIÓN
+  window.addEventListener('DOMContentLoaded', () => {
+    cargarDesdeStorage();
+    ponerFechaHoy();
+  });
+
+  function cargarDesdeStorage() {
+    const dataGuardada = localStorage.getItem("CALDO_YADIRA_APP_DATA");
+    if (dataGuardada) {
+      try {
+        appData = JSON.parse(dataGuardada);
+      } catch (e) {
+        console.error("Error al cargar datos", e);
+      }
+    }
+  }
+
+  function guardarEnStorage() {
+    localStorage.setItem("CALDO_YADIRA_APP_DATA", JSON.stringify(appData));
+    actualizarTodo();
+  }
+
+  function ponerFechaHoy() {
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    fechaActual = `${yyyy}-${mm}-${dd}`;
+    document.getElementById("fecha-operacion").value = fechaActual;
+    alCambiarFecha();
+  }
+
+  function alCambiarFecha() {
+    fechaActual = document.getElementById("fecha-operacion").value;
+    cargarStockPresasDelDia();
+    actualizarTodo();
+  }
+
+  // CAMBIO ENTRE NEGOCIOS
+  function cambiarNegocio(negocio) {
+    const secCaldo = document.getElementById("seccion-caldo");
+    const secYadira = document.getElementById("seccion-yadira");
+    const btnCaldo = document.getElementById("btn-negocio-caldo");
+    const btnYadira = document.getElementById("btn-negocio-yadira");
+    const bottomNav = document.getElementById("bottom-bar-caldo");
+
+    if (negocio === 'caldo') {
+      secCaldo.style.display = "block";
+      secYadira.style.display = "none";
+      btnCaldo.classList.add("active");
+      btnYadira.classList.remove("active");
+      bottomNav.style.display = "flex";
+    } else {
+      secCaldo.style.display = "none";
+      secYadira.style.display = "block";
+      btnCaldo.classList.remove("active");
+      btnYadira.classList.add("active");
+      bottomNav.style.display = "none";
+    }
+    actualizarTodo();
+  }
+
+  // NAVEGACIÓN DENTRO DE CALDO
+  function navegarSubCaldo(pestana) {
+    document.getElementById("tab-caldo-anotar").classList.remove("active");
+    document.getElementById("tab-caldo-cuadre").classList.remove("active");
+    document.getElementById("tab-caldo-historial").classList.remove("active");
+
+    document.getElementById("nav-btn-anotar").classList.remove("active");
+    document.getElementById("nav-btn-cuadre").classList.remove("active");
+    document.getElementById("nav-btn-historial").classList.remove("active");
+
+    if (pestana === 'anotar') {
+      document.getElementById("tab-caldo-anotar").classList.add("active");
+      document.getElementById("nav-btn-anotar").classList.add("active");
+    } else if (pestana === 'cuadre') {
+      document.getElementById("tab-caldo-cuadre").classList.add("active");
+      document.getElementById("nav-btn-cuadre").classList.add("active");
+    } else if (pestana === 'historial') {
+      document.getElementById("tab-caldo-historial").classList.add("active");
+      document.getElementById("nav-btn-historial").classList.add("active");
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // CONTROL DE PRESAS (GALLINA)
+  function cargarStockPresasDelDia() {
+    const stock = appData.stockPresas[fechaActual] || { ayer: 0, hoy: 0 };
+    document.getElementById("presas-ayer").value = stock.ayer || "";
+    document.getElementById("presas-hoy").value = stock.hoy || "";
+    calcularStockPresas();
+  }
+
+  function guardarStockPresas() {
+    const ayer = parseInt(document.getElementById("presas-ayer").value) || 0;
+    const hoy = parseInt(document.getElementById("presas-hoy").value) || 0;
+    appData.stockPresas[fechaActual] = { ayer, hoy };
+    guardarEnStorage();
+    alert("¡Stock de presas fijado para la fecha seleccionada!");
+  }
+
+  function calcularStockPresas() {
+    const ayer = parseInt(document.getElementById("presas-ayer").value) || 0;
+    const hoy = parseInt(document.getElementById("presas-hoy").value) || 0;
+    const totalOlla = ayer + hoy;
+
+    // Sumar caldos vendidos en la fecha
+    const vendidos = appData.caldos
+      .filter(c => c.fecha === fechaActual)
+      .reduce((sum, c) => sum + c.cantidad, 0);
+
+    const quedan = totalOlla - vendidos;
+
+    document.getElementById("stock-total-olla").innerText = totalOlla;
+    document.getElementById("stock-vendidas").innerText = vendidos;
+    document.getElementById("stock-quedan").innerText = quedan;
+
+    const badge = document.getElementById("badge-stock-estado");
+    if (quedan < 0) {
+      badge.innerText = "¡Faltan presas en olla!";
+      badge.style.background = "#fee2e2";
+      badge.style.color = "#dc2626";
+    } else {
+      badge.innerText = "Stock al día";
+      badge.className = "card-badge badge-orange";
+      badge.style.background = "";
+      badge.style.color = "";
+    }
+  }
+
+  // VENTAS DE CALDO
+  function seleccionarTurno(turno) {
+    turnoSeleccionado = turno;
+    const btnW = document.getElementById("btn-turno-wilder");
+    const btnD = document.getElementById("btn-turno-delia");
+    if (turno === 'wilder') {
+      btnW.className = "shift-btn active-wilder";
+      btnD.className = "shift-btn";
+    } else {
+      btnW.className = "shift-btn";
+      btnD.className = "shift-btn active-delia";
+    }
+  }
+
+  function cambiarCantCaldos(delta) {
+    cantCaldosInput = Math.max(1, cantCaldosInput + delta);
+    actualizarVistaContadorCaldos();
+  }
+
+  function sumarCaldosRapido(n) {
+    cantCaldosInput += n;
+    actualizarVistaContadorCaldos();
+  }
+
+  function actualizarVistaContadorCaldos() {
+    document.getElementById("caldos-count").innerText = cantCaldosInput;
+    document.getElementById("caldos-total-soles").innerText = `Total: S/ ${(cantCaldosInput * PRECIO_CALDO).toFixed(2)}`;
+  }
+
+  function registrarVentaCaldos() {
+    appData.caldos.push({
+      id: Date.now(),
+      fecha: fechaActual,
+      turno: turnoSeleccionado,
+      cantidad: cantCaldosInput,
+      precioUnit: PRECIO_CALDO,
+      total: cantCaldosInput * PRECIO_CALDO
+    });
+    cantCaldosInput = 1;
+    actualizarVistaContadorCaldos();
+    guardarEnStorage();
+  }
+
+  // GASTOS E INSUMOS
+  function cargarInsumo(nombre) {
+    document.getElementById("gasto-concepto").value = nombre;
+    document.getElementById("gasto-monto").focus();
+  }
+
+  function registrarGastoInsumo() {
+    const concepto = document.getElementById("gasto-concepto").value.trim();
+    const monto = parseFloat(document.getElementById("gasto-monto").value);
+    const pagador = document.getElementById("gasto-pagador").value;
+
+    if (!concepto) {
+      alert("Escribe o selecciona qué insumo compraste.");
+      return;
+    }
+    if (isNaN(monto) || monto <= 0) {
+      alert("Ingresa un costo válido en Soles.");
+      return;
+    }
+
+    appData.gastos.push({
+      id: Date.now(),
+      fecha: fechaActual,
+      concepto,
+      monto,
+      pagador
+    });
+
+    document.getElementById("gasto-concepto").value = "";
+    document.getElementById("gasto-monto").value = "";
+    guardarEnStorage();
+  }
+
+  // ADELANTO A WILLIANS
+  function registrarAdelantoWilli() {
+    const motivo = document.getElementById("adelanto-motivo").value.trim() || "Adelanto personal";
+    const monto = parseFloat(document.getElementById("adelanto-monto").value);
+
+    if (isNaN(monto) || monto <= 0) {
+      alert("Ingresa el monto entregado a Willians.");
+      return;
+    }
+
+    appData.adelantos.push({
+      id: Date.now(),
+      fecha: fechaActual,
+      destinatario: "willians",
+      motivo,
+      monto
+    });
+
+    document.getElementById("adelanto-motivo").value = "";
+    document.getElementById("adelanto-monto").value = "";
+    guardarEnStorage();
+  }
+
+  // SECCIÓN CAFETERÍA YADIRA
+  function seleccionarProductoYadira(prod, precio) {
+    document.getElementById("yadira-producto-nombre").value = prod;
+    if (precio > 0) {
+      document.getElementById("yadira-producto-monto").value = precio.toFixed(2);
+    } else {
+      document.getElementById("yadira-producto-monto").value = "";
+      document.getElementById("yadira-producto-monto").focus();
+    }
+  }
+
+  function registrarVentaYadira() {
+    const producto = document.getElementById("yadira-producto-nombre").value.trim();
+    const monto = parseFloat(document.getElementById("yadira-producto-monto").value);
+    const medio = document.getElementById("yadira-medio-pago").value;
+
+    if (!producto || isNaN(monto) || monto <= 0) {
+      alert("Ingresa el producto y el precio cobrado por Yadira.");
+      return;
+    }
+
+    appData.yadiraVentas.push({
+      id: Date.now(),
+      fecha: fechaActual,
+      producto,
+      monto,
+      medio
+    });
+
+    document.getElementById("yadira-producto-nombre").value = "";
+    document.getElementById("yadira-producto-monto").value = "";
+    guardarEnStorage();
+  }
+
+  function registrarGastoYadira() {
+    const concepto = document.getElementById("yadira-gasto-nombre").value.trim();
+    const monto = parseFloat(document.getElementById("yadira-gasto-monto").value);
+
+    if (!concepto || isNaN(monto) || monto <= 0) {
+      alert("Ingresa el insumo comprado por Yadira y su costo.");
+      return;
+    }
+
+    appData.yadiraGastos.push({
+      id: Date.now(),
+      fecha: fechaActual,
+      concepto,
+      monto
+    });
+
+    document.getElementById("yadira-gasto-nombre").value = "";
+    document.getElementById("yadira-gasto-monto").value = "";
+    guardarEnStorage();
+  }
+
+  // CÁLCULOS GENERALES Y ACTUALIZACIÓN VISUAL
+  function actualizarTodo() {
+    calcularStockPresas();
+    actualizarCuadreCaldo();
+    actualizarHistorialCaldo();
+    actualizarCajaYadira();
+  }
+
+  function actualizarCuadreCaldo() {
+    // Filtrar registros de la fecha activa
+    const ventasDia = appData.caldos.filter(c => c.fecha === fechaActual);
+    const gastosDia = appData.gastos.filter(g => g.fecha === fechaActual);
+    const adelantosWilliDia = appData.adelantos.filter(a => a.fecha === fechaActual && a.destinatario === "willians");
+
+    // Totales de caldos
+    const cantCaldosTotal = ventasDia.reduce((s, c) => s + c.cantidad, 0);
+    const ventaTotalBruta = cantCaldosTotal * PRECIO_CALDO;
+
+    // Desglose de caldos por turno
+    const caldosWilder = ventasDia.filter(c => c.turno === 'wilder').reduce((s, c) => s + c.cantidad, 0);
+    const montoWilder = caldosWilder * PRECIO_CALDO;
+
+    const caldosDelia = ventasDia.filter(c => c.turno === 'delia').reduce((s, c) => s + c.cantidad, 0);
+    const montoDelia = caldosDelia * PRECIO_CALDO;
+
+    // Totales de gastos por pagador
+    const comprasWilder = gastosDia.filter(g => g.pagador === 'wilder').reduce((s, g) => s + g.monto, 0);
+    const comprasDelia = gastosDia.filter(g => g.pagador === 'delia').reduce((s, g) => s + g.monto, 0);
+    const comprasCaja = gastosDia.filter(g => g.pagador === 'caja').reduce((s, g) => s + g.monto, 0);
+    const gastoTotalInsumos = comprasWilder + comprasDelia + comprasCaja;
+
+    // Ganancia Neta Real del Negocio
+    const gananciaNeta = Math.max(0, ventaTotalBruta - gastoTotalInsumos);
+
+    // 50% Base
+    const mitadBase = gananciaNeta / 2;
+
+    // Descuentos Willians
+    const adelantosWilliTotal = adelantosWilliDia.reduce((s, a) => s + a.monto, 0);
+    const saldoFinalWilli = mitadBase - adelantosWilliTotal;
+
+    // Retorno Wilder (50% ganancia + reembolso compras de su bolsillo - lo que cobró directamente)
+    // Efectivo en mano que Wilder tiene de las mañanas = montoWilder
+    // Dinero que le corresponde a Wilder = mitadBase + comprasWilder
+    const posicionNetoWilder = (mitadBase + comprasWilder) - montoWilder;
+
+    // Tarjeta Delia
+    const efectivoQuedoDelia = montoDelia - comprasDelia;
+
+    // Pintar en interfaz
+    document.getElementById("cuadre-ganancia-neta").innerText = `S/ ${gananciaNeta.toFixed(2)}`;
+    document.getElementById("cuadre-venta-total").innerText = `S/ ${ventaTotalBruta.toFixed(2)}`;
+    document.getElementById("cuadre-caldos-unidades").innerText = `${cantCaldosTotal} platos vendidos`;
+    document.getElementById("cuadre-costo-total").innerText = `S/ ${gastoTotalInsumos.toFixed(2)}`;
+    document.getElementById("cuadre-insumos-count").innerText = `${gastosDia.length} compras`;
+
+    document.getElementById("willi-50-base").innerText = `S/ ${mitadBase.toFixed(2)}`;
+    document.getElementById("willi-adelantos-total").innerText = `- S/ ${adelantosWilliTotal.toFixed(2)}`;
+    document.getElementById("willi-saldo-final").innerText = `S/ ${saldoFinalWilli.toFixed(2)}`;
+
+    document.getElementById("wilder-50-base").innerText = `S/ ${mitadBase.toFixed(2)}`;
+    document.getElementById("wilder-reembolso-compras").innerText = `+ S/ ${comprasWilder.toFixed(2)}`;
+    document.getElementById("wilder-caldos-cobrados").innerText = `S/ ${montoWilder.toFixed(2)}`;
+    document.getElementById("wilder-saldo-final").innerText = `S/ ${posicionNetoWilder.toFixed(2)}`;
+
+    document.getElementById("delia-caldos-monto").innerText = `S/ ${montoDelia.toFixed(2)}`;
+    document.getElementById("delia-caldos-cant").innerText = caldosDelia;
+    document.getElementById("delia-compras-monto").innerText = `S/ ${comprasDelia.toFixed(2)}`;
+    document.getElementById("delia-neto-quedo").innerText = `S/ ${efectivoQuedoDelia.toFixed(2)}`;
+  }
+
+  function actualizarHistorialCaldo() {
+    const cont = document.getElementById("lista-movimientos-caldo");
+    cont.innerHTML = "";
+
+    const ventas = appData.caldos.filter(c => c.fecha === fechaActual);
+    const gastos = appData.gastos.filter(g => g.fecha === fechaActual);
+    const adelantos = appData.adelantos.filter(a => a.fecha === fechaActual);
+
+    if (ventas.length === 0 && gastos.length === 0 && adelantos.length === 0) {
+      cont.innerHTML = `<div style="text-align:center; padding:18px; color:var(--slate-400); font-size:13px;">No hay registros anotados para esta fecha.</div>`;
+      return;
+    }
+
+    ventas.forEach(v => {
+      cont.innerHTML += `
+        <div class="hist-item">
+          <div>
+            <div class="hist-desc">🍲 Venta: ${v.cantidad} caldo(s)</div>
+            <div class="hist-meta">Turno: ${v.turno === 'wilder' ? 'Mañana (Wilder)' : 'Tarde (Delia)'}</div>
+          </div>
+          <div class="hist-monto text-green">+ S/ ${v.total.toFixed(2)}</div>
+        </div>
+      `;
+    });
+
+    gastos.forEach(g => {
+      let pagTxt = g.pagador === 'wilder' ? 'Bolsillo Wilder' : (g.pagador === 'delia' ? 'Bolsillo Delia' : 'Caja');
+      cont.innerHTML += `
+        <div class="hist-item">
+          <div>
+            <div class="hist-desc">🛒 Insumo: ${g.concepto}</div>
+            <div class="hist-meta">Pagó: ${pagTxt}</div>
+          </div>
+          <div class="hist-monto text-red">- S/ ${g.monto.toFixed(2)}</div>
+        </div>
+      `;
+    });
+
+    adelantos.forEach(a => {
+      cont.innerHTML += `
+        <div class="hist-item">
+          <div>
+            <div class="hist-desc">🤝 Adelanto a Willians: ${a.motivo}</div>
+            <div class="hist-meta">Descuento de ganancia</div>
+          </div>
+          <div class="hist-monto text-blue">- S/ ${a.monto.toFixed(2)}</div>
+        </div>
+      `;
+    });
+  }
+
+  function actualizarCajaYadira() {
+    const vYadira = appData.yadiraVentas.filter(v => v.fecha === fechaActual);
+    const gYadira = appData.yadiraGastos.filter(g => g.fecha === fechaActual);
+
+    const ventaTotal = vYadira.reduce((s, v) => s + v.monto, 0);
+    const gastoTotal = gYadira.reduce((s, g) => s + g.monto, 0);
+    const neta = Math.max(0, ventaTotal - gastoTotal);
+
+    document.getElementById("yadira-ganancia-neta").innerText = `S/ ${neta.toFixed(2)}`;
+    document.getElementById("yadira-venta-total").innerText = `S/ ${ventaTotal.toFixed(2)}`;
+    document.getElementById("yadira-costo-total").innerText = `S/ ${gastoTotal.toFixed(2)}`;
+
+    const cont = document.getElementById("lista-movimientos-yadira");
+    cont.innerHTML = "";
+
+    if (vYadira.length === 0 && gYadira.length === 0) {
+      cont.innerHTML = `<div style="text-align:center; padding:18px; color:var(--slate-400); font-size:13px;">Sin movimientos de cafetería hoy.</div>`;
+      return;
+    }
+
+    vYadira.forEach(v => {
+      cont.innerHTML += `
+        <div class="hist-item">
+          <div>
+            <div class="hist-desc">🥤 ${v.producto}</div>
+            <div class="hist-meta">Medio: ${v.medio.toUpperCase()}</div>
+          </div>
+          <div class="hist-monto text-purple">+ S/ ${v.monto.toFixed(2)}</div>
+        </div>
+      `;
+    });
+
+    gYadira.forEach(g => {
+      cont.innerHTML += `
+        <div class="hist-item">
+          <div>
+            <div class="hist-desc">🍓 Insumo: ${g.concepto}</div>
+            <div class="hist-meta">Gasto Cafetería</div>
+          </div>
+          <div class="hist-monto text-red">- S/ ${g.monto.toFixed(2)}</div>
+        </div>
+      `;
+    });
+  }
+
+  function limpiarMovimientosFecha() {
+    if (!confirm(`¿Estás seguro de borrar todos los registros del día ${fechaActual}?`)) return;
+    appData.caldos = appData.caldos.filter(c => c.fecha !== fechaActual);
+    appData.gastos = appData.gastos.filter(g => g.fecha !== fechaActual);
+    appData.adelantos = appData.adelantos.filter(a => a.fecha !== fechaActual);
+    guardarEnStorage();
+  }
+
+  // GESTIÓN DE RESPALDO (JSON)
+  function abrirRespaldo() {
+    const accion = prompt("Escribe '1' para DESCARGAR respaldo de tus cuentas, o '2' para RESTAURAR una copia previa:");
+    if (accion === '1') {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `Cuentas_Wilder_${fechaActual}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    } else if (accion === '2') {
+      const jsonStr = prompt("Pega aquí el contenido de tu respaldo JSON:");
+      if (jsonStr) {
+        try {
+          appData = JSON.parse(jsonStr);
+          guardarEnStorage();
+          alert("¡Cuentas restauradas correctamente!");
+        } catch (e) {
+          alert("Error: El texto ingresado no es un respaldo válido.");
+        }
+      }
+    }
+  }
+</script>
+</body>
+</html>
