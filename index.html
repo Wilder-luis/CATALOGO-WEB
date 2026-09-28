@@ -128,7 +128,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* BARRA DE NAVEGACIÓN DÍA A DÍA */
+    /* BARRA DE FECHAS */
     .date-nav-bar {
       margin: 14px 16px 0 16px;
       background: white;
@@ -241,20 +241,21 @@
     .badge-purple { background: var(--purple-light); color: var(--purple); }
     .badge-green { background: var(--emerald-light); color: var(--emerald); }
 
+    /* STOCK GRID CON 5 COLUMNAS: OLLA, VENDIDAS, DESECHADAS, QUEDAN, BOTON */
     .stock-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 6px;
       margin-top: 10px;
       background: var(--slate-50);
-      padding: 10px;
+      padding: 10px 8px;
       border-radius: var(--radius-md);
       text-align: center;
       border: 1px dashed var(--slate-300);
     }
 
     .stock-item-val {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--slate-900);
     }
@@ -497,7 +498,6 @@
       padding: 8px;
     }
 
-    /* TARJETAS DUALES WILLIANS Y DELIA EN EL REPORTE */
     .reporte-resumen-doble {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -646,21 +646,25 @@
     <!-- SUB-PESTAÑA 1: ANOTAR -->
     <div id="tab-caldo-anotar" class="tab-content active">
       
-      <!-- 1. CONTROL DE PRESAS -->
+      <!-- 1. CONTROL DE PRESAS (CON OPCIÓN DE DESECHAR PRESAS) -->
       <div class="card">
         <div class="card-header">
           <div class="card-title">🍗 Control de Presas (Olla)</div>
           <span class="card-badge badge-orange" id="badge-stock-estado">Stock Activo</span>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="form-group">
-            <label class="form-label">Sobraron de ayer:</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+          <div class="form-group" style="margin-bottom: 6px;">
+            <label class="form-label" style="font-size: 11px;">Sobraron ayer:</label>
             <input type="number" id="presas-ayer" class="input-text" placeholder="0" min="0" oninput="calcularStockPresas()">
           </div>
-          <div class="form-group">
-            <label class="form-label">Compradas hoy:</label>
+          <div class="form-group" style="margin-bottom: 6px;">
+            <label class="form-label" style="font-size: 11px;">Compradas hoy:</label>
             <input type="number" id="presas-hoy" class="input-text" placeholder="0" min="0" oninput="calcularStockPresas()">
+          </div>
+          <div class="form-group" style="margin-bottom: 6px;">
+            <label class="form-label" style="font-size: 11px; color:#dc2626;">🗑️ Desechadas:</label>
+            <input type="number" id="presas-desecho" class="input-text" placeholder="0" min="0" style="border-color:#fca5a5;" oninput="calcularStockPresas()">
           </div>
         </div>
 
@@ -671,17 +675,22 @@
           </div>
           <div>
             <div class="stock-item-val text-green" id="stock-vendidas">0</div>
-            <div class="stock-item-lbl">Caldos Vendidos</div>
+            <div class="stock-item-lbl">Vendidas</div>
+          </div>
+          <div>
+            <div class="stock-item-val text-red" id="stock-desechadas-val">0</div>
+            <div class="stock-item-lbl">Desechadas</div>
           </div>
           <div>
             <div class="stock-item-val text-purple" id="stock-quedan">0</div>
-            <div class="stock-item-lbl">Quedan p/ Mañana</div>
+            <div class="stock-item-lbl">Quedan Mañ.</div>
           </div>
-          <div>
-            <button onclick="guardarStockPresas()" style="width:100%; height:100%; border:none; background:var(--primary); color:white; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">
-              Fijar Stock
-            </button>
-          </div>
+        </div>
+
+        <div style="margin-top: 8px;">
+          <button onclick="guardarStockPresas()" style="width:100%; border:none; background:var(--primary); color:white; padding:8px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">
+            ✓ Fijar Stock y Presas Desechadas
+          </button>
         </div>
       </div>
 
@@ -881,10 +890,9 @@
 
     </div>
 
-    <!-- SUB-PESTAÑA 3: REPORTE TOTAL Y LIQUIDACIÓN ACUMULADA (WILLIANS + DELIA) -->
+    <!-- SUB-PESTAÑA 3: REPORTE TOTAL Y LIQUIDACIÓN ACUMULADA -->
     <div id="tab-caldo-reporte" class="tab-content">
       
-      <!-- BANNER GENERAL ACUMULADO -->
       <div class="reporte-acumulado-banner">
         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
           <div>
@@ -913,10 +921,8 @@
         </div>
       </div>
 
-      <!-- TARJETAS DE LIQUIDACIÓN: WILLIANS Y DELIA -->
+      <!-- RESUMEN WILLIANS Y DELIA -->
       <div class="reporte-resumen-doble">
-        
-        <!-- CUENTA WILLIANS -->
         <div class="card-cierre-acumulado" style="background:#f0fdf4; border-left:4px solid #059669;">
           <div style="font-size:12px; font-weight:800; color:#065f46; display:flex; align-items:center; gap:4px;">
             👦 Willians (Socio 50%)
@@ -931,7 +937,6 @@
           </div>
         </div>
 
-        <!-- CUENTA DELIA -->
         <div class="card-cierre-acumulado" style="background:#faf5ff; border-left:4px solid #7c3aed;">
           <div style="font-size:12px; font-weight:800; color:#5b21b6; display:flex; align-items:center; gap:4px;">
             👩 Delia (Tardes 1pm+)
@@ -945,7 +950,6 @@
             <div style="font-size:18px; font-weight:900; color:#7c3aed;" id="rep-acum-saldo-delia">S/ 0.00</div>
           </div>
         </div>
-
       </div>
 
       <div class="card-header" style="margin-bottom:10px; border:none;">
@@ -953,11 +957,7 @@
         <span class="card-badge badge-orange" id="rep-total-dias">0 días con datos</span>
       </div>
 
-      <!-- LISTA DE DÍAS DETALLADOS -->
-      <div id="contenedor-reporte-dias">
-        <!-- Renderizado dinámico -->
-      </div>
-
+      <div id="contenedor-reporte-dias"></div>
     </div>
 
     <!-- SUB-PESTAÑA 4: MOVIMIENTOS DEL DÍA -->
@@ -967,9 +967,7 @@
           <div class="card-title">📜 Movimientos del Día</div>
           <button onclick="limpiarMovimientosFecha()" style="border:none; background:transparent; color:#dc2626; font-size:11px; font-weight:700; cursor:pointer;">Borrar Día</button>
         </div>
-        <div id="lista-movimientos-caldo">
-          <!-- Movimientos dinámicos -->
-        </div>
+        <div id="lista-movimientos-caldo"></div>
       </div>
     </div>
 
@@ -1099,7 +1097,7 @@
     caldos: [],
     gastos: [],
     adelantos: [],
-    stockPresas: {},
+    stockPresas: {},  // { "YYYY-MM-DD": { ayer: 0, hoy: 0, desecho: 0 } }
     yadiraVentas: [],
     yadiraGastos: []
   };
@@ -1225,40 +1223,45 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // STOCK DE PRESAS
+  // CONTROL DE PRESAS (CON MERMA / DESECHO)
   function cargarStockPresasDelDia() {
-    const stock = appData.stockPresas[fechaActual] || { ayer: 0, hoy: 0 };
+    const stock = appData.stockPresas[fechaActual] || { ayer: 0, hoy: 0, desecho: 0 };
     document.getElementById("presas-ayer").value = stock.ayer || "";
     document.getElementById("presas-hoy").value = stock.hoy || "";
+    document.getElementById("presas-desecho").value = stock.desecho || "";
     calcularStockPresas();
   }
 
   function guardarStockPresas() {
     const ayer = parseInt(document.getElementById("presas-ayer").value) || 0;
     const hoy = parseInt(document.getElementById("presas-hoy").value) || 0;
-    appData.stockPresas[fechaActual] = { ayer, hoy };
+    const desecho = parseInt(document.getElementById("presas-desecho").value) || 0;
+    appData.stockPresas[fechaActual] = { ayer, hoy, desecho };
     guardarEnStorage();
-    alert("¡Stock de presas fijado para la fecha!");
+    alert("¡Stock de presas y desecho fijados correctamente para la fecha!");
   }
 
   function calcularStockPresas() {
     const ayer = parseInt(document.getElementById("presas-ayer").value) || 0;
     const hoy = parseInt(document.getElementById("presas-hoy").value) || 0;
+    const desecho = parseInt(document.getElementById("presas-desecho").value) || 0;
     const totalOlla = ayer + hoy;
 
     const vendidos = appData.caldos
       .filter(c => c.fecha === fechaActual)
       .reduce((sum, c) => sum + c.cantidad, 0);
 
-    const quedan = totalOlla - vendidos;
+    // Las que quedan para mañana descuentan tanto las vendidas como las desechadas
+    const quedan = totalOlla - vendidos - desecho;
 
     document.getElementById("stock-total-olla").innerText = totalOlla;
     document.getElementById("stock-vendidas").innerText = vendidos;
+    document.getElementById("stock-desechadas-val").innerText = desecho;
     document.getElementById("stock-quedan").innerText = quedan;
 
     const badge = document.getElementById("badge-stock-estado");
     if (quedan < 0) {
-      badge.innerText = "¡Faltan presas!";
+      badge.innerText = "¡Faltan presas en olla!";
       badge.style.background = "#fee2e2";
       badge.style.color = "#dc2626";
     } else {
@@ -1444,6 +1447,7 @@
     const vDia = appData.caldos.filter(c => c.fecha === f);
     const gDia = appData.gastos.filter(g => g.fecha === f);
     const aDia = appData.adelantos.filter(a => a.fecha === f && a.destinatario === "willians");
+    const stock = appData.stockPresas[f] || { ayer: 0, hoy: 0, desecho: 0 };
 
     const cantTotal = vDia.reduce((s, c) => s + c.cantidad, 0);
     const caldosWilder = vDia.filter(c => c.turno === 'wilder').reduce((s, c) => s + c.cantidad, 0);
@@ -1465,8 +1469,9 @@
     const saldoWilli = mitadBase - adelantosWilli;
 
     const saldoWilder = (mitadBase + comprasWilder) - ventaWilder;
-    // Dinero neto en poder de Delia ese día = lo que cobró de caldos menos lo que gastó de su bolsillo
     const saldoDelia = ventaDelia - comprasDelia;
+
+    const desechoPresas = stock.desecho || 0;
 
     return {
       fecha: f,
@@ -1486,7 +1491,8 @@
       saldoWilli,
       saldoWilder,
       saldoDelia,
-      hayMovimiento: (vDia.length > 0 || gDia.length > 0 || aDia.length > 0)
+      desechoPresas,
+      hayMovimiento: (vDia.length > 0 || gDia.length > 0 || aDia.length > 0 || desechoPresas > 0)
     };
   }
 
@@ -1531,7 +1537,7 @@
     document.getElementById("delia-neto-quedo").innerText = `S/ ${m.saldoDelia.toFixed(2)}`;
   }
 
-  // GENERADOR DEL REPORTE ACUMULADO DÍA A DÍA (WILLIANS + DELIA)
+  // GENERADOR DEL REPORTE ACUMULADO
   function generarReporteGeneralDias() {
     const contenedor = document.getElementById("contenedor-reporte-dias");
     contenedor.innerHTML = "";
@@ -1539,7 +1545,8 @@
     const todasLasFechas = new Set([
       ...appData.caldos.map(c => c.fecha),
       ...appData.gastos.map(g => g.fecha),
-      ...appData.adelantos.map(a => a.fecha)
+      ...appData.adelantos.map(a => a.fecha),
+      ...Object.keys(appData.stockPresas)
     ]);
 
     const fechasOrdenadas = Array.from(todasLasFechas).sort().reverse();
@@ -1599,6 +1606,7 @@
           <div>
             <b style="font-size:13px; color:var(--slate-850);">📅 ${f}</b>
             <span style="font-size:11px; color:var(--slate-500); margin-left:4px;">(${met.cantTotal} caldos: ${met.caldosWilder} Mañ. / ${met.caldosDelia} Tard.)</span>
+            ${met.desechoPresas > 0 ? `<span style="font-size:10px; background:#fee2e2; color:#dc2626; font-weight:700; padding:2px 6px; border-radius:9999px; margin-left:4px;">🗑️ ${met.desechoPresas} presas merma</span>` : ''}
           </div>
           <span style="font-size:12px; font-weight:800; color:${esGanancia ? 'var(--emerald)' : '#dc2626'};">
             ${esGanancia ? '+S/ ' + met.gananciaNeta.toFixed(2) : 'S/ ' + met.gananciaNeta.toFixed(2)}
@@ -1614,13 +1622,11 @@
           <b class="text-red">- S/ ${met.gastoTotal.toFixed(2)}</b>
         </div>
         
-        <!-- DETALLE WILLIANS DÍA -->
         <div style="background:#f0fdf4; padding:6px 8px; border-radius:6px; margin:4px 0; border:1px solid #dcfce7; display:flex; justify-content:space-between; font-size:11px;">
           <span>👦 Willians (50% S/ ${met.mitadBase.toFixed(2)} - Adel. S/ ${met.adelantosWilli.toFixed(2)}):</span>
           <b style="color:#059669;">Saldo: S/ ${met.saldoWilli.toFixed(2)}</b>
         </div>
 
-        <!-- DETALLE DELIA DÍA -->
         <div style="background:#faf5ff; padding:6px 8px; border-radius:6px; margin:4px 0; border:1px solid #f3e8ff; display:flex; justify-content:space-between; font-size:11px;">
           <span>👩 Delia (Cobró S/ ${met.ventaDelia.toFixed(2)} - Gastó S/ ${met.comprasDelia.toFixed(2)}):</span>
           <b style="color:#7c3aed;">En mano: S/ ${met.saldoDelia.toFixed(2)}</b>
@@ -1635,12 +1641,10 @@
     document.getElementById("rep-acum-ganancia").innerText = `S/ ${acumGanancia.toFixed(2)}`;
     document.getElementById("rep-acum-caldos-cant").innerText = `${acumCaldosCant} platos`;
 
-    // Totales Willians
     document.getElementById("rep-willi-ganancia-total").innerText = `S/ ${acumWilliGanancia.toFixed(2)}`;
     document.getElementById("rep-willi-adelantos-total").innerText = `- S/ ${acumWilliAdelantos.toFixed(2)}`;
     document.getElementById("rep-acum-saldo-willians").innerText = `S/ ${acumSaldoWillians.toFixed(2)}`;
 
-    // Totales Delia
     document.getElementById("rep-delia-caldos-total").innerText = `S/ ${acumDeliaCaldosMonto.toFixed(2)}`;
     document.getElementById("rep-delia-gastos-total").innerText = `- S/ ${acumDeliaGastosMonto.toFixed(2)}`;
     document.getElementById("rep-acum-saldo-delia").innerText = `S/ ${acumSaldoDelia.toFixed(2)}`;
@@ -1776,6 +1780,7 @@
     appData.caldos = appData.caldos.filter(c => c.fecha !== fechaActual);
     appData.gastos = appData.gastos.filter(g => g.fecha !== fechaActual);
     appData.adelantos = appData.adelantos.filter(a => a.fecha !== fechaActual);
+    delete appData.stockPresas[fechaActual];
     guardarEnStorage();
   }
 
