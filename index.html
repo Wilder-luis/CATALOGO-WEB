@@ -26,7 +26,7 @@
       --slate-900: #0f172a;
       --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
       --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
       --radius-md: 12px;
       --radius-lg: 16px;
       --radius-xl: 20px;
@@ -55,7 +55,6 @@
       position: relative;
     }
 
-    /* HEADER */
     .header {
       background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
       color: white;
@@ -98,7 +97,6 @@
       gap: 5px;
     }
 
-    /* SWITCHER CALDO / CAFETERÍA */
     .business-switcher {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -130,7 +128,6 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* FECHA BAR */
     .date-bar {
       margin: 14px 16px 0 16px;
       background: white;
@@ -169,7 +166,6 @@
       color: var(--slate-700);
     }
 
-    /* CONTENT TABS */
     .tab-content {
       display: none;
       padding: 14px 16px;
@@ -179,7 +175,6 @@
       display: block;
     }
 
-    /* CARDS */
     .card {
       background: white;
       border-radius: var(--radius-lg);
@@ -219,7 +214,6 @@
     .badge-purple { background: var(--purple-light); color: var(--purple); }
     .badge-green { background: var(--emerald-light); color: var(--emerald); }
 
-    /* STOCK DE PRESAS METRICS */
     .stock-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -246,7 +240,6 @@
       line-height: 1.1;
     }
 
-    /* FORMS & INPUTS */
     .form-group {
       margin-bottom: 12px;
     }
@@ -275,7 +268,6 @@
       border-color: var(--primary);
     }
 
-    /* COUNTER GRANDE */
     .counter-wrapper {
       display: flex;
       align-items: center;
@@ -319,7 +311,6 @@
       margin-top: 4px;
     }
 
-    /* QUICK PILLS */
     .pills-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -338,7 +329,6 @@
       cursor: pointer;
     }
 
-    /* SHIFT SELECTOR (Wilder vs Delia) */
     .shift-toggle {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -355,7 +345,7 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: 700;
-      color: var(--slate-750);
+      color: var(--slate-700);
       line-height: 1.2;
     }
 
@@ -371,7 +361,6 @@
       color: #6d28d9;
     }
 
-    /* BOTÓN PRIMARIO */
     .btn-submit {
       width: 100%;
       background: var(--primary);
@@ -390,15 +379,11 @@
     }
 
     .btn-submit:active {
-      background: var(--primary-dark);
       transform: scale(0.99);
     }
 
-    .btn-purple {
-      background: var(--purple);
-    }
+    .btn-purple { background: var(--purple); }
 
-    /* SCROLL HORIZONTAL DE INSUMOS */
     .scroll-ingredients {
       display: flex;
       gap: 8px;
@@ -429,13 +414,13 @@
       white-space: nowrap;
     }
 
-    .chip-item:active {
-      background: var(--primary-light);
-      border-color: var(--primary);
-      color: var(--primary-dark);
+    .chip-highlight {
+      background: #fef08a;
+      border-color: #eab308;
+      color: #854d0e;
+      font-weight: 700;
     }
 
-    /* PESTAÑA CUADRE 50/50 */
     .balance-box {
       border-radius: var(--radius-lg);
       padding: 14px;
@@ -466,15 +451,11 @@
       margin-top: 2px;
     }
 
-    /* TARJETAS DE LIQUIDACIÓN */
-    .split-card {
-      border-left: 5px solid;
-    }
+    .split-card { border-left: 5px solid; }
     .split-willi { border-color: #059669; background: #f0fdf4; }
     .split-wilder { border-color: #0284c7; background: #f0f9ff; }
     .split-delia { border-color: #7c3aed; background: #faf5ff; }
 
-    /* FOOTER NAV */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -505,15 +486,9 @@
       flex: 1;
     }
 
-    .nav-btn.active {
-      color: var(--primary);
-    }
+    .nav-btn.active { color: var(--primary); }
+    .nav-btn-icon { font-size: 19px; }
 
-    .nav-btn-icon {
-      font-size: 19px;
-    }
-
-    /* HISTORIAL LIST */
     .hist-item {
       display: flex;
       justify-content: space-between;
@@ -523,24 +498,10 @@
       font-size: 13px;
     }
 
-    .hist-item:last-child {
-      border-bottom: none;
-    }
-
-    .hist-desc {
-      font-weight: 600;
-      color: var(--slate-800);
-    }
-
-    .hist-meta {
-      font-size: 11px;
-      color: var(--slate-400);
-    }
-
-    .hist-monto {
-      font-weight: 800;
-      font-size: 14px;
-    }
+    .hist-item:last-child { border-bottom: none; }
+    .hist-desc { font-weight: 600; color: var(--slate-800); }
+    .hist-meta { font-size: 11px; color: var(--slate-400); }
+    .hist-monto { font-weight: 800; font-size: 14px; }
 
     .text-green { color: var(--emerald); }
     .text-red { color: #dc2626; }
@@ -552,7 +513,7 @@
 
 <div class="app-container">
   
-  <!-- CABECERA PRINCIPAL -->
+  <!-- CABECERA -->
   <header class="header">
     <div class="header-top">
       <div>
@@ -575,7 +536,7 @@
     </div>
   </header>
 
-  <!-- BARRA DE FECHA DE TRABAJO -->
+  <!-- FECHA -->
   <div class="date-bar">
     <div class="date-bar-left">
       <span style="font-size: 16px;">📅</span>
@@ -585,14 +546,14 @@
   </div>
 
   <!-- ============================================== -->
-  <!-- SECCIÓN 1: NEGOCIO DE CALDO DE GALLINA (50/50) -->
+  <!-- SECCIÓN 1: CALDO DE GALLINA (50/50)           -->
   <!-- ============================================== -->
   <div id="seccion-caldo">
     
-    <!-- SUB-PESTAÑA 1: ANOTAR REGISTROS -->
+    <!-- SUB-PESTAÑA 1: ANOTAR -->
     <div id="tab-caldo-anotar" class="tab-content active">
       
-      <!-- 1. CONTROL DE PRESAS (OLLA) -->
+      <!-- 1. CONTROL DE PRESAS -->
       <div class="card">
         <div class="card-header">
           <div class="card-title">🍗 Control de Presas (Olla)</div>
@@ -668,15 +629,16 @@
         </button>
       </div>
 
-      <!-- 3. INSUMOS Y GASTOS OPERATIVOS -->
+      <!-- 3. INSUMOS Y GASTOS (CON OPCIÓN DE MONTO TOTAL GLOBAL) -->
       <div class="card">
         <div class="card-header">
           <div class="card-title">🛒 Insumos y Gastos</div>
           <span class="card-badge badge-orange">Compras del caldo</span>
         </div>
 
-        <label class="form-label" style="margin-bottom: 2px;">Insumo frecuente (Desliza con el dedo 👉):</label>
+        <label class="form-label" style="margin-bottom: 2px;">Insumo frecuente o gasto directo (👉 Desliza):</label>
         <div class="scroll-ingredients">
+          <span class="chip-item chip-highlight" onclick="cargarInsumo('Gasto total compras del día (Sin detallar)', 'wilder')">⚡ MONTO TOTAL GLOBAL (Wilder)</span>
           <span class="chip-item" onclick="cargarInsumo('Presas de gallina')">🍗 Presas gallina</span>
           <span class="chip-item" onclick="cargarInsumo('Papa x kilo')">🥔 Papa x kilo</span>
           <span class="chip-item" onclick="cargarInsumo('Huevos gallina')">🥚 Huevos gallina</span>
@@ -698,8 +660,8 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Descripción del insumo:</label>
-          <input type="text" id="gasto-concepto" class="input-text" placeholder="Ej. 1 plancha huevos, 10kg papa">
+          <label class="form-label">Descripción del gasto o insumo:</label>
+          <input type="text" id="gasto-concepto" class="input-text" placeholder="Ej. Gasto global compras del día, o 10kg papa">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
@@ -722,26 +684,32 @@
         </button>
       </div>
 
-      <!-- 4. ADELANTO A WILLIANS -->
+      <!-- 4. ADELANTO A WILLIANS (PERMITE 0.00 O REGISTRAR DÍA SIN ADELANTO) -->
       <div class="card">
         <div class="card-header">
           <div class="card-title">🤝 Adelanto a Willians</div>
           <span class="card-badge badge-green">Descuento de su 50%</span>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px;">
+        <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 8px;">
           <div class="form-group">
-            <label class="form-label">Motivo (ej. cuenta personal):</label>
-            <input type="text" id="adelanto-motivo" class="input-text" placeholder="Para sus cuentas">
+            <label class="form-label">Motivo:</label>
+            <input type="text" id="adelanto-motivo" class="input-text" placeholder="Ej. Cuenta personal, o Sin adelanto">
           </div>
           <div class="form-group">
             <label class="form-label">Monto (S/):</label>
-            <input type="number" step="0.5" id="adelanto-monto" class="input-text" placeholder="0.00">
+            <input type="number" step="0.5" id="adelanto-monto" class="input-text" placeholder="0.00" value="0.00">
           </div>
         </div>
 
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <button type="button" class="pill-btn" onclick="fijarAdelantoCero()" style="flex: 1; font-size: 11px; background: #f8fafc; border: 1px solid var(--slate-300);">
+            ✓ Marcar S/ 0.00 (Hoy no pidió)
+          </button>
+        </div>
+
         <button class="btn-submit" onclick="registrarAdelantoWilli()" style="background: var(--emerald);">
-          ✓ Registrar Entrega a Willians
+          ✓ Guardar Registro de Willians
         </button>
       </div>
 
@@ -751,7 +719,7 @@
     <div id="tab-caldo-cuadre" class="tab-content">
       
       <div class="balance-box balance-main">
-        <div style="font-size:12px; font-weight:700; opacity:0.8; text-transform:uppercase;">Balance General del Día</div>
+        <div style="font-size:12px; font-weight:700; opacity:0.8; text-transform:uppercase;">Balance General de la Fecha</div>
         <div style="font-size:30px; font-weight:900; margin-top:4px;" id="cuadre-ganancia-neta">S/ 0.00</div>
         <div style="font-size:12px; opacity:0.85;">Ganancia Neta Real a Repartir</div>
 
@@ -762,7 +730,7 @@
             <div style="font-size:10px; opacity:0.7;" id="cuadre-caldos-unidades">0 platos</div>
           </div>
           <div class="balance-subcard">
-            <div style="font-size:11px; opacity:0.75;">Total Insumos Gastados</div>
+            <div style="font-size:11px; opacity:0.75;">Total Insumos / Gastos</div>
             <div class="balance-val text-red" id="cuadre-costo-total">S/ 0.00</div>
             <div style="font-size:10px; opacity:0.7;" id="cuadre-insumos-count">0 compras</div>
           </div>
@@ -793,8 +761,8 @@
         </div>
         <div style="margin-top:8px; font-size:13px; color:var(--slate-600); line-height:1.5;">
           • Tu 50% de ganancia neta: <b id="wilder-50-base">S/ 0.00</b><br>
-          • Insumos pagados de tu bolsillo a recuperar: <b class="text-green" id="wilder-reembolso-compras">+ S/ 0.00</b><br>
-          • Dinero de caldos mañana en tu mano (Yape/Efe): <b id="wilder-caldos-cobrados">S/ 0.00</b>
+          • Insumos/Gastos de tu bolsillo a recuperar: <b class="text-green" id="wilder-reembolso-compras">+ S/ 0.00</b><br>
+          • Dinero de caldos mañana cobrado por ti: <b id="wilder-caldos-cobrados">S/ 0.00</b>
         </div>
         <div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--slate-300); display:flex; justify-content:space-between; align-items:center;">
           <span style="font-size:13px; font-weight:800; color:var(--slate-800);">Tu Posición Neta de Caja:</span>
@@ -828,22 +796,19 @@
           <button onclick="limpiarMovimientosFecha()" style="border:none; background:transparent; color:#dc2626; font-size:11px; font-weight:700; cursor:pointer;">Borrar Día</button>
         </div>
         <div id="lista-movimientos-caldo">
-          <!-- Se llena por JavaScript -->
+          <!-- Movimientos dinámicos -->
         </div>
       </div>
     </div>
 
   </div>
 
-
   <!-- ============================================== -->
-  <!-- SECCIÓN 2: CAFETERÍA DE YADIRA (SEPARADA)      -->
+  <!-- SECCIÓN 2: CAFETERÍA DE YADIRA                 -->
   <!-- ============================================== -->
   <div id="seccion-yadira" style="display: none;">
-    
     <div class="tab-content active" style="padding-top:14px;">
       
-      <!-- RESUMEN CAJA YADIRA -->
       <div class="balance-box" style="background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); color:white;">
         <div style="font-size:12px; font-weight:700; opacity:0.8; text-transform:uppercase;">Caja Cafetería Yadira</div>
         <div style="font-size:30px; font-weight:900; margin-top:4px;" id="yadira-ganancia-neta">S/ 0.00</div>
@@ -855,13 +820,12 @@
             <div class="balance-val text-green" id="yadira-venta-total">S/ 0.00</div>
           </div>
           <div class="balance-subcard">
-            <div style="font-size:11px; opacity:0.75;">Gastos Fruta/Insumos</div>
+            <div style="font-size:11px; opacity:0.75;">Gastos Insumos</div>
             <div class="balance-val text-red" id="yadira-costo-total">S/ 0.00</div>
           </div>
         </div>
       </div>
 
-      <!-- BOTONES RÁPIDOS DE PRODUCTOS DE YADIRA -->
       <div class="card">
         <div class="card-header">
           <div class="card-title">🍹 Registrar Venta de Producto</div>
@@ -869,14 +833,14 @@
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;">
-          <button class="pill-btn" onclick="seleccionarProductoYadira('Jugo Surtido', 7.00)" style="font-size:11px;">🥤 Jugo Surtido (S/7)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Jugo Surtido', 7.00)" style="font-size:11px;">🥤 J. Surtido (S/7)</button>
           <button class="pill-btn" onclick="seleccionarProductoYadira('Jugo Especial', 9.00)" style="font-size:11px;">🥤 J. Especial (S/9)</button>
-          <button class="pill-btn" onclick="seleccionarProductoYadira('Tajada Keke', 3.50)" style="font-size:11px;">🍰 Keke Tajada (S/3.5)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Tajada Keke', 3.50)" style="font-size:11px;">🍰 Keke (S/3.5)</button>
           <button class="pill-btn" onclick="seleccionarProductoYadira('Waffle', 6.00)" style="font-size:11px;">🧇 Waffle (S/6)</button>
           <button class="pill-btn" onclick="seleccionarProductoYadira('Empanada', 4.00)" style="font-size:11px;">🥟 Empanada (S/4)</button>
           <button class="pill-btn" onclick="seleccionarProductoYadira('Café Pasado', 3.00)" style="font-size:11px;">☕ Café (S/3)</button>
           <button class="pill-btn" onclick="seleccionarProductoYadira('Frappé', 8.00)" style="font-size:11px;">🍧 Frappé (S/8)</button>
-          <button class="pill-btn" onclick="seleccionarProductoYadira('Yogurt Ensalada', 7.50)" style="font-size:11px;">🍓 Yogurt/Fruta (S/7.5)</button>
+          <button class="pill-btn" onclick="seleccionarProductoYadira('Yogurt Ensalada', 7.50)" style="font-size:11px;">🍓 Yogurt (S/7.5)</button>
           <button class="pill-btn" onclick="seleccionarProductoYadira('Venta Libre', 0)" style="font-size:11px;">✏️ Otro Precio</button>
         </div>
 
@@ -904,10 +868,9 @@
         </button>
       </div>
 
-      <!-- REGISTRAR COMPRA DE FRUTAS / INSUMOS YADIRA -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title">🍓 Gastos de Cafetería (Insumos)</div>
+          <div class="card-title">🍓 Gastos Cafetería (Insumos)</div>
           <span class="card-badge badge-purple">Frutas, leche, descartables</span>
         </div>
 
@@ -927,22 +890,17 @@
         </button>
       </div>
 
-      <!-- LISTA DE MOVIMIENTOS YADIRA -->
       <div class="card">
         <div class="card-header">
           <div class="card-title">📋 Ventas y Gastos de Yadira</div>
         </div>
-        <div id="lista-movimientos-yadira">
-          <!-- Llenado JS -->
-        </div>
+        <div id="lista-movimientos-yadira"></div>
       </div>
 
     </div>
-
   </div>
 
-
-  <!-- BARRA DE NAVEGACIÓN INFERIOR (Solo visible en Caldo) -->
+  <!-- NAVEGACIÓN INFERIOR -->
   <nav class="bottom-nav" id="bottom-bar-caldo">
     <button class="nav-btn active" id="nav-btn-anotar" onclick="navegarSubCaldo('anotar')">
       <span class="nav-btn-icon">✍️</span>
@@ -961,14 +919,13 @@
 </div>
 
 <script>
-  // ESTADO GLOBAL DE DATOS
   let appData = {
-    caldos: [],       // { id, fecha, turno, cantidad, precioUnit, total }
-    gastos: [],       // { id, fecha, concepto, monto, pagador }
-    adelantos: [],    // { id, fecha, motivo, monto, destinatario }
-    stockPresas: {},  // { "YYYY-MM-DD": { ayer: 0, hoy: 0 } }
-    yadiraVentas: [], // { id, fecha, producto, monto, medio }
-    yadiraGastos: []  // { id, fecha, concepto, monto }
+    caldos: [],
+    gastos: [],
+    adelantos: [],
+    stockPresas: {},
+    yadiraVentas: [],
+    yadiraGastos: []
   };
 
   let fechaActual = "";
@@ -976,7 +933,6 @@
   let cantCaldosInput = 1;
   const PRECIO_CALDO = 15.00;
 
-  // INICIALIZACIÓN
   window.addEventListener('DOMContentLoaded', () => {
     cargarDesdeStorage();
     ponerFechaHoy();
@@ -1014,7 +970,6 @@
     actualizarTodo();
   }
 
-  // CAMBIO ENTRE NEGOCIOS
   function cambiarNegocio(negocio) {
     const secCaldo = document.getElementById("seccion-caldo");
     const secYadira = document.getElementById("seccion-yadira");
@@ -1038,7 +993,6 @@
     actualizarTodo();
   }
 
-  // NAVEGACIÓN DENTRO DE CALDO
   function navegarSubCaldo(pestana) {
     document.getElementById("tab-caldo-anotar").classList.remove("active");
     document.getElementById("tab-caldo-cuadre").classList.remove("active");
@@ -1061,7 +1015,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // CONTROL DE PRESAS (GALLINA)
+  // CONTROL PRESAS
   function cargarStockPresasDelDia() {
     const stock = appData.stockPresas[fechaActual] || { ayer: 0, hoy: 0 };
     document.getElementById("presas-ayer").value = stock.ayer || "";
@@ -1074,7 +1028,7 @@
     const hoy = parseInt(document.getElementById("presas-hoy").value) || 0;
     appData.stockPresas[fechaActual] = { ayer, hoy };
     guardarEnStorage();
-    alert("¡Stock de presas fijado para la fecha seleccionada!");
+    alert("¡Stock de presas fijado para la fecha!");
   }
 
   function calcularStockPresas() {
@@ -1082,7 +1036,6 @@
     const hoy = parseInt(document.getElementById("presas-hoy").value) || 0;
     const totalOlla = ayer + hoy;
 
-    // Sumar caldos vendidos en la fecha
     const vendidos = appData.caldos
       .filter(c => c.fecha === fechaActual)
       .reduce((sum, c) => sum + c.cantidad, 0);
@@ -1095,18 +1048,18 @@
 
     const badge = document.getElementById("badge-stock-estado");
     if (quedan < 0) {
-      badge.innerText = "¡Faltan presas en olla!";
+      badge.innerText = "¡Faltan presas!";
       badge.style.background = "#fee2e2";
       badge.style.color = "#dc2626";
     } else {
-      badge.innerText = "Stock al día";
+      badge.innerText = "Stock Activo";
       badge.className = "card-badge badge-orange";
       badge.style.background = "";
       badge.style.color = "";
     }
   }
 
-  // VENTAS DE CALDO
+  // VENTAS CALDO
   function seleccionarTurno(turno) {
     turnoSeleccionado = turno;
     const btnW = document.getElementById("btn-turno-wilder");
@@ -1149,9 +1102,12 @@
     guardarEnStorage();
   }
 
-  // GASTOS E INSUMOS
-  function cargarInsumo(nombre) {
+  // GASTOS E INSUMOS (MEJORA: MONTO GLOBAL SIN DETALLAR)
+  function cargarInsumo(nombre, pagadorPredeterminado) {
     document.getElementById("gasto-concepto").value = nombre;
+    if (pagadorPredeterminado) {
+      document.getElementById("gasto-pagador").value = pagadorPredeterminado;
+    }
     document.getElementById("gasto-monto").focus();
   }
 
@@ -1165,7 +1121,7 @@
       return;
     }
     if (isNaN(monto) || monto <= 0) {
-      alert("Ingresa un costo válido en Soles.");
+      alert("Ingresa un monto válido en Soles.");
       return;
     }
 
@@ -1182,14 +1138,26 @@
     guardarEnStorage();
   }
 
-  // ADELANTO A WILLIANS
-  function registrarAdelantoWilli() {
-    const motivo = document.getElementById("adelanto-motivo").value.trim() || "Adelanto personal";
-    const monto = parseFloat(document.getElementById("adelanto-monto").value);
+  // ADELANTO WILLIANS (MEJORA: PERMITE 0.00)
+  function fijarAdelantoCero() {
+    document.getElementById("adelanto-motivo").value = "Sin adelanto (S/ 0.00)";
+    document.getElementById("adelanto-monto").value = "0.00";
+  }
 
-    if (isNaN(monto) || monto <= 0) {
-      alert("Ingresa el monto entregado a Willians.");
+  function registrarAdelantoWilli() {
+    let motivo = document.getElementById("adelanto-motivo").value.trim();
+    let montoVal = document.getElementById("adelanto-monto").value;
+    let monto = parseFloat(montoVal);
+
+    if (isNaN(monto) || monto < 0) {
+      alert("Ingresa un monto válido (puede ser 0.00 si hoy no hubo adelanto).");
       return;
+    }
+
+    if (monto === 0) {
+      motivo = motivo || "Sin adelanto en el día";
+    } else {
+      motivo = motivo || "Adelanto personal a Willians";
     }
 
     appData.adelantos.push({
@@ -1201,11 +1169,12 @@
     });
 
     document.getElementById("adelanto-motivo").value = "";
-    document.getElementById("adelanto-monto").value = "";
+    document.getElementById("adelanto-monto").value = "0.00";
     guardarEnStorage();
+    alert("¡Registro de Willians guardado!");
   }
 
-  // SECCIÓN CAFETERÍA YADIRA
+  // YADIRA
   function seleccionarProductoYadira(prod, precio) {
     document.getElementById("yadira-producto-nombre").value = prod;
     if (precio > 0) {
@@ -1260,7 +1229,7 @@
     guardarEnStorage();
   }
 
-  // CÁLCULOS GENERALES Y ACTUALIZACIÓN VISUAL
+  // ACTUALIZAR INTERFAZ
   function actualizarTodo() {
     calcularStockPresas();
     actualizarCuadreCaldo();
@@ -1269,52 +1238,38 @@
   }
 
   function actualizarCuadreCaldo() {
-    // Filtrar registros de la fecha activa
     const ventasDia = appData.caldos.filter(c => c.fecha === fechaActual);
     const gastosDia = appData.gastos.filter(g => g.fecha === fechaActual);
     const adelantosWilliDia = appData.adelantos.filter(a => a.fecha === fechaActual && a.destinatario === "willians");
 
-    // Totales de caldos
     const cantCaldosTotal = ventasDia.reduce((s, c) => s + c.cantidad, 0);
     const ventaTotalBruta = cantCaldosTotal * PRECIO_CALDO;
 
-    // Desglose de caldos por turno
     const caldosWilder = ventasDia.filter(c => c.turno === 'wilder').reduce((s, c) => s + c.cantidad, 0);
     const montoWilder = caldosWilder * PRECIO_CALDO;
 
     const caldosDelia = ventasDia.filter(c => c.turno === 'delia').reduce((s, c) => s + c.cantidad, 0);
     const montoDelia = caldosDelia * PRECIO_CALDO;
 
-    // Totales de gastos por pagador
     const comprasWilder = gastosDia.filter(g => g.pagador === 'wilder').reduce((s, g) => s + g.monto, 0);
     const comprasDelia = gastosDia.filter(g => g.pagador === 'delia').reduce((s, g) => s + g.monto, 0);
     const comprasCaja = gastosDia.filter(g => g.pagador === 'caja').reduce((s, g) => s + g.monto, 0);
     const gastoTotalInsumos = comprasWilder + comprasDelia + comprasCaja;
 
-    // Ganancia Neta Real del Negocio
     const gananciaNeta = Math.max(0, ventaTotalBruta - gastoTotalInsumos);
-
-    // 50% Base
     const mitadBase = gananciaNeta / 2;
 
-    // Descuentos Willians
     const adelantosWilliTotal = adelantosWilliDia.reduce((s, a) => s + a.monto, 0);
     const saldoFinalWilli = mitadBase - adelantosWilliTotal;
 
-    // Retorno Wilder (50% ganancia + reembolso compras de su bolsillo - lo que cobró directamente)
-    // Efectivo en mano que Wilder tiene de las mañanas = montoWilder
-    // Dinero que le corresponde a Wilder = mitadBase + comprasWilder
     const posicionNetoWilder = (mitadBase + comprasWilder) - montoWilder;
-
-    // Tarjeta Delia
     const efectivoQuedoDelia = montoDelia - comprasDelia;
 
-    // Pintar en interfaz
     document.getElementById("cuadre-ganancia-neta").innerText = `S/ ${gananciaNeta.toFixed(2)}`;
     document.getElementById("cuadre-venta-total").innerText = `S/ ${ventaTotalBruta.toFixed(2)}`;
     document.getElementById("cuadre-caldos-unidades").innerText = `${cantCaldosTotal} platos vendidos`;
     document.getElementById("cuadre-costo-total").innerText = `S/ ${gastoTotalInsumos.toFixed(2)}`;
-    document.getElementById("cuadre-insumos-count").innerText = `${gastosDia.length} compras`;
+    document.getElementById("cuadre-insumos-count").innerText = `${gastosDia.length} gastos`;
 
     document.getElementById("willi-50-base").innerText = `S/ ${mitadBase.toFixed(2)}`;
     document.getElementById("willi-adelantos-total").innerText = `- S/ ${adelantosWilliTotal.toFixed(2)}`;
@@ -1361,7 +1316,7 @@
       cont.innerHTML += `
         <div class="hist-item">
           <div>
-            <div class="hist-desc">🛒 Insumo: ${g.concepto}</div>
+            <div class="hist-desc">🛒 ${g.concepto}</div>
             <div class="hist-meta">Pagó: ${pagTxt}</div>
           </div>
           <div class="hist-monto text-red">- S/ ${g.monto.toFixed(2)}</div>
@@ -1373,10 +1328,10 @@
       cont.innerHTML += `
         <div class="hist-item">
           <div>
-            <div class="hist-desc">🤝 Adelanto a Willians: ${a.motivo}</div>
-            <div class="hist-meta">Descuento de ganancia</div>
+            <div class="hist-desc">🤝 Willians: ${a.motivo}</div>
+            <div class="hist-meta">Adelanto registrado</div>
           </div>
-          <div class="hist-monto text-blue">- S/ ${a.monto.toFixed(2)}</div>
+          <div class="hist-monto text-blue">${a.monto > 0 ? '- S/ ' + a.monto.toFixed(2) : 'S/ 0.00'}</div>
         </div>
       `;
     });
@@ -1428,33 +1383,32 @@
   }
 
   function limpiarMovimientosFecha() {
-    if (!confirm(`¿Estás seguro de borrar todos los registros del día ${fechaActual}?`)) return;
+    if (!confirm(`¿Borrar los registros de la fecha ${fechaActual}?`)) return;
     appData.caldos = appData.caldos.filter(c => c.fecha !== fechaActual);
     appData.gastos = appData.gastos.filter(g => g.fecha !== fechaActual);
     appData.adelantos = appData.adelantos.filter(a => a.fecha !== fechaActual);
     guardarEnStorage();
   }
 
-  // GESTIÓN DE RESPALDO (JSON)
   function abrirRespaldo() {
-    const accion = prompt("Escribe '1' para DESCARGAR respaldo de tus cuentas, o '2' para RESTAURAR una copia previa:");
+    const accion = prompt("Escribe '1' para DESCARGAR copia de seguridad, o '2' para RESTAURAR datos:");
     if (accion === '1') {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `Cuentas_Wilder_${fechaActual}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
+      const a = document.createElement('a');
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", `Cuentas_Wilder_${fechaActual}.json`);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     } else if (accion === '2') {
-      const jsonStr = prompt("Pega aquí el contenido de tu respaldo JSON:");
+      const jsonStr = prompt("Pega el texto de tu copia de seguridad:");
       if (jsonStr) {
         try {
           appData = JSON.parse(jsonStr);
           guardarEnStorage();
           alert("¡Cuentas restauradas correctamente!");
         } catch (e) {
-          alert("Error: El texto ingresado no es un respaldo válido.");
+          alert("Error: Texto de respaldo no válido.");
         }
       }
     }
