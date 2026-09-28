@@ -48,7 +48,7 @@
     }
 
     .app-container {
-      max-width: 520px;
+      max-width: 540px;
       margin: 0 auto;
       background: #f8fafc;
       min-height: 100vh;
@@ -58,7 +58,7 @@
     .header {
       background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
       color: white;
-      padding: 18px 18px 22px 18px;
+      padding: 16px 16px 20px 16px;
       border-bottom-left-radius: var(--radius-xl);
       border-bottom-right-radius: var(--radius-xl);
       box-shadow: var(--shadow-md);
@@ -68,7 +68,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .brand-title {
@@ -87,14 +87,14 @@
       background: rgba(255, 255, 255, 0.2);
       border: none;
       color: white;
-      padding: 7px 12px;
+      padding: 6px 11px;
       border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
     }
 
     .business-switcher {
@@ -128,42 +128,74 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .date-bar {
+    /* BARRA DE NAVEGACIÓN DE FECHAS CON FLECHAS ADELANTAR / RETROCEDER */
+    .date-nav-bar {
       margin: 14px 16px 0 16px;
       background: white;
-      padding: 10px 14px;
+      padding: 8px 10px;
       border-radius: var(--radius-md);
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--slate-200);
+      gap: 6px;
     }
 
-    .date-bar-left {
+    .btn-date-nav {
+      background: var(--slate-100);
+      border: 1px solid var(--slate-300);
+      color: var(--slate-800);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-date-nav:active {
+      background: var(--slate-300);
+    }
+
+    .date-display-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
     }
 
     .date-input {
       border: none;
-      font-weight: 700;
-      font-size: 14px;
-      color: var(--slate-800);
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--slate-850);
       outline: none;
       background: transparent;
+      text-align: center;
+      cursor: pointer;
     }
 
-    .btn-today {
-      background: var(--slate-100);
-      border: 1px solid var(--slate-300);
-      padding: 4px 10px;
-      border-radius: 6px;
+    .date-label-sub {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: capitalize;
+    }
+
+    .btn-today-pill {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border: 1px solid #fed7aa;
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
       cursor: pointer;
-      color: var(--slate-700);
     }
 
     .tab-content {
@@ -378,10 +410,7 @@
       gap: 8px;
     }
 
-    .btn-submit:active {
-      transform: scale(0.99);
-    }
-
+    .btn-submit:active { transform: scale(0.99); }
     .btn-purple { background: var(--purple); }
 
     .scroll-ingredients {
@@ -393,9 +422,7 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    .scroll-ingredients::-webkit-scrollbar {
-      height: 5px;
-    }
+    .scroll-ingredients::-webkit-scrollbar { height: 5px; }
     .scroll-ingredients::-webkit-scrollbar-thumb {
       background: var(--slate-300);
       border-radius: 4px;
@@ -418,7 +445,7 @@
       background: #fef08a;
       border-color: #eab308;
       color: #854d0e;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .balance-box {
@@ -456,19 +483,68 @@
     .split-wilder { border-color: #0284c7; background: #f0f9ff; }
     .split-delia { border-color: #7c3aed; background: #faf5ff; }
 
+    /* ESTILOS DEL REPORTE ACUMULADO DÍA A DÍA */
+    .reporte-acumulado-banner {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .reporte-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .reporte-kpi-card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 8px;
+    }
+
+    .reporte-dia-card {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .reporte-dia-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .reporte-fila {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 4px;
+      color: var(--slate-600);
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      max-width: 520px;
+      max-width: 540px;
       margin: 0 auto;
       background: white;
       border-top: 1px solid var(--slate-200);
       display: flex;
       justify-content: space-around;
-      padding: 8px 6px;
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.04);
+      padding: 8px 4px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
       z-index: 100;
     }
 
@@ -482,12 +558,12 @@
       font-weight: 700;
       color: var(--slate-400);
       cursor: pointer;
-      gap: 3px;
+      gap: 2px;
       flex: 1;
     }
 
     .nav-btn.active { color: var(--primary); }
-    .nav-btn-icon { font-size: 19px; }
+    .nav-btn-icon { font-size: 18px; }
 
     .hist-item {
       display: flex;
@@ -536,13 +612,24 @@
     </div>
   </header>
 
-  <!-- FECHA -->
-  <div class="date-bar">
-    <div class="date-bar-left">
-      <span style="font-size: 16px;">📅</span>
+  <!-- BARRA DE NAVEGACIÓN DÍA A DÍA CON FLECHAS -->
+  <div class="date-nav-bar">
+    <button class="btn-date-nav" onclick="cambiarDiaRelativo(-1)" title="Día Anterior">
+      ◀
+    </button>
+    
+    <div class="date-display-center">
       <input type="date" id="fecha-operacion" class="date-input" onchange="alCambiarFecha()">
+      <span class="date-label-sub" id="fecha-formateada-texto">Hoy</span>
     </div>
-    <button class="btn-today" onclick="ponerFechaHoy()">Hoy</button>
+
+    <button class="btn-date-nav" onclick="cambiarDiaRelativo(1)" title="Día Siguiente">
+      ▶
+    </button>
+
+    <button class="btn-today-pill" onclick="ponerFechaHoy()">
+      Hoy
+    </button>
   </div>
 
   <!-- ============================================== -->
@@ -629,7 +716,7 @@
         </button>
       </div>
 
-      <!-- 3. INSUMOS Y GASTOS (CON OPCIÓN DE MONTO TOTAL GLOBAL) -->
+      <!-- 3. INSUMOS Y GASTOS OPERATIVOS -->
       <div class="card">
         <div class="card-header">
           <div class="card-title">🛒 Insumos y Gastos</div>
@@ -684,7 +771,7 @@
         </button>
       </div>
 
-      <!-- 4. ADELANTO A WILLIANS (PERMITE 0.00 O REGISTRAR DÍA SIN ADELANTO) -->
+      <!-- 4. ADELANTO A WILLIANS -->
       <div class="card">
         <div class="card-header">
           <div class="card-title">🤝 Adelanto a Willians</div>
@@ -715,13 +802,13 @@
 
     </div>
 
-    <!-- SUB-PESTAÑA 2: CUADRE 50/50 -->
+    <!-- SUB-PESTAÑA 2: CUADRE 50/50 DEL DÍA SELECCIONADO -->
     <div id="tab-caldo-cuadre" class="tab-content">
       
       <div class="balance-box balance-main">
-        <div style="font-size:12px; font-weight:700; opacity:0.8; text-transform:uppercase;">Balance General de la Fecha</div>
+        <div style="font-size:12px; font-weight:700; opacity:0.8; text-transform:uppercase;">Balance del Día Seleccionado</div>
         <div style="font-size:30px; font-weight:900; margin-top:4px;" id="cuadre-ganancia-neta">S/ 0.00</div>
-        <div style="font-size:12px; opacity:0.85;">Ganancia Neta Real a Repartir</div>
+        <div style="font-size:12px; opacity:0.85;" id="cuadre-estado-resultado">Ganancia Neta Real a Repartir</div>
 
         <div class="balance-grid">
           <div class="balance-subcard">
@@ -732,7 +819,7 @@
           <div class="balance-subcard">
             <div style="font-size:11px; opacity:0.75;">Total Insumos / Gastos</div>
             <div class="balance-val text-red" id="cuadre-costo-total">S/ 0.00</div>
-            <div style="font-size:10px; opacity:0.7;" id="cuadre-insumos-count">0 compras</div>
+            <div style="font-size:10px; opacity:0.7;" id="cuadre-insumos-count">0 gastos</div>
           </div>
         </div>
       </div>
@@ -748,7 +835,7 @@
           Menos adelantos de dinero recibidos: <b class="text-red" id="willi-adelantos-total">- S/ 0.00</b>
         </div>
         <div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--slate-300); display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:13px; font-weight:800; color:var(--slate-800);">Saldo Líquido a Pagarle:</span>
+          <span style="font-size:13px; font-weight:800; color:var(--slate-800);">Saldo del Día a Pagarle:</span>
           <span style="font-size:20px; font-weight:900; color:var(--emerald);" id="willi-saldo-final">S/ 0.00</span>
         </div>
       </div>
@@ -762,7 +849,7 @@
         <div style="margin-top:8px; font-size:13px; color:var(--slate-600); line-height:1.5;">
           • Tu 50% de ganancia neta: <b id="wilder-50-base">S/ 0.00</b><br>
           • Insumos/Gastos de tu bolsillo a recuperar: <b class="text-green" id="wilder-reembolso-compras">+ S/ 0.00</b><br>
-          • Dinero de caldos mañana cobrado por ti: <b id="wilder-caldos-cobrados">S/ 0.00</b>
+          • Dinero de caldos cobrado por ti: <b id="wilder-caldos-cobrados">S/ 0.00</b>
         </div>
         <div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--slate-300); display:flex; justify-content:space-between; align-items:center;">
           <span style="font-size:13px; font-weight:800; color:var(--slate-800);">Tu Posición Neta de Caja:</span>
@@ -788,11 +875,55 @@
 
     </div>
 
-    <!-- SUB-PESTAÑA 3: HISTORIAL -->
+    <!-- SUB-PESTAÑA 3: REPORTE GENERAL DÍA A DÍA (NUEVO) -->
+    <div id="tab-caldo-reporte" class="tab-content">
+      
+      <!-- BANNER DE LIQUIDACIÓN TOTAL ACUMULADA CON WILLIANS -->
+      <div class="reporte-acumulado-banner">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <div style="font-size:11px; font-weight:700; opacity:0.8; text-transform:uppercase;">Liquidación Acumulada con Willians</div>
+            <div style="font-size:26px; font-weight:900; margin-top:2px; color:#4ade80;" id="rep-acum-saldo-willians">S/ 0.00</div>
+            <div style="font-size:11px; opacity:0.85;">Total Neto a entregarle a Willians hasta hoy</div>
+          </div>
+          <button onclick="copiarReporteTexto()" style="background:rgba(255,255,255,0.2); border:none; color:white; padding:7px 11px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">
+            📋 Copiar Resumen
+          </button>
+        </div>
+
+        <div class="reporte-kpi-grid">
+          <div class="reporte-kpi-card">
+            <div style="font-size:10px; opacity:0.75;">Venta Total</div>
+            <div style="font-size:14px; font-weight:800;" id="rep-acum-ventas">S/ 0.00</div>
+          </div>
+          <div class="reporte-kpi-card">
+            <div style="font-size:10px; opacity:0.75;">Total Insumos</div>
+            <div style="font-size:14px; font-weight:800; color:#f87171;" id="rep-acum-gastos">S/ 0.00</div>
+          </div>
+          <div class="reporte-kpi-card">
+            <div style="font-size:10px; opacity:0.75;">Ganancia Neta</div>
+            <div style="font-size:14px; font-weight:800; color:#38bdf8;" id="rep-acum-ganancia">S/ 0.00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-header" style="margin-bottom:10px; border:none;">
+        <div class="card-title">📅 Historial Día por Día</div>
+        <span class="card-badge badge-orange" id="rep-total-dias">0 días con datos</span>
+      </div>
+
+      <!-- LISTA DE DÍAS DETALLADOS -->
+      <div id="contenedor-reporte-dias">
+        <!-- Renderizado dinámico -->
+      </div>
+
+    </div>
+
+    <!-- SUB-PESTAÑA 4: HISTORIAL DE MOVIMIENTOS DEL DÍA -->
     <div id="tab-caldo-historial" class="tab-content">
       <div class="card">
         <div class="card-header">
-          <div class="card-title">📜 Movimientos de la Fecha</div>
+          <div class="card-title">📜 Movimientos del Día</div>
           <button onclick="limpiarMovimientosFecha()" style="border:none; background:transparent; color:#dc2626; font-size:11px; font-weight:700; cursor:pointer;">Borrar Día</button>
         </div>
         <div id="lista-movimientos-caldo">
@@ -900,7 +1031,7 @@
     </div>
   </div>
 
-  <!-- NAVEGACIÓN INFERIOR -->
+  <!-- NAVEGACIÓN INFERIOR (4 PESTAÑAS) -->
   <nav class="bottom-nav" id="bottom-bar-caldo">
     <button class="nav-btn active" id="nav-btn-anotar" onclick="navegarSubCaldo('anotar')">
       <span class="nav-btn-icon">✍️</span>
@@ -908,11 +1039,15 @@
     </button>
     <button class="nav-btn" id="nav-btn-cuadre" onclick="navegarSubCaldo('cuadre')">
       <span class="nav-btn-icon">⚖️</span>
-      <span>Cuadre 50/50</span>
+      <span>Cuadre Día</span>
+    </button>
+    <button class="nav-btn" id="nav-btn-reporte" onclick="navegarSubCaldo('reporte')">
+      <span class="nav-btn-icon">📊</span>
+      <span>Reporte Total</span>
     </button>
     <button class="nav-btn" id="nav-btn-historial" onclick="navegarSubCaldo('historial')">
       <span class="nav-btn-icon">📑</span>
-      <span>Historial</span>
+      <span>Movimientos</span>
     </button>
   </nav>
 
@@ -954,22 +1089,53 @@
     actualizarTodo();
   }
 
+  // GESTIÓN DE FECHAS Y FLECHAS ◀ ▶
   function ponerFechaHoy() {
     const hoy = new Date();
-    const yyyy = hoy.getFullYear();
-    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
-    const dd = String(hoy.getDate()).padStart(2, '0');
-    fechaActual = `${yyyy}-${mm}-${dd}`;
+    fechaActual = formatearDateAString(hoy);
+    document.getElementById("fecha-operacion").value = fechaActual;
+    alCambiarFecha();
+  }
+
+  function formatearDateAString(dateObj) {
+    const yyyy = dateObj.getFullYear();
+    const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const dd = String(dateObj.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  function cambiarDiaRelativo(dias) {
+    const partes = fechaActual.split("-");
+    const d = new Date(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]));
+    d.setDate(d.getDate() + dias);
+    fechaActual = formatearDateAString(d);
     document.getElementById("fecha-operacion").value = fechaActual;
     alCambiarFecha();
   }
 
   function alCambiarFecha() {
     fechaActual = document.getElementById("fecha-operacion").value;
+    actualizarEtiquetaFechaTexto();
     cargarStockPresasDelDia();
     actualizarTodo();
   }
 
+  function actualizarEtiquetaFechaTexto() {
+    if (!fechaActual) return;
+    const partes = fechaActual.split("-");
+    const fechaObj = new Date(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]));
+    const hoyStr = formatearDateAString(new Date());
+
+    const opciones = { weekday: 'short', day: 'numeric', month: 'short' };
+    let texto = fechaObj.toLocaleDateString('es-ES', opciones);
+
+    if (fechaActual === hoyStr) {
+      texto = `Hoy (${texto})`;
+    }
+    document.getElementById("fecha-formateada-texto").innerText = texto;
+  }
+
+  // CAMBIO ENTRE NEGOCIOS
   function cambiarNegocio(negocio) {
     const secCaldo = document.getElementById("seccion-caldo");
     const secYadira = document.getElementById("seccion-yadira");
@@ -993,14 +1159,13 @@
     actualizarTodo();
   }
 
+  // NAVEGACIÓN EN CALDO
   function navegarSubCaldo(pestana) {
-    document.getElementById("tab-caldo-anotar").classList.remove("active");
-    document.getElementById("tab-caldo-cuadre").classList.remove("active");
-    document.getElementById("tab-caldo-historial").classList.remove("active");
+    const tabs = ["tab-caldo-anotar", "tab-caldo-cuadre", "tab-caldo-reporte", "tab-caldo-historial"];
+    const btns = ["nav-btn-anotar", "nav-btn-cuadre", "nav-btn-reporte", "nav-btn-historial"];
 
-    document.getElementById("nav-btn-anotar").classList.remove("active");
-    document.getElementById("nav-btn-cuadre").classList.remove("active");
-    document.getElementById("nav-btn-historial").classList.remove("active");
+    tabs.forEach(t => document.getElementById(t).classList.remove("active"));
+    btns.forEach(b => document.getElementById(b).classList.remove("active"));
 
     if (pestana === 'anotar') {
       document.getElementById("tab-caldo-anotar").classList.add("active");
@@ -1008,6 +1173,10 @@
     } else if (pestana === 'cuadre') {
       document.getElementById("tab-caldo-cuadre").classList.add("active");
       document.getElementById("nav-btn-cuadre").classList.add("active");
+    } else if (pestana === 'reporte') {
+      document.getElementById("tab-caldo-reporte").classList.add("active");
+      document.getElementById("nav-btn-reporte").classList.add("active");
+      generarReporteGeneralDias();
     } else if (pestana === 'historial') {
       document.getElementById("tab-caldo-historial").classList.add("active");
       document.getElementById("nav-btn-historial").classList.add("active");
@@ -1015,7 +1184,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // CONTROL PRESAS
+  // STOCK DE PRESAS
   function cargarStockPresasDelDia() {
     const stock = appData.stockPresas[fechaActual] || { ayer: 0, hoy: 0 };
     document.getElementById("presas-ayer").value = stock.ayer || "";
@@ -1059,7 +1228,7 @@
     }
   }
 
-  // VENTAS CALDO
+  // VENTAS CALDOS
   function seleccionarTurno(turno) {
     turnoSeleccionado = turno;
     const btnW = document.getElementById("btn-turno-wilder");
@@ -1102,7 +1271,7 @@
     guardarEnStorage();
   }
 
-  // GASTOS E INSUMOS (MEJORA: MONTO GLOBAL SIN DETALLAR)
+  // INSUMOS Y GASTOS (MONTO TOTAL GLOBAL)
   function cargarInsumo(nombre, pagadorPredeterminado) {
     document.getElementById("gasto-concepto").value = nombre;
     if (pagadorPredeterminado) {
@@ -1138,7 +1307,7 @@
     guardarEnStorage();
   }
 
-  // ADELANTO WILLIANS (MEJORA: PERMITE 0.00)
+  // ADELANTO WILLIANS (PERMITE S/ 0.00)
   function fijarAdelantoCero() {
     document.getElementById("adelanto-motivo").value = "Sin adelanto (S/ 0.00)";
     document.getElementById("adelanto-monto").value = "0.00";
@@ -1174,7 +1343,7 @@
     alert("¡Registro de Willians guardado!");
   }
 
-  // YADIRA
+  // SECCIÓN YADIRA
   function seleccionarProductoYadira(prod, precio) {
     document.getElementById("yadira-producto-nombre").value = prod;
     if (precio > 0) {
@@ -1229,7 +1398,56 @@
     guardarEnStorage();
   }
 
-  // ACTUALIZAR INTERFAZ
+  // CÁLCULO DE UN DÍA ESPECÍFICO (FUNCIÓN REUTILIZABLE)
+  function calcularMetricasFecha(f) {
+    const vDia = appData.caldos.filter(c => c.fecha === f);
+    const gDia = appData.gastos.filter(g => g.fecha === f);
+    const aDia = appData.adelantos.filter(a => a.fecha === f && a.destinatario === "willians");
+
+    const cantTotal = vDia.reduce((s, c) => s + c.cantidad, 0);
+    const caldosWilder = vDia.filter(c => c.turno === 'wilder').reduce((s, c) => s + c.cantidad, 0);
+    const caldosDelia = vDia.filter(c => c.turno === 'delia').reduce((s, c) => s + c.cantidad, 0);
+
+    const ventaTotal = cantTotal * PRECIO_CALDO;
+    const ventaWilder = caldosWilder * PRECIO_CALDO;
+    const ventaDelia = caldosDelia * PRECIO_CALDO;
+
+    const comprasWilder = gDia.filter(g => g.pagador === 'wilder').reduce((s, g) => s + g.monto, 0);
+    const comprasDelia = gDia.filter(g => g.pagador === 'delia').reduce((s, g) => s + g.monto, 0);
+    const comprasCaja = gDia.filter(g => g.pagador === 'caja').reduce((s, g) => s + g.monto, 0);
+    const gastoTotal = comprasWilder + comprasDelia + comprasCaja;
+
+    const gananciaNeta = ventaTotal - gastoTotal; // puede ser negativa si hubo pérdida
+    const mitadBase = gananciaNeta > 0 ? (gananciaNeta / 2) : 0;
+
+    const adelantosWilli = aDia.reduce((s, a) => s + a.monto, 0);
+    const saldoWilli = mitadBase - adelantosWilli;
+
+    const saldoWilder = (mitadBase + comprasWilder) - ventaWilder;
+    const saldoDelia = ventaDelia - comprasDelia;
+
+    return {
+      fecha: f,
+      cantTotal,
+      caldosWilder,
+      caldosDelia,
+      ventaTotal,
+      ventaWilder,
+      ventaDelia,
+      gastoTotal,
+      comprasWilder,
+      comprasDelia,
+      gananciaNeta,
+      mitadBase,
+      adelantosWilli,
+      saldoWilli,
+      saldoWilder,
+      saldoDelia,
+      hayMovimiento: (vDia.length > 0 || gDia.length > 0 || aDia.length > 0)
+    };
+  }
+
+  // ACTUALIZACIÓN DE TODO EL SISTEMA
   function actualizarTodo() {
     calcularStockPresas();
     actualizarCuadreCaldo();
@@ -1238,54 +1456,145 @@
   }
 
   function actualizarCuadreCaldo() {
-    const ventasDia = appData.caldos.filter(c => c.fecha === fechaActual);
-    const gastosDia = appData.gastos.filter(g => g.fecha === fechaActual);
-    const adelantosWilliDia = appData.adelantos.filter(a => a.fecha === fechaActual && a.destinatario === "willians");
+    const m = calcularMetricasFecha(fechaActual);
 
-    const cantCaldosTotal = ventasDia.reduce((s, c) => s + c.cantidad, 0);
-    const ventaTotalBruta = cantCaldosTotal * PRECIO_CALDO;
+    document.getElementById("cuadre-ganancia-neta").innerText = `S/ ${m.gananciaNeta.toFixed(2)}`;
+    document.getElementById("cuadre-venta-total").innerText = `S/ ${m.ventaTotal.toFixed(2)}`;
+    document.getElementById("cuadre-caldos-unidades").innerText = `${m.cantTotal} platos vendidos`;
+    document.getElementById("cuadre-costo-total").innerText = `S/ ${m.gastoTotal.toFixed(2)}`;
+    document.getElementById("cuadre-insumos-count").innerText = `Compras del día`;
 
-    const caldosWilder = ventasDia.filter(c => c.turno === 'wilder').reduce((s, c) => s + c.cantidad, 0);
-    const montoWilder = caldosWilder * PRECIO_CALDO;
+    const lblRes = document.getElementById("cuadre-estado-resultado");
+    if (m.gananciaNeta < 0) {
+      lblRes.innerText = "⚠️ DÍA CON PÉRDIDA OPERATIVA (Gastos superan ventas)";
+      lblRes.style.color = "#f87171";
+    } else {
+      lblRes.innerText = "Ganancia Neta Real a Repartir (50/50)";
+      lblRes.style.color = "";
+    }
 
-    const caldosDelia = ventasDia.filter(c => c.turno === 'delia').reduce((s, c) => s + c.cantidad, 0);
-    const montoDelia = caldosDelia * PRECIO_CALDO;
+    document.getElementById("willi-50-base").innerText = `S/ ${m.mitadBase.toFixed(2)}`;
+    document.getElementById("willi-adelantos-total").innerText = `- S/ ${m.adelantosWilli.toFixed(2)}`;
+    document.getElementById("willi-saldo-final").innerText = `S/ ${m.saldoWilli.toFixed(2)}`;
 
-    const comprasWilder = gastosDia.filter(g => g.pagador === 'wilder').reduce((s, g) => s + g.monto, 0);
-    const comprasDelia = gastosDia.filter(g => g.pagador === 'delia').reduce((s, g) => s + g.monto, 0);
-    const comprasCaja = gastosDia.filter(g => g.pagador === 'caja').reduce((s, g) => s + g.monto, 0);
-    const gastoTotalInsumos = comprasWilder + comprasDelia + comprasCaja;
+    document.getElementById("wilder-50-base").innerText = `S/ ${m.mitadBase.toFixed(2)}`;
+    document.getElementById("wilder-reembolso-compras").innerText = `+ S/ ${m.comprasWilder.toFixed(2)}`;
+    document.getElementById("wilder-caldos-cobrados").innerText = `S/ ${m.ventaWilder.toFixed(2)}`;
+    document.getElementById("wilder-saldo-final").innerText = `S/ ${m.saldoWilder.toFixed(2)}`;
 
-    const gananciaNeta = Math.max(0, ventaTotalBruta - gastoTotalInsumos);
-    const mitadBase = gananciaNeta / 2;
-
-    const adelantosWilliTotal = adelantosWilliDia.reduce((s, a) => s + a.monto, 0);
-    const saldoFinalWilli = mitadBase - adelantosWilliTotal;
-
-    const posicionNetoWilder = (mitadBase + comprasWilder) - montoWilder;
-    const efectivoQuedoDelia = montoDelia - comprasDelia;
-
-    document.getElementById("cuadre-ganancia-neta").innerText = `S/ ${gananciaNeta.toFixed(2)}`;
-    document.getElementById("cuadre-venta-total").innerText = `S/ ${ventaTotalBruta.toFixed(2)}`;
-    document.getElementById("cuadre-caldos-unidades").innerText = `${cantCaldosTotal} platos vendidos`;
-    document.getElementById("cuadre-costo-total").innerText = `S/ ${gastoTotalInsumos.toFixed(2)}`;
-    document.getElementById("cuadre-insumos-count").innerText = `${gastosDia.length} gastos`;
-
-    document.getElementById("willi-50-base").innerText = `S/ ${mitadBase.toFixed(2)}`;
-    document.getElementById("willi-adelantos-total").innerText = `- S/ ${adelantosWilliTotal.toFixed(2)}`;
-    document.getElementById("willi-saldo-final").innerText = `S/ ${saldoFinalWilli.toFixed(2)}`;
-
-    document.getElementById("wilder-50-base").innerText = `S/ ${mitadBase.toFixed(2)}`;
-    document.getElementById("wilder-reembolso-compras").innerText = `+ S/ ${comprasWilder.toFixed(2)}`;
-    document.getElementById("wilder-caldos-cobrados").innerText = `S/ ${montoWilder.toFixed(2)}`;
-    document.getElementById("wilder-saldo-final").innerText = `S/ ${posicionNetoWilder.toFixed(2)}`;
-
-    document.getElementById("delia-caldos-monto").innerText = `S/ ${montoDelia.toFixed(2)}`;
-    document.getElementById("delia-caldos-cant").innerText = caldosDelia;
-    document.getElementById("delia-compras-monto").innerText = `S/ ${comprasDelia.toFixed(2)}`;
-    document.getElementById("delia-neto-quedo").innerText = `S/ ${efectivoQuedoDelia.toFixed(2)}`;
+    document.getElementById("delia-caldos-monto").innerText = `S/ ${m.ventaDelia.toFixed(2)}`;
+    document.getElementById("delia-caldos-cant").innerText = m.caldosDelia;
+    document.getElementById("delia-compras-monto").innerText = `S/ ${m.comprasDelia.toFixed(2)}`;
+    document.getElementById("delia-neto-quedo").innerText = `S/ ${m.saldoDelia.toFixed(2)}`;
   }
 
+  // GENERADOR DEL REPORTE DETALLADO DÍA A DÍA (ACUMULADO)
+  function generarReporteGeneralDias() {
+    const contenedor = document.getElementById("contenedor-reporte-dias");
+    contenedor.innerHTML = "";
+
+    // Obtener todas las fechas únicas registradas en caldos, gastos o adelantos
+    const todasLasFechas = new Set([
+      ...appData.caldos.map(c => c.fecha),
+      ...appData.gastos.map(g => g.fecha),
+      ...appData.adelantos.map(a => a.fecha)
+    ]);
+
+    const fechasOrdenadas = Array.from(todasLasFechas).sort().reverse(); // De más reciente a más antiguo
+
+    if (fechasOrdenadas.length === 0) {
+      contenedor.innerHTML = `<div style="text-align:center; padding:24px; color:var(--slate-400); font-size:13px;">No hay movimientos registrados todavía. Anota caldos o gastos en la pestaña 'Anotar'.</div>`;
+      document.getElementById("rep-total-dias").innerText = "0 días";
+      document.getElementById("rep-acum-saldo-willians").innerText = "S/ 0.00";
+      document.getElementById("rep-acum-ventas").innerText = "S/ 0.00";
+      document.getElementById("rep-acum-gastos").innerText = "S/ 0.00";
+      document.getElementById("rep-acum-ganancia").innerText = "S/ 0.00";
+      return;
+    }
+
+    let acumVentas = 0;
+    let acumGastos = 0;
+    let acumGanancia = 0;
+    let acumSaldoWillians = 0;
+
+    fechasOrdenadas.forEach(f => {
+      const met = calcularMetricasFecha(f);
+      if (!met.hayMovimiento) return;
+
+      acumVentas += met.ventaTotal;
+      acumGastos += met.gastoTotal;
+      acumGanancia += met.gananciaNeta;
+      acumSaldoWillians += met.saldoWilli;
+
+      const esGanancia = met.gananciaNeta >= 0;
+
+      const card = document.createElement("div");
+      card.className = "reporte-dia-card";
+      card.innerHTML = `
+        <div class="reporte-dia-header">
+          <div>
+            <b style="font-size:13px; color:var(--slate-850);">📅 ${f}</b>
+            <span style="font-size:11px; color:var(--slate-500); margin-left:4px;">(${met.cantTotal} caldos)</span>
+          </div>
+          <span style="font-size:12px; font-weight:800; color:${esGanancia ? 'var(--emerald)' : '#dc2626'};">
+            ${esGanancia ? 'Ganancia: +S/ ' + met.gananciaNeta.toFixed(2) : 'Pérdida: S/ ' + met.gananciaNeta.toFixed(2)}
+          </span>
+        </div>
+
+        <div class="reporte-fila">
+          <span>Ingreso Total (${met.cantTotal} caldos):</span>
+          <b>S/ ${met.ventaTotal.toFixed(2)}</b>
+        </div>
+        <div class="reporte-fila">
+          <span>Insumos y Gastos:</span>
+          <b class="text-red">- S/ ${met.gastoTotal.toFixed(2)}</b>
+        </div>
+        <div class="reporte-fila">
+          <span>Parte Willians (50% neto):</span>
+          <b>S/ ${met.mitadBase.toFixed(2)}</b>
+        </div>
+        <div class="reporte-fila">
+          <span>Adelantos que se le dio a Willians:</span>
+          <b class="text-blue">${met.adelantosWilli > 0 ? '- S/ ' + met.adelantosWilli.toFixed(2) : 'S/ 0.00'}</b>
+        </div>
+        
+        <div style="margin-top:6px; padding-top:6px; border-top:1px dashed var(--slate-200); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px; font-weight:700; color:var(--slate-700);">Saldo a pagar a Willians de este día:</span>
+          <span style="font-size:14px; font-weight:900; color:${met.saldoWilli >= 0 ? 'var(--emerald)' : '#dc2626'};">
+            S/ ${met.saldoWilli.toFixed(2)}
+          </span>
+        </div>
+      `;
+      contenedor.appendChild(card);
+    });
+
+    document.getElementById("rep-total-dias").innerText = `${fechasOrdenadas.length} días registrados`;
+    document.getElementById("rep-acum-saldo-willians").innerText = `S/ ${acumSaldoWillians.toFixed(2)}`;
+    document.getElementById("rep-acum-ventas").innerText = `S/ ${acumVentas.toFixed(2)}`;
+    document.getElementById("rep-acum-gastos").innerText = `S/ ${acumGastos.toFixed(2)}`;
+    document.getElementById("rep-acum-ganancia").innerText = `S/ ${acumGanancia.toFixed(2)}`;
+  }
+
+  function copiarReporteTexto() {
+    let texto = `*REPORTE ECONÓMICO CALDO DE GALLINA*\n`;
+    texto += `Fecha de corte: ${fechaActual}\n`;
+    texto += `------------------------------------\n`;
+    texto += `• Total Ventas: ${document.getElementById("rep-acum-ventas").innerText}\n`;
+    texto += `• Total Insumos: ${document.getElementById("rep-acum-gastos").innerText}\n`;
+    texto += `• Ganancia Neta Total: ${document.getElementById("rep-acum-ganancia").innerText}\n`;
+    texto += `• *TOTAL LIQUIDACIÓN A WILLIANS (50%): ${document.getElementById("rep-acum-saldo-willians").innerText}*\n`;
+    texto += `------------------------------------\n`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(texto).then(() => {
+        alert("¡Resumen copiado! Puedes pegarlo directamente en WhatsApp con Willians.");
+      });
+    } else {
+      prompt("Copia este reporte para compartirlo:", texto);
+    }
+  }
+
+  // HISTORIAL DEL DÍA
   function actualizarHistorialCaldo() {
     const cont = document.getElementById("lista-movimientos-caldo");
     cont.innerHTML = "";
@@ -1295,7 +1604,7 @@
     const adelantos = appData.adelantos.filter(a => a.fecha === fechaActual);
 
     if (ventas.length === 0 && gastos.length === 0 && adelantos.length === 0) {
-      cont.innerHTML = `<div style="text-align:center; padding:18px; color:var(--slate-400); font-size:13px;">No hay registros anotados para esta fecha.</div>`;
+      cont.innerHTML = `<div style="text-align:center; padding:18px; color:var(--slate-400); font-size:13px;">No hay registros anotados para esta fecha. Usa las flechas ◀ ▶ para ver otros días.</div>`;
       return;
     }
 
@@ -1353,7 +1662,7 @@
     cont.innerHTML = "";
 
     if (vYadira.length === 0 && gYadira.length === 0) {
-      cont.innerHTML = `<div style="text-align:center; padding:18px; color:var(--slate-400); font-size:13px;">Sin movimientos de cafetería hoy.</div>`;
+      cont.innerHTML = `<div style="text-align:center; padding:18px; color:var(--slate-400); font-size:13px;">Sin movimientos de cafetería en esta fecha.</div>`;
       return;
     }
 
