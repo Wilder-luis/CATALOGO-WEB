@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Control de Negocio - Wilder & Familia</title>
+  <title>Control de Negocio - Wilder, Delia, Willians & Yadira</title>
   <style>
     :root {
       --primary: #ea580c;
@@ -128,7 +128,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* BARRA DE NAVEGACIÓN DE FECHAS CON FLECHAS ADELANTAR / RETROCEDER */
+    /* BARRA DE NAVEGACIÓN DÍA A DÍA */
     .date-nav-bar {
       margin: 14px 16px 0 16px;
       background: white;
@@ -155,12 +155,9 @@
       font-size: 16px;
       font-weight: 900;
       cursor: pointer;
-      transition: background 0.15s;
     }
 
-    .btn-date-nav:active {
-      background: var(--slate-300);
-    }
+    .btn-date-nav:active { background: var(--slate-300); }
 
     .date-display-center {
       display: flex;
@@ -203,9 +200,7 @@
       padding: 14px 16px;
     }
 
-    .tab-content.active {
-      display: block;
-    }
+    .tab-content.active { display: block; }
 
     .card {
       background: white;
@@ -272,9 +267,7 @@
       line-height: 1.1;
     }
 
-    .form-group {
-      margin-bottom: 12px;
-    }
+    .form-group { margin-bottom: 12px; }
 
     .form-label {
       display: block;
@@ -296,9 +289,7 @@
       font-weight: 500;
     }
 
-    .input-text:focus, .select-box:focus {
-      border-color: var(--primary);
-    }
+    .input-text:focus, .select-box:focus { border-color: var(--primary); }
 
     .counter-wrapper {
       display: flex;
@@ -483,9 +474,9 @@
     .split-wilder { border-color: #0284c7; background: #f0f9ff; }
     .split-delia { border-color: #7c3aed; background: #faf5ff; }
 
-    /* ESTILOS DEL REPORTE ACUMULADO DÍA A DÍA */
+    /* REPORTE Y LIQUIDACIÓN ACUMULADA */
     .reporte-acumulado-banner {
-      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       color: white;
       border-radius: var(--radius-lg);
       padding: 16px;
@@ -504,6 +495,21 @@
       background: rgba(255, 255, 255, 0.08);
       border-radius: 10px;
       padding: 8px;
+    }
+
+    /* TARJETAS DUALES WILLIANS Y DELIA EN EL REPORTE */
+    .reporte-resumen-doble {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card-cierre-acumulado {
+      border-radius: var(--radius-md);
+      padding: 12px;
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--shadow-sm);
     }
 
     .reporte-dia-card {
@@ -612,7 +618,7 @@
     </div>
   </header>
 
-  <!-- BARRA DE NAVEGACIÓN DÍA A DÍA CON FLECHAS -->
+  <!-- BARRA DE FECHAS CON FLECHAS ◀ ▶ -->
   <div class="date-nav-bar">
     <button class="btn-date-nav" onclick="cambiarDiaRelativo(-1)" title="Día Anterior">
       ◀
@@ -832,7 +838,7 @@
         </div>
         <div style="margin-top:8px; font-size:13px; color:var(--slate-600);">
           Ganancia que le corresponde (50% neto): <b id="willi-50-base">S/ 0.00</b><br>
-          Menos adelantos de dinero recibidos: <b class="text-red" id="willi-adelantos-total">- S/ 0.00</b>
+          Menos adelantos recibidos en el día: <b class="text-red" id="willi-adelantos-total">- S/ 0.00</b>
         </div>
         <div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--slate-300); display:flex; justify-content:space-between; align-items:center;">
           <span style="font-size:13px; font-weight:800; color:var(--slate-800);">Saldo del Día a Pagarle:</span>
@@ -868,43 +874,78 @@
           • Compras pagadas del bolsillo de Delia: <b class="text-red" id="delia-compras-monto">S/ 0.00</b>
         </div>
         <div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--slate-300); display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:12px; font-weight:800; color:var(--slate-800);">Efectivo de caldo que queda en casa:</span>
+          <span style="font-size:12px; font-weight:800; color:var(--slate-800);">Efectivo de caldo en poder de Delia:</span>
           <span style="font-size:18px; font-weight:900; color:var(--purple);" id="delia-neto-quedo">S/ 0.00</span>
         </div>
       </div>
 
     </div>
 
-    <!-- SUB-PESTAÑA 3: REPORTE GENERAL DÍA A DÍA (NUEVO) -->
+    <!-- SUB-PESTAÑA 3: REPORTE TOTAL Y LIQUIDACIÓN ACUMULADA (WILLIANS + DELIA) -->
     <div id="tab-caldo-reporte" class="tab-content">
       
-      <!-- BANNER DE LIQUIDACIÓN TOTAL ACUMULADA CON WILLIANS -->
+      <!-- BANNER GENERAL ACUMULADO -->
       <div class="reporte-acumulado-banner">
         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
           <div>
-            <div style="font-size:11px; font-weight:700; opacity:0.8; text-transform:uppercase;">Liquidación Acumulada con Willians</div>
-            <div style="font-size:26px; font-weight:900; margin-top:2px; color:#4ade80;" id="rep-acum-saldo-willians">S/ 0.00</div>
-            <div style="font-size:11px; opacity:0.85;">Total Neto a entregarle a Willians hasta hoy</div>
+            <div style="font-size:11px; font-weight:700; opacity:0.8; text-transform:uppercase;">Liquidación Acumulada del Negocio</div>
+            <div style="font-size:25px; font-weight:900; margin-top:2px; color:#38bdf8;" id="rep-acum-ganancia">S/ 0.00</div>
+            <div style="font-size:11px; opacity:0.85;">Ganancia Neta Total de todos los días registrados</div>
           </div>
           <button onclick="copiarReporteTexto()" style="background:rgba(255,255,255,0.2); border:none; color:white; padding:7px 11px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">
-            📋 Copiar Resumen
+            📋 Copiar WhatsApp
           </button>
         </div>
 
         <div class="reporte-kpi-grid">
           <div class="reporte-kpi-card">
-            <div style="font-size:10px; opacity:0.75;">Venta Total</div>
-            <div style="font-size:14px; font-weight:800;" id="rep-acum-ventas">S/ 0.00</div>
+            <div style="font-size:10px; opacity:0.75;">Ventas Brutas</div>
+            <div style="font-size:13px; font-weight:800; color:#4ade80;" id="rep-acum-ventas">S/ 0.00</div>
           </div>
           <div class="reporte-kpi-card">
             <div style="font-size:10px; opacity:0.75;">Total Insumos</div>
-            <div style="font-size:14px; font-weight:800; color:#f87171;" id="rep-acum-gastos">S/ 0.00</div>
+            <div style="font-size:13px; font-weight:800; color:#f87171;" id="rep-acum-gastos">S/ 0.00</div>
           </div>
           <div class="reporte-kpi-card">
-            <div style="font-size:10px; opacity:0.75;">Ganancia Neta</div>
-            <div style="font-size:14px; font-weight:800; color:#38bdf8;" id="rep-acum-ganancia">S/ 0.00</div>
+            <div style="font-size:10px; opacity:0.75;">Caldos Vendidos</div>
+            <div style="font-size:13px; font-weight:800;" id="rep-acum-caldos-cant">0 platos</div>
           </div>
         </div>
+      </div>
+
+      <!-- TARJETAS DE LIQUIDACIÓN: WILLIANS Y DELIA -->
+      <div class="reporte-resumen-doble">
+        
+        <!-- CUENTA WILLIANS -->
+        <div class="card-cierre-acumulado" style="background:#f0fdf4; border-left:4px solid #059669;">
+          <div style="font-size:12px; font-weight:800; color:#065f46; display:flex; align-items:center; gap:4px;">
+            👦 Willians (Socio 50%)
+          </div>
+          <div style="margin-top:6px; font-size:11px; color:var(--slate-600); line-height:1.4;">
+            50% Ganancia: <b id="rep-willi-ganancia-total">S/ 0.00</b><br>
+            Menos adelantos: <b class="text-red" id="rep-willi-adelantos-total">- S/ 0.00</b>
+          </div>
+          <div style="margin-top:8px; padding-top:6px; border-top:1px dashed #bbf7d0;">
+            <div style="font-size:10px; font-weight:700; color:#047857;">SALDO A PAGARLE:</div>
+            <div style="font-size:18px; font-weight:900; color:#059669;" id="rep-acum-saldo-willians">S/ 0.00</div>
+          </div>
+        </div>
+
+        <!-- CUENTA DELIA -->
+        <div class="card-cierre-acumulado" style="background:#faf5ff; border-left:4px solid #7c3aed;">
+          <div style="font-size:12px; font-weight:800; color:#5b21b6; display:flex; align-items:center; gap:4px;">
+            👩 Delia (Tardes 1pm+)
+          </div>
+          <div style="margin-top:6px; font-size:11px; color:var(--slate-600); line-height:1.4;">
+            Caldos cobrados: <b id="rep-delia-caldos-total">S/ 0.00</b><br>
+            Gastos de su bolsillo: <b class="text-red" id="rep-delia-gastos-total">- S/ 0.00</b>
+          </div>
+          <div style="margin-top:8px; padding-top:6px; border-top:1px dashed #e9d5ff;">
+            <div style="font-size:10px; font-weight:700; color:#6d28d9;">EN MANO DE DELIA:</div>
+            <div style="font-size:18px; font-weight:900; color:#7c3aed;" id="rep-acum-saldo-delia">S/ 0.00</div>
+          </div>
+        </div>
+
       </div>
 
       <div class="card-header" style="margin-bottom:10px; border:none;">
@@ -919,7 +960,7 @@
 
     </div>
 
-    <!-- SUB-PESTAÑA 4: HISTORIAL DE MOVIMIENTOS DEL DÍA -->
+    <!-- SUB-PESTAÑA 4: MOVIMIENTOS DEL DÍA -->
     <div id="tab-caldo-historial" class="tab-content">
       <div class="card">
         <div class="card-header">
@@ -1089,7 +1130,7 @@
     actualizarTodo();
   }
 
-  // GESTIÓN DE FECHAS Y FLECHAS ◀ ▶
+  // GESTIÓN DE FECHAS
   function ponerFechaHoy() {
     const hoy = new Date();
     fechaActual = formatearDateAString(hoy);
@@ -1271,7 +1312,7 @@
     guardarEnStorage();
   }
 
-  // INSUMOS Y GASTOS (MONTO TOTAL GLOBAL)
+  // INSUMOS Y GASTOS
   function cargarInsumo(nombre, pagadorPredeterminado) {
     document.getElementById("gasto-concepto").value = nombre;
     if (pagadorPredeterminado) {
@@ -1307,7 +1348,7 @@
     guardarEnStorage();
   }
 
-  // ADELANTO WILLIANS (PERMITE S/ 0.00)
+  // ADELANTO WILLIANS
   function fijarAdelantoCero() {
     document.getElementById("adelanto-motivo").value = "Sin adelanto (S/ 0.00)";
     document.getElementById("adelanto-monto").value = "0.00";
@@ -1398,7 +1439,7 @@
     guardarEnStorage();
   }
 
-  // CÁLCULO DE UN DÍA ESPECÍFICO (FUNCIÓN REUTILIZABLE)
+  // CÁLCULO DE UN DÍA ESPECÍFICO
   function calcularMetricasFecha(f) {
     const vDia = appData.caldos.filter(c => c.fecha === f);
     const gDia = appData.gastos.filter(g => g.fecha === f);
@@ -1417,13 +1458,14 @@
     const comprasCaja = gDia.filter(g => g.pagador === 'caja').reduce((s, g) => s + g.monto, 0);
     const gastoTotal = comprasWilder + comprasDelia + comprasCaja;
 
-    const gananciaNeta = ventaTotal - gastoTotal; // puede ser negativa si hubo pérdida
+    const gananciaNeta = ventaTotal - gastoTotal;
     const mitadBase = gananciaNeta > 0 ? (gananciaNeta / 2) : 0;
 
     const adelantosWilli = aDia.reduce((s, a) => s + a.monto, 0);
     const saldoWilli = mitadBase - adelantosWilli;
 
     const saldoWilder = (mitadBase + comprasWilder) - ventaWilder;
+    // Dinero neto en poder de Delia ese día = lo que cobró de caldos menos lo que gastó de su bolsillo
     const saldoDelia = ventaDelia - comprasDelia;
 
     return {
@@ -1437,6 +1479,7 @@
       gastoTotal,
       comprasWilder,
       comprasDelia,
+      comprasCaja,
       gananciaNeta,
       mitadBase,
       adelantosWilli,
@@ -1466,7 +1509,7 @@
 
     const lblRes = document.getElementById("cuadre-estado-resultado");
     if (m.gananciaNeta < 0) {
-      lblRes.innerText = "⚠️ DÍA CON PÉRDIDA OPERATIVA (Gastos superan ventas)";
+      lblRes.innerText = "⚠️ DÍA CON PÉRDIDA OPERATIVA (Gastos superaron ventas)";
       lblRes.style.color = "#f87171";
     } else {
       lblRes.innerText = "Ganancia Neta Real a Repartir (50/50)";
@@ -1488,34 +1531,47 @@
     document.getElementById("delia-neto-quedo").innerText = `S/ ${m.saldoDelia.toFixed(2)}`;
   }
 
-  // GENERADOR DEL REPORTE DETALLADO DÍA A DÍA (ACUMULADO)
+  // GENERADOR DEL REPORTE ACUMULADO DÍA A DÍA (WILLIANS + DELIA)
   function generarReporteGeneralDias() {
     const contenedor = document.getElementById("contenedor-reporte-dias");
     contenedor.innerHTML = "";
 
-    // Obtener todas las fechas únicas registradas en caldos, gastos o adelantos
     const todasLasFechas = new Set([
       ...appData.caldos.map(c => c.fecha),
       ...appData.gastos.map(g => g.fecha),
       ...appData.adelantos.map(a => a.fecha)
     ]);
 
-    const fechasOrdenadas = Array.from(todasLasFechas).sort().reverse(); // De más reciente a más antiguo
+    const fechasOrdenadas = Array.from(todasLasFechas).sort().reverse();
 
     if (fechasOrdenadas.length === 0) {
       contenedor.innerHTML = `<div style="text-align:center; padding:24px; color:var(--slate-400); font-size:13px;">No hay movimientos registrados todavía. Anota caldos o gastos en la pestaña 'Anotar'.</div>`;
       document.getElementById("rep-total-dias").innerText = "0 días";
-      document.getElementById("rep-acum-saldo-willians").innerText = "S/ 0.00";
       document.getElementById("rep-acum-ventas").innerText = "S/ 0.00";
       document.getElementById("rep-acum-gastos").innerText = "S/ 0.00";
       document.getElementById("rep-acum-ganancia").innerText = "S/ 0.00";
+      document.getElementById("rep-acum-caldos-cant").innerText = "0 platos";
+      document.getElementById("rep-acum-saldo-willians").innerText = "S/ 0.00";
+      document.getElementById("rep-willi-ganancia-total").innerText = "S/ 0.00";
+      document.getElementById("rep-willi-adelantos-total").innerText = "- S/ 0.00";
+      document.getElementById("rep-acum-saldo-delia").innerText = "S/ 0.00";
+      document.getElementById("rep-delia-caldos-total").innerText = "S/ 0.00";
+      document.getElementById("rep-delia-gastos-total").innerText = "- S/ 0.00";
       return;
     }
 
     let acumVentas = 0;
     let acumGastos = 0;
     let acumGanancia = 0;
+    let acumCaldosCant = 0;
+
+    let acumWilliGanancia = 0;
+    let acumWilliAdelantos = 0;
     let acumSaldoWillians = 0;
+
+    let acumDeliaCaldosMonto = 0;
+    let acumDeliaGastosMonto = 0;
+    let acumSaldoDelia = 0;
 
     fechasOrdenadas.forEach(f => {
       const met = calcularMetricasFecha(f);
@@ -1524,7 +1580,15 @@
       acumVentas += met.ventaTotal;
       acumGastos += met.gastoTotal;
       acumGanancia += met.gananciaNeta;
+      acumCaldosCant += met.cantTotal;
+
+      acumWilliGanancia += met.mitadBase;
+      acumWilliAdelantos += met.adelantosWilli;
       acumSaldoWillians += met.saldoWilli;
+
+      acumDeliaCaldosMonto += met.ventaDelia;
+      acumDeliaGastosMonto += met.comprasDelia;
+      acumSaldoDelia += met.saldoDelia;
 
       const esGanancia = met.gananciaNeta >= 0;
 
@@ -1534,63 +1598,79 @@
         <div class="reporte-dia-header">
           <div>
             <b style="font-size:13px; color:var(--slate-850);">📅 ${f}</b>
-            <span style="font-size:11px; color:var(--slate-500); margin-left:4px;">(${met.cantTotal} caldos)</span>
+            <span style="font-size:11px; color:var(--slate-500); margin-left:4px;">(${met.cantTotal} caldos: ${met.caldosWilder} Mañ. / ${met.caldosDelia} Tard.)</span>
           </div>
           <span style="font-size:12px; font-weight:800; color:${esGanancia ? 'var(--emerald)' : '#dc2626'};">
-            ${esGanancia ? 'Ganancia: +S/ ' + met.gananciaNeta.toFixed(2) : 'Pérdida: S/ ' + met.gananciaNeta.toFixed(2)}
+            ${esGanancia ? '+S/ ' + met.gananciaNeta.toFixed(2) : 'S/ ' + met.gananciaNeta.toFixed(2)}
           </span>
         </div>
 
         <div class="reporte-fila">
-          <span>Ingreso Total (${met.cantTotal} caldos):</span>
+          <span>Ventas (Mañ S/ ${met.ventaWilder.toFixed(2)} + Tard S/ ${met.ventaDelia.toFixed(2)}):</span>
           <b>S/ ${met.ventaTotal.toFixed(2)}</b>
         </div>
         <div class="reporte-fila">
-          <span>Insumos y Gastos:</span>
+          <span>Insumos y Gastos totales:</span>
           <b class="text-red">- S/ ${met.gastoTotal.toFixed(2)}</b>
         </div>
-        <div class="reporte-fila">
-          <span>Parte Willians (50% neto):</span>
-          <b>S/ ${met.mitadBase.toFixed(2)}</b>
-        </div>
-        <div class="reporte-fila">
-          <span>Adelantos que se le dio a Willians:</span>
-          <b class="text-blue">${met.adelantosWilli > 0 ? '- S/ ' + met.adelantosWilli.toFixed(2) : 'S/ 0.00'}</b>
-        </div>
         
-        <div style="margin-top:6px; padding-top:6px; border-top:1px dashed var(--slate-200); display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:11px; font-weight:700; color:var(--slate-700);">Saldo a pagar a Willians de este día:</span>
-          <span style="font-size:14px; font-weight:900; color:${met.saldoWilli >= 0 ? 'var(--emerald)' : '#dc2626'};">
-            S/ ${met.saldoWilli.toFixed(2)}
-          </span>
+        <!-- DETALLE WILLIANS DÍA -->
+        <div style="background:#f0fdf4; padding:6px 8px; border-radius:6px; margin:4px 0; border:1px solid #dcfce7; display:flex; justify-content:space-between; font-size:11px;">
+          <span>👦 Willians (50% S/ ${met.mitadBase.toFixed(2)} - Adel. S/ ${met.adelantosWilli.toFixed(2)}):</span>
+          <b style="color:#059669;">Saldo: S/ ${met.saldoWilli.toFixed(2)}</b>
+        </div>
+
+        <!-- DETALLE DELIA DÍA -->
+        <div style="background:#faf5ff; padding:6px 8px; border-radius:6px; margin:4px 0; border:1px solid #f3e8ff; display:flex; justify-content:space-between; font-size:11px;">
+          <span>👩 Delia (Cobró S/ ${met.ventaDelia.toFixed(2)} - Gastó S/ ${met.comprasDelia.toFixed(2)}):</span>
+          <b style="color:#7c3aed;">En mano: S/ ${met.saldoDelia.toFixed(2)}</b>
         </div>
       `;
       contenedor.appendChild(card);
     });
 
     document.getElementById("rep-total-dias").innerText = `${fechasOrdenadas.length} días registrados`;
-    document.getElementById("rep-acum-saldo-willians").innerText = `S/ ${acumSaldoWillians.toFixed(2)}`;
     document.getElementById("rep-acum-ventas").innerText = `S/ ${acumVentas.toFixed(2)}`;
     document.getElementById("rep-acum-gastos").innerText = `S/ ${acumGastos.toFixed(2)}`;
     document.getElementById("rep-acum-ganancia").innerText = `S/ ${acumGanancia.toFixed(2)}`;
+    document.getElementById("rep-acum-caldos-cant").innerText = `${acumCaldosCant} platos`;
+
+    // Totales Willians
+    document.getElementById("rep-willi-ganancia-total").innerText = `S/ ${acumWilliGanancia.toFixed(2)}`;
+    document.getElementById("rep-willi-adelantos-total").innerText = `- S/ ${acumWilliAdelantos.toFixed(2)}`;
+    document.getElementById("rep-acum-saldo-willians").innerText = `S/ ${acumSaldoWillians.toFixed(2)}`;
+
+    // Totales Delia
+    document.getElementById("rep-delia-caldos-total").innerText = `S/ ${acumDeliaCaldosMonto.toFixed(2)}`;
+    document.getElementById("rep-delia-gastos-total").innerText = `- S/ ${acumDeliaGastosMonto.toFixed(2)}`;
+    document.getElementById("rep-acum-saldo-delia").innerText = `S/ ${acumSaldoDelia.toFixed(2)}`;
   }
 
   function copiarReporteTexto() {
-    let texto = `*REPORTE ECONÓMICO CALDO DE GALLINA*\n`;
+    let texto = `*LIQUIDACIÓN TOTAL ACUMULADA - CALDO DE GALLINA*\n`;
     texto += `Fecha de corte: ${fechaActual}\n`;
     texto += `------------------------------------\n`;
-    texto += `• Total Ventas: ${document.getElementById("rep-acum-ventas").innerText}\n`;
-    texto += `• Total Insumos: ${document.getElementById("rep-acum-gastos").innerText}\n`;
+    texto += `• Total Ventas Brutas: ${document.getElementById("rep-acum-ventas").innerText}\n`;
+    texto += `• Total Insumos / Gastos: ${document.getElementById("rep-acum-gastos").innerText}\n`;
     texto += `• Ganancia Neta Total: ${document.getElementById("rep-acum-ganancia").innerText}\n`;
-    texto += `• *TOTAL LIQUIDACIÓN A WILLIANS (50%): ${document.getElementById("rep-acum-saldo-willians").innerText}*\n`;
+    texto += `------------------------------------\n`;
+    texto += `👦 *CUENTA WILLIANS (Socio 50%):*\n`;
+    texto += `  - 50% Ganancia Neta: ${document.getElementById("rep-willi-ganancia-total").innerText}\n`;
+    texto += `  - Menos adelantos recibidos: ${document.getElementById("rep-willi-adelantos-total").innerText}\n`;
+    texto += `  👉 *TOTAL NETO A PAGARLE A WILLIANS: ${document.getElementById("rep-acum-saldo-willians").innerText}*\n`;
+    texto += `------------------------------------\n`;
+    texto += `👩 *CUENTA DELIA (Turno Tarde 1pm+):*\n`;
+    texto += `  - Total caldos cobrados en tardes: ${document.getElementById("rep-delia-caldos-total").innerText}\n`;
+    texto += `  - Menos gastos de su bolsillo: ${document.getElementById("rep-delia-gastos-total").innerText}\n`;
+    texto += `  👉 *DINERO NETO EN MANO DE DELIA POR RENDIR: ${document.getElementById("rep-acum-saldo-delia").innerText}*\n`;
     texto += `------------------------------------\n`;
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(texto).then(() => {
-        alert("¡Resumen copiado! Puedes pegarlo directamente en WhatsApp con Willians.");
+        alert("¡Liquidación copiada! Lista para compartirla por WhatsApp.");
       });
     } else {
-      prompt("Copia este reporte para compartirlo:", texto);
+      prompt("Copia este reporte para compartir:", texto);
     }
   }
 
@@ -1604,7 +1684,7 @@
     const adelantos = appData.adelantos.filter(a => a.fecha === fechaActual);
 
     if (ventas.length === 0 && gastos.length === 0 && adelantos.length === 0) {
-      cont.innerHTML = `<div style="text-align:center; padding:18px; color:var(--slate-400); font-size:13px;">No hay registros anotados para esta fecha. Usa las flechas ◀ ▶ para ver otros días.</div>`;
+      cont.innerHTML = `<div style="text-align:center; padding:18px; color:var(--slate-400); font-size:13px;">No hay registros anotados para esta fecha. Usa las flechas ◀ ▶ para navegar.</div>`;
       return;
     }
 
